@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@drawable/side_nav_bar"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/big_border"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <ImageView
+        android:id="@+id/image_view_icon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:contentDescription="@string/nav_header_desc"
+        android:layout_marginEnd="@dimen/mid_border"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/text_view_e_coin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E 币"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/image_view_icon" />
+
+    <TextView
+        android:id="@+id/text_view_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="等级"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_e_coin" />
+
+    <!-- 心率 -->
+    <TextView
+        android:id="@+id/text_view_heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="心率"
+        app:layout_constraintLeft_toRightOf="@id/image_view_icon"
+        app:layout_constraintTop_toTopOf="@id/image_view_icon" />
+
+
+    <!-- 血压 -->
+    <TextView
+        android:id="@+id/text_view_blood_press"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="血压"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/text_view_blood_fat" />
+
+    <!-- 血脂 -->
+    <TextView
+        android:id="@+id/text_view_blood_fat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="血脂"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/text_view_blood_press"
+        app:layout_constraintRight_toLeftOf="@id/text_view_blood_sugar" />
+
+    <!-- 血糖 -->
+    <TextView
+        android:id="@+id/text_view_blood_sugar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="血糖"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/text_view_blood_fat"
+        app:layout_constraintRight_toLeftOf="@id/text_view_sleep" />
+
+    <!-- 睡眠 -->
+    <TextView
+        android:id="@+id/text_view_sleep"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="睡眠"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/text_view_blood_sugar"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

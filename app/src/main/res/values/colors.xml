@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorGrayBlue">#8091ea</color>
+    <color name="colorDarkGrayBlue">#5772E5</color>
+    <color name="colorGold">#E9E255</color>
+    <color name="deepSkyBlue">#00BFFF</color>
+
+    <color name="fullTransparent">#00000000</color>
+    <color name="level_1_Transparent">#20000000</color>
+    <color name="level_2_Transparent">#40000000</color>
+    <color name="level_3_Transparent">#60000000</color>
+    <color name="level_4_Transparent">#80000000</color>
+    <color name="level_5_Transparent">#A0000000</color>
+    <color name="level_6_Transparent">#C0000000</color>
+    <color name="level_7_Transparent">#E0000000</color>
+    <color name="lightTransparent">#F0000000</color>
+</resources>
