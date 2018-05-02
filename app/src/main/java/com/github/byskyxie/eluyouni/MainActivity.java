@@ -1,9 +1,15 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,12 +19,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener ,IndexFragment.OnFragmentInteractionListener
+                    ,CompoundButton.OnCheckedChangeListener{
+
+    private static final int CHECKED_NONE = 0;
+    private static final int CHECKED_INDEX = 1;
+    private static final int CHECKED_CONSULT = 2;
+    private static final int CHECKED_MEDICINE = 3;
+    private static final int CHECKED_DOCTOR = 4;
+    private int checkedOpt = CHECKED_NONE;
 
     private NavigationView navView;
+    private RadioButton radioButtonIndex;
+    private RadioButton radioButtonConsult;
+    private RadioButton radioButtonMedic;
+    private RadioButton radioButtonDoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +50,17 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        radioButtonIndex = findViewById(R.id.radio_button_index);
+        radioButtonConsult = findViewById(R.id.radio_button_consult);
+        radioButtonMedic = findViewById(R.id.radio_button_medicine);
+        radioButtonDoc = findViewById(R.id.radio_button_private_doc);
+        radioButtonIndex.setChecked(true);  //默认选中
+        radioButtonIndex.setOnCheckedChangeListener(this);
+        radioButtonConsult.setOnCheckedChangeListener(this);
+        radioButtonMedic.setOnCheckedChangeListener(this);
+        radioButtonDoc.setOnCheckedChangeListener(this);
+
+        //TODO:setDrawableTopSize(VIEW,32);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,6 +71,15 @@ public class MainActivity extends BaseActivity
         navView = (NavigationView) findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
 
+    }
+
+    /**
+     * set size of drawer
+     * */
+    private void setDrawableTopSize(TextView view, int size){
+        Drawable[] ds =  view.getCompoundDrawables();
+        ds[1].setBounds(0,0,size,size);
+        view.setCompoundDrawables(null,ds[1],null,null);
     }
 
     @Override
@@ -105,4 +139,45 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        //TODO:fragment 交流实现
+        Log.e("MainActivity","has changed Fragment.");
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        //        菜单选中,切换fragment
+        //        先checked 后 清除pre checked
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        switch (buttonView.getId()){
+            case R.id.radio_button_index:
+                //Toast.makeText(this,"new Frag",Toast.LENGTH_SHORT).show();
+                if(isChecked || checkedOpt == CHECKED_INDEX){
+                    checkedOpt = CHECKED_INDEX;
+                    transaction.add(R.id.fragment_show, new IndexFragment());
+                    transaction.commit();
+                }
+                break;
+            case R.id.radio_button_consult:
+                if(isChecked || checkedOpt == CHECKED_CONSULT){
+                    checkedOpt = CHECKED_CONSULT;
+
+                }
+                break;
+            case R.id.radio_button_medicine:
+                if(isChecked || checkedOpt == CHECKED_MEDICINE){
+                    checkedOpt = CHECKED_MEDICINE;
+
+                }
+                break;
+            case R.id.radio_button_private_doc:
+                if(isChecked || checkedOpt == CHECKED_DOCTOR){
+                    checkedOpt = CHECKED_DOCTOR;
+
+                }
+                break;
+        }
+    }
 }
