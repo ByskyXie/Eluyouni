@@ -8,29 +8,54 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <fragment
+        android:id="@+id/fragment_show"
+        android:name="com.github.byskyxie.eluyouni.IndexFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_line_menu"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.88"/>
+
     <RadioGroup
         android:id="@+id/radio_group_main_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@drawable/shape_for_bottom_menu"
+        android:paddingTop="@dimen/small_border"
+        android:paddingBottom="@dimen/mini_border"
+        app:layout_constraintTop_toBottomOf="@id/guide_line_menu"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1">
+
         <RadioButton
             android:id="@+id/radio_button_index"
             android:layout_width="0dp"
+            android:textColor="@drawable/color_for_bottom_text"
+            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
+            android:drawableTop="@drawable/ic_index"
             android:text="@string/main_menu_index"
             android:layout_weight="1"/>
 
         <RadioButton
             android:id="@+id/radio_button_consult"
             android:layout_width="0dp"
+            android:textColor="@drawable/color_for_bottom_text"
+            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
+            android:drawableTop="@drawable/ic_consult"
             android:text="@string/main_menu_consult"
             android:layout_weight="1"/>
 
@@ -38,18 +63,24 @@
         <RadioButton
             android:id="@+id/radio_button_medicine"
             android:layout_width="0dp"
+            android:textColor="@drawable/color_for_bottom_text"
+            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
+            android:drawableTop="@drawable/ic_medicine"
             android:text="@string/main_menu_medicine"
             android:layout_weight="1"/>
 
         <RadioButton
             android:id="@+id/radio_button_private_doc"
             android:layout_width="0dp"
+            android:textColor="@drawable/color_for_bottom_text"
+            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
+            android:drawableTop="@drawable/ic_doc"
             android:text="@string/main_menu_private_doc"
             android:layout_weight="1"/>
 

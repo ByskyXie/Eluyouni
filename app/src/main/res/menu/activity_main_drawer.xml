@@ -3,23 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="none">
+    <group android:checkableBehavior="none"
+        android:id="@+id/group_user">
+
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:id="@+id/nav_menu_my_keep"
+            android:icon="@drawable/ic_nav_keep"
+            android:title="@string/nav_menu_my_keep" />
+
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:id="@+id/nav_menu_visited"
+            android:icon="@drawable/ic_nav_visited"
+            android:title="@string/nav_menu_visited" />
+
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:id="@+id/nav_menu_my_article"
+            android:icon="@drawable/ic_nav_article"
+            android:title="@string/nav_menu_my_article" />
+
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_menu_my_health_document"
+            android:icon="@drawable/ic_nav_document"
+            android:title="@string/nav_menu_my_health_document" />
+
+        <item
+            android:id="@+id/nav_menu_my_doctor"
+            android:icon="@drawable/ic_nav_doctor"
+            android:title="@string/nav_menu_my_doctor" />
+
+        <item
+            android:id="@+id/nav_menu_my_consult_record"
+            android:icon="@drawable/ic_nav_consult"
+            android:title="@string/nav_menu_my_consult_record" />
+
+        <item
+            android:id="@+id/nav_menu_my_health_manage"
+            android:icon="@drawable/ic_nav_manage"
+            android:title="@string/nav_menu_my_health_manage" />
+
+        <item
+            android:id="@+id/nav_menu_my_relate_account"
+            android:icon="@drawable/ic_nav_relate"
+            android:title="@string/nav_menu_my_relate_account" />
     </group>
 
     <item android:title="Communicate">

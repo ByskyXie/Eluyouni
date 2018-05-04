@@ -23,4 +23,22 @@
     <string name="main_menu_consult">会诊室</string>
     <string name="main_menu_medicine">寻医问药</string>
     <string name="main_menu_private_doc">私人医生</string>
+
+    <!-- pager -->
+    <string name="pager_focus">关注</string>
+    <string name="pager_patient_exper">久病良医</string>
+    <string name="pager_famous_doc">名医案例</string>
+    <string name="pager_usual_casus">常见病例</string>
+    <string name="pager_community">社区交流</string>
+
+    <!-- navigation menu -->
+    <string name="nav_menu_my_keep">我的收藏</string>
+    <string name="nav_menu_visited">浏览记录</string>
+    <string name="nav_menu_my_article">我的文章</string>
+    <string name="nav_menu_my_health_document">健康文档</string>
+    <string name="nav_menu_my_doctor">私人医生</string>
+    <string name="nav_menu_my_consult_record">会诊记录</string>
+    <string name="nav_menu_my_health_manage">健康管理</string>
+    <string name="nav_menu_my_relate_account">亲情账号</string>
+
 </resources>

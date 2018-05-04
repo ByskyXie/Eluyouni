@@ -4,10 +4,17 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorLightGrayBlue">#b6bff3</color>
     <color name="colorGrayBlue">#8091ea</color>
     <color name="colorDarkGrayBlue">#5772E5</color>
     <color name="colorGold">#E9E255</color>
     <color name="deepSkyBlue">#00BFFF</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="lightGray">#EAEAEA</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="coldGray">#808A87</color>
+    <color name="black">#000000</color>
 
     <color name="fullTransparent">#00000000</color>
     <color name="level_1_Transparent">#20000000</color>

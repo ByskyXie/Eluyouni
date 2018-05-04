@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener ,IndexFragment.OnFragmentInteractionListener
-                    ,CompoundButton.OnCheckedChangeListener{
+                    ,CompoundButton.OnCheckedChangeListener, View.OnClickListener{
 
     private static final int CHECKED_NONE = 0;
     private static final int CHECKED_INDEX = 1;
@@ -37,6 +37,7 @@ public class MainActivity extends BaseActivity
     private int checkedOpt = CHECKED_NONE;
 
     private NavigationView navView;
+    private View navHeader;
     private RadioButton radioButtonIndex;
     private RadioButton radioButtonConsult;
     private RadioButton radioButtonMedic;
@@ -50,6 +51,11 @@ public class MainActivity extends BaseActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //设置点击时间
+        navView = (NavigationView) findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
+        navHeader = navView.inflateHeaderView(R.layout.nav_header_main);
+
         radioButtonIndex = findViewById(R.id.radio_button_index);
         radioButtonConsult = findViewById(R.id.radio_button_consult);
         radioButtonMedic = findViewById(R.id.radio_button_medicine);
@@ -60,7 +66,7 @@ public class MainActivity extends BaseActivity
         radioButtonMedic.setOnCheckedChangeListener(this);
         radioButtonDoc.setOnCheckedChangeListener(this);
 
-        //TODO:setDrawableTopSize(VIEW,32);
+        //TODO:setDrawableTopSize(radioButtonMedic,92);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,8 +74,6 @@ public class MainActivity extends BaseActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        navView = (NavigationView) findViewById(R.id.nav_view);
-        navView.setNavigationItemSelectedListener(this);
 
     }
 
@@ -120,15 +124,7 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
+        if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
 
@@ -179,5 +175,10 @@ public class MainActivity extends BaseActivity
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
