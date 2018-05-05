@@ -87,4 +87,10 @@
         app:layout_constraintLeft_toRightOf="@id/text_view_blood_sugar"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <com.github.byskyxie.eluyouni.HeartBeatView
+        android:id="@+id/heart_beat_view"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintLeft_toRightOf="@id/text_view_heart"/>
+
 </android.support.constraint.ConstraintLayout>
