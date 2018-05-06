@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/small_border">
+
+    <ImageView
+        android:id="@+id/image_view_item_community_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_view_item_community_ername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_border"
+        android:layout_marginStart="@dimen/small_border"
+        app:layout_constraintLeft_toRightOf="@id/image_view_item_community_icon"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_view_item_community_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/small_border"
+        app:layout_constraintLeft_toRightOf="@id/text_view_item_community_ername"
+        app:layout_constraintTop_toTopOf="@id/text_view_item_community_ername"/>
+
+    <TextView
+        android:id="@+id/text_view_item_community_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/mini_border"
+        android:layout_marginStart="@dimen/small_border"
+        app:layout_constraintTop_toBottomOf="@id/text_view_item_community_ername"
+        app:layout_constraintLeft_toRightOf="@id/image_view_item_community_icon"/>
+
+    <TextView
+        android:id="@+id/text_view_item_community_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_border"
+        app:layout_constraintTop_toBottomOf="@id/image_view_item_community_icon"/>
+
+</android.support.constraint.ConstraintLayout>
