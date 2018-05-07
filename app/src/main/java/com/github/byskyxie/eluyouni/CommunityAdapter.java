@@ -41,42 +41,40 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
     CommunityAdapter(Context context, ArrayList<PatientCommunity> list) {
         this.context = context;
         this.list = list;
-//        this.list.add(new PatientCommunity(10001,10002,1,"2018-1-1 10:00","test+++",5));
     }
-
-    @Override
-    public void onBindViewHolder(@NonNull CommunityHolder holder, int position) {
-        int actPos = holder.getAdapterPosition();
-        holder.content.setText(list.get(actPos).getCcontent());
-        if(list.get(actPos).getErType() == 1){
-            holder.tag.setText("患者");
-            //联网获取患者姓名
-            Patient patient = ((BaseActivity)context).getPatientBaseInfo( list.get(actPos).getErId());
-            holder.erName.setText(patient.getPname());
-        }else if(list.get(actPos).getErType() == 2){
-            holder.tag.setText("医生");
-            //联网获得医生姓名
-            Doctor doctor = ((BaseActivity)context).getDoctorBaseInfo( list.get(actPos).getErId());
-            holder.erName.setText(doctor.getDname());
-        }else{
-            Log.e("CommunityAdapter","Get error er_type!!");
-        }
-        holder.time.setText( list.get(actPos).getTime());
-        holder.content.setText( list.get(actPos).getCcontent());
-        holder.assent.setText( list.get(actPos).getAssentNum());
-    }
-
 
     @NonNull
     @Override
     public CommunityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.e("0000000000000000000","00000000000 create view 00000000");
         View view = LayoutInflater.from(context).inflate(R.layout.item_community, parent , false);
         return new CommunityHolder(view);
     }
 
     @Override
-    public int getItemCount() {
-        return 0;
+    public void onBindViewHolder(@NonNull CommunityHolder holder, final int position) {
+        int actPos = holder.getAdapterPosition();
+        holder.content.setText(list.get(actPos).getCcontent());
+//        if(list.get(actPos).getErType() == 1){
+//            holder.tag.setText("患者");
+//            //联网获取患者姓名
+//            Patient patient = ((BaseActivity)context).getPatientBaseInfo( list.get(actPos).getErId());
+//            holder.erName.setText(patient.getPname());
+//        }else if(list.get(actPos).getErType() == 2){
+//            holder.tag.setText("医生");
+//            //联网获得医生姓名
+//            Doctor doctor = ((BaseActivity)context).getDoctorBaseInfo( list.get(actPos).getErId());
+//            holder.erName.setText(doctor.getDname());
+//        }else{
+//            Log.e("CommunityAdapter","Get error er_type!!");
+//        }
+        holder.time.setText( list.get(actPos).getTime());
+        holder.content.setText( list.get(actPos).getCcontent());
+        holder.assent.setText( ""+list.get(actPos).getAssentNum());
     }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
 }
