@@ -10,13 +10,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import java.security.Permission;
 
 public class BaseActivity extends AppCompatActivity {
     public static final String IP_SERVER = "192.168.137.1";  //"192.168.137.1"  "119.23.62.71"
-    private static final String SQL_LOGIN = "SELECT COUNT(*) FROM PATIENT;";
 
     protected static Patient userInfo = null;
     protected static SQLiteDatabase userDatabaseRead;
@@ -38,8 +34,13 @@ public class BaseActivity extends AppCompatActivity {
 
     protected boolean isLogin(){
         Cursor cursor = userDatabaseRead.query("PATIENT",new String[]{"*"}, null, null,null,null,null);
-        if(cursor == null || cursor.getCount() == 0)
+        if(cursor == null )
             return false;
+        else if(cursor.getCount() == 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
         return true;
     }
 
@@ -47,7 +48,16 @@ public class BaseActivity extends AppCompatActivity {
         if(userInfo!=null)
             return;
         //TODO:从数据库读取资料
-
+        userInfo = new Patient();
+        Cursor cursor = userDatabaseRead.query("PATIENT", new String[]{"*"}, null, null, null, null, null);
+        cursor.moveToFirst();
+        userInfo.setPid(cursor.getLong(cursor.getColumnIndex("PID")));
+        userInfo.setPname(cursor.getString(cursor.getColumnIndex("PNAME")));
+        userInfo.setPwd(cursor.getString(cursor.getColumnIndex("PPWD")));
+        userInfo.setPicon(cursor.getString(cursor.getColumnIndex("PICON")));
+        userInfo.setEcoin(cursor.getLong(cursor.getColumnIndex("ECOIN")));
+        userInfo.setPscore(cursor.getInt(cursor.getColumnIndex("PSCORE")));
+        cursor.close();
     }
 
     /**
@@ -74,4 +84,6 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 }

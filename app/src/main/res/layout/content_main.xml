@@ -8,9 +8,9 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <fragment
+
+    <FrameLayout
         android:id="@+id/fragment_show"
-        android:name="com.github.byskyxie.eluyouni.IndexFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -19,7 +19,7 @@
         android:orientation="horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.88"/>
+        app:layout_constraintGuide_percent="0.89"/>
 
     <RadioGroup
         android:id="@+id/radio_group_main_menu"

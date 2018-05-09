@@ -44,7 +44,6 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private LayoutInflater inflater;
     private ViewPager pager;
     private IndexPagerAdapter indexPagerAdapter;
     private IndexHandler handler = new IndexHandler(this);
@@ -123,7 +122,6 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.inflater = inflater;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_index, container, false);
         //设置pager内容
@@ -213,7 +211,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if(((RecyclerView)pager.findViewById(R.id.recycler_community)).getAdapter()!=null ){
+                        if(pager.findViewById(R.id.recycler_community)!=null
+                                && ((RecyclerView)pager.findViewById(R.id.recycler_community)).getAdapter()!=null ){
                             return;
                         }
                         ArrayList<PatientCommunity> commList = new ArrayList<PatientCommunity>();

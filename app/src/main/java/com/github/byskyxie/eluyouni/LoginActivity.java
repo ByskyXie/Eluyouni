@@ -236,10 +236,11 @@ public class LoginActivity extends BaseActivity{
                 BufferedReader br = new BufferedReader(ins);
                 //获得结果
                 String line = br.readLine();
-                if(line.matches("failed")){
+                if(line.matches("failed.*")){
                     //说明失败
+                    Log.w(".LoginActivity","Login failed");
                     return false;
-                }else if(line.matches("accepted")){
+                }else if(line.matches("accepted.*")){
                     //成功
                     Patient patient = new Patient();
                     for(int i=0;;i++){

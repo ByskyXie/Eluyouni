@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -23,10 +20,10 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener ,IndexFragment.OnFragmentInteractionListener
+        implements NavigationView.OnNavigationItemSelectedListener ,IndexFragment.OnFragmentInteractionListener ,ConsultFragment.OnFragmentInteractionListener
+                    ,MedicineFragment.OnFragmentInteractionListener, PriDocFragment.OnFragmentInteractionListener
                     ,CompoundButton.OnCheckedChangeListener, View.OnClickListener{
 
     private static final int CHECKED_NONE = 0;
@@ -43,23 +40,31 @@ public class MainActivity extends BaseActivity
     private RadioButton radioButtonMedic;
     private RadioButton radioButtonDoc;
 
+    private IndexFragment indexFragment;
+    private ConsultFragment consultFragment;
+    private MedicineFragment medicineFragment;
+    private PriDocFragment priDocFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //进入主页
+
         setContentView(R.layout.activity_main);
+        setDefaultFragment();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //设置点击时间
+        //设置点击事件
         navView = (NavigationView) findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
         navHeader = navView.inflateHeaderView(R.layout.nav_header_main);
+        navHeader.findViewById(R.id.heart_beat_view).setOnClickListener(this);
 
         radioButtonIndex = findViewById(R.id.radio_button_index);
         radioButtonConsult = findViewById(R.id.radio_button_consult);
         radioButtonMedic = findViewById(R.id.radio_button_medicine);
         radioButtonDoc = findViewById(R.id.radio_button_private_doc);
+
         radioButtonIndex.setChecked(true);  //默认选中
         radioButtonIndex.setOnCheckedChangeListener(this);
         radioButtonConsult.setOnCheckedChangeListener(this);
@@ -75,6 +80,16 @@ public class MainActivity extends BaseActivity
         toggle.syncState();
 
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        FragmentTransaction tran = getSupportFragmentManager().beginTransaction();
+//        tran.remove(indexFragment);
+//        tran.remove(consultFragment);
+//        tran.remove(medicineFragment);
+//        tran.remove(priDocFragment);
     }
 
     /**
@@ -137,8 +152,17 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        //TODO:fragment 交流实现
+        //TODO:多个fragment 的交流实现
         Log.e("MainActivity","has changed Fragment.");
+    }
+
+    private void setDefaultFragment(){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        indexFragment = new IndexFragment();
+        transaction.replace(R.id.fragment_show, indexFragment);
+        transaction.commit();
+        checkedOpt = CHECKED_INDEX;
     }
 
     @Override
@@ -150,35 +174,77 @@ public class MainActivity extends BaseActivity
         switch (buttonView.getId()){
             case R.id.radio_button_index:
                 //Toast.makeText(this,"new Frag",Toast.LENGTH_SHORT).show();
-                if(isChecked || checkedOpt == CHECKED_INDEX){
+                if(isChecked && checkedOpt != CHECKED_INDEX){
                     checkedOpt = CHECKED_INDEX;
-                    transaction.add(R.id.fragment_show, new IndexFragment());
+                    if(indexFragment == null){
+                        indexFragment = new IndexFragment();
+                        transaction.add(R.id.fragment_show, indexFragment);
+                    }
+                    hideFragment(transaction);
+                    transaction.show(indexFragment);
                     transaction.commit();
                 }
                 break;
             case R.id.radio_button_consult:
-                if(isChecked || checkedOpt == CHECKED_CONSULT){
+                if(isChecked && checkedOpt != CHECKED_CONSULT){
                     checkedOpt = CHECKED_CONSULT;
-
+                    if(consultFragment == null){
+                        consultFragment = new ConsultFragment();
+                        transaction.add(R.id.fragment_show, consultFragment);
+                    }
+                    hideFragment(transaction);
+                    transaction.show(consultFragment);
+                    transaction.commit();
                 }
                 break;
             case R.id.radio_button_medicine:
-                if(isChecked || checkedOpt == CHECKED_MEDICINE){
+                if(isChecked && checkedOpt != CHECKED_MEDICINE){
                     checkedOpt = CHECKED_MEDICINE;
-
+                    if(medicineFragment == null){
+                        medicineFragment = new MedicineFragment();
+                        transaction.add(R.id.fragment_show, medicineFragment);
+                    }
+                    hideFragment(transaction);
+                    transaction.show(medicineFragment);
+                    transaction.commit();
                 }
                 break;
             case R.id.radio_button_private_doc:
-                if(isChecked || checkedOpt == CHECKED_DOCTOR){
+                if(isChecked && checkedOpt != CHECKED_DOCTOR){
                     checkedOpt = CHECKED_DOCTOR;
-
+                    if(priDocFragment == null){
+                        priDocFragment = new PriDocFragment();
+                        transaction.add(R.id.fragment_show, priDocFragment);
+                    }
+                    hideFragment(transaction);
+                    transaction.show(priDocFragment);
+                    transaction.commit();
                 }
                 break;
         }
     }
 
+    private void hideFragment(FragmentTransaction transaction){
+        if(indexFragment != null){
+            transaction.hide(indexFragment);
+        }
+        if(consultFragment != null){
+            transaction.hide(consultFragment);
+        }
+        if(medicineFragment != null){
+            transaction.hide(medicineFragment);
+        }
+        if(priDocFragment != null){
+            transaction.hide(priDocFragment);
+        }
+    }
+
     @Override
     public void onClick(View v) {
-
+        switch(v.getId()){
+            case R.id.heart_beat_view:
+                ((HeartBeatView)v).startAnim();
+                break;
+        }
     }
 }
