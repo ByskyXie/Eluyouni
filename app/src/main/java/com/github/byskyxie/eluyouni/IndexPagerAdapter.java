@@ -1,12 +1,9 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,40 +11,51 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
-public class IndexPagerAdapter extends PagerAdapter {
+public class IndexPagerAdapter extends PagerAdapter{
 
-    static final int COMMUNITY_ACCEPT = 0x010;
+    static final int COMMUNITY_ACCEPT = 0x0010;
     static final int BASE_INFO_ACCEPT = 0x0100;
+    static final int ARTICLE_DOCTOR_ACCEPT = 0x1000;
+    public int communityCurrentPos = 1;   //record community position
 
     private Context context;
-    private ArrayList<View> list;
-    private ArrayList<String> titles;
+    private ArrayList<View> list;   //五个pager的示例
+    private ArrayList<String> titles;   //五个pager的名字
+    protected int checkedPage = -1;   //当前所在页面位置
 
-    public int communityCurrentPos = 1;   //record position
-    private ArrayList<PatientCommunity> commList;
+    private RecyclerView focusRecycler;
+    private RecyclerView recomRecycler;
+    private RecyclerView patiRecycler;
+    private RecyclerView docRecycler;
     private RecyclerView commRecycler;
 
     IndexPagerAdapter(Context context, ArrayList<View> list, ArrayList<String> titles) {
         this.context = context;
         this.list = list;
         this.titles = titles;
+        focusRecycler = list.get(0).findViewById(R.id.recycler_focus);
+        recomRecycler = list.get(1).findViewById(R.id.recycler_recommend);
+        patiRecycler = list.get(2).findViewById(R.id.recycler_article_patient);
+        docRecycler = list.get(3).findViewById(R.id.recycler_article_doctor);
+        commRecycler = list.get(4).findViewById(R.id.recycler_community);
+    }
+
+    public void addDocList(ArrayList<ArticleDoctor> docList) {
+        if(((DoctorArticleAdapter)docRecycler.getAdapter()).compareDataSetSame(docList))
+            return;
+        //加入新元素
+        ((DoctorArticleAdapter)docRecycler.getAdapter()).addData(docList);
+        commitDataChanged(3);
     }
 
     public void addCommList(ArrayList<PatientCommunity> commList) {
-        if(this.commList == null || this.commList.get(0).getCcontent().equals(commList.get(0).getCcontent()))
-            this.commList = commList;
-        else{
-            //加入新元素
-            this.commList.addAll(commList);
-        }
+        if(((CommunityAdapter)commRecycler.getAdapter()).compareDataSetSame(commList))
+            return; //无变化
+        //加入新元素
+        ((CommunityAdapter)commRecycler.getAdapter()).addData(commList);
+        commitDataChanged(4);
     }
 
     @Override
@@ -81,8 +89,40 @@ public class IndexPagerAdapter extends PagerAdapter {
     @Override
     public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.setPrimaryItem(container, position, object);
-        RecyclerView recyclerView;
-        switch (position){
+        checkedPage = position;
+        switch (checkedPage){
+            case 0:
+
+                break;
+            case 1:
+
+                break;
+            case 2:
+
+                break;
+            case 3:
+                if(docRecycler == null)
+                    docRecycler = container.findViewById(R.id.recycler_article_doctor);
+                docRecycler.getAdapter().notifyDataSetChanged();
+                break;
+            case 4:
+                //community
+                if(commRecycler == null)
+                    commRecycler = container.findViewById(R.id.recycler_community);
+                commRecycler.getAdapter().notifyDataSetChanged();
+                break;
+        }
+    }
+
+    protected void commitDataChanged(){
+        //代表更新当前视角
+        commitDataChanged(-1);
+    }
+
+    private void commitDataChanged(int pos){
+        if(pos == -1)   //-1 代表当前视角
+            pos = checkedPage;
+        switch (pos){
             case 0:
                 break;
             case 1:
@@ -90,30 +130,20 @@ public class IndexPagerAdapter extends PagerAdapter {
             case 2:
                 break;
             case 3:
-                break;
-            case 4:
-                //community
-                if(commRecycler == null)
-                    commRecycler = container.findViewById(R.id.recycler_community);
-                //排除无内容显示的情况
-                if(commList==null){
+                if(docRecycler == null || docRecycler.getAdapter() == null){
                     break;
                 }
-                CommunityAdapter adapter = new CommunityAdapter(context,commList);
-                LinearLayoutManager llm = new LinearLayoutManager(context, LinearLayout.VERTICAL, false);
-                llm.setSmoothScrollbarEnabled(true);
-                commRecycler.setLayoutManager(llm);
-                commRecycler.setAdapter(adapter );
-                adapter.notifyDataSetChanged();
-//                commRecycler.addItemDecoration(new DividerItemDecoration(context, LinearLayout.VERTICAL));
+//                ((DoctorArticleAdapter)docRecycler.getAdapter()).setData(docList);
+                docRecycler.getAdapter().notifyDataSetChanged();
+                break;
+            case 4:
+                if(commRecycler == null || commRecycler.getAdapter() == null)
+                    break;
+//                ((CommunityAdapter)docRecycler.getAdapter()).setData(commList);
+                commRecycler.getAdapter().notifyDataSetChanged();
                 break;
         }
-    }
 
-    protected  void notifyDataChanged(){
-        if(commRecycler == null || commRecycler.getAdapter() == null)
-            return;
-        commRecycler.getAdapter().notifyDataSetChanged();
     }
 
 }

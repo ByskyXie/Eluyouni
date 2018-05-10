@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_border"
         app:layout_constraintLeft_toRightOf="@id/text_view_item_community_ername"
-        app:layout_constraintTop_toTopOf="@id/text_view_item_community_ername"/>
+        app:layout_constraintBottom_toBottomOf="@id/text_view_item_community_ername"/>
 
     <TextView
         android:id="@+id/text_view_item_community_time"

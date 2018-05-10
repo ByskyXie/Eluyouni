@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.CommunityHolder> {
 
     private Context context;
-    private ArrayList<PatientCommunity> list;
+    private ArrayList<PatientCommunity> list = new ArrayList<PatientCommunity>();
 
     static class CommunityHolder extends RecyclerView.ViewHolder{
         private ImageView icon;
@@ -42,7 +42,25 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
 
     CommunityAdapter(Context context, ArrayList<PatientCommunity> list) {
         this.context = context;
-        this.list = list;
+        if(list != null)
+            this.list.addAll(list);
+    }
+
+    protected void addData(ArrayList<PatientCommunity> list){
+        if(list != null)
+            this.list.addAll(list);
+    }
+
+    protected ArrayList<PatientCommunity> getData(){
+        return list;
+    }
+
+    protected boolean compareDataSetSame(ArrayList<PatientCommunity> list){
+        if(list == null)
+            return true;
+        if(this.list.isEmpty())
+            return false;
+        return this.list.get(0).getCcontent().equals( list.get(0).getCcontent() );
     }
 
     @NonNull
