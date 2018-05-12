@@ -4,13 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class IndexPagerAdapter extends PagerAdapter{
@@ -18,18 +17,18 @@ public class IndexPagerAdapter extends PagerAdapter{
     static final int COMMUNITY_ACCEPT = 0x0010;
     static final int BASE_INFO_ACCEPT = 0x0100;
     static final int ARTICLE_DOCTOR_ACCEPT = 0x1000;
-    public int communityCurrentPos = 1;   //record community position
+    static final int ARTICLE_PATIENT_ACCEPT = 0x1001;
 
     private Context context;
     private ArrayList<View> list;   //五个pager的示例
     private ArrayList<String> titles;   //五个pager的名字
     protected int checkedPage = -1;   //当前所在页面位置
 
-    private RecyclerView focusRecycler;
-    private RecyclerView recomRecycler;
-    private RecyclerView patiRecycler;
-    private RecyclerView docRecycler;
-    private RecyclerView commRecycler;
+    protected RecyclerView focusRecycler;
+    protected RecyclerView recomRecycler;
+    protected RecyclerView patiRecycler;
+    protected RecyclerView docRecycler;
+    protected RecyclerView commRecycler;
 
     IndexPagerAdapter(Context context, ArrayList<View> list, ArrayList<String> titles) {
         this.context = context;
@@ -42,11 +41,19 @@ public class IndexPagerAdapter extends PagerAdapter{
         commRecycler = list.get(4).findViewById(R.id.recycler_community);
     }
 
-    public void addDocList(ArrayList<ArticleDoctor> docList) {
-        if(((DoctorArticleAdapter)docRecycler.getAdapter()).compareDataSetSame(docList))
+    public void addPatiList(ArrayList<ArticlePatient> patiList){
+        if(((ArticlePatientAdapter)patiRecycler.getAdapter()).compareDataSetSame(patiList))
             return;
         //加入新元素
-        ((DoctorArticleAdapter)docRecycler.getAdapter()).addData(docList);
+        ((ArticlePatientAdapter)patiRecycler.getAdapter()).addData(patiList);
+        commitDataChanged(2);
+    }
+
+    public void addDocList(ArrayList<ArticleDoctor> docList) {
+        if(((ArticleDoctorAdapter)docRecycler.getAdapter()).compareDataSetSame(docList))
+            return;
+        //加入新元素
+        ((ArticleDoctorAdapter)docRecycler.getAdapter()).addData(docList);
         commitDataChanged(3);
     }
 
@@ -128,18 +135,20 @@ public class IndexPagerAdapter extends PagerAdapter{
             case 1:
                 break;
             case 2:
+                if(patiRecycler == null || patiRecycler.getAdapter() == null){
+                    break;
+                }
+                patiRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 3:
                 if(docRecycler == null || docRecycler.getAdapter() == null){
                     break;
                 }
-//                ((DoctorArticleAdapter)docRecycler.getAdapter()).setData(docList);
                 docRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 4:
                 if(commRecycler == null || commRecycler.getAdapter() == null)
                     break;
-//                ((CommunityAdapter)docRecycler.getAdapter()).setData(commList);
                 commRecycler.getAdapter().notifyDataSetChanged();
                 break;
         }

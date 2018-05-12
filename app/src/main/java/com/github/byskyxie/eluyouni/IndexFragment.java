@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import static com.github.byskyxie.eluyouni.BaseActivity.IP_SERVER;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_DOCTOR_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_PATIENT_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.BASE_INFO_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ACCEPT;
 
@@ -79,7 +80,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         Log.e("indexFragmentHandler","indexFragment has recycler BASE_INFO");
                         break;
                     }
-                    //TODO:没用，考虑怎么提醒相关更新
+                    //TODO:没用，考虑怎么提醒数据项更新
                     (fragment.get()).indexPagerAdapter.commitDataChanged();
                     break;
                 case ARTICLE_DOCTOR_ACCEPT:
@@ -87,8 +88,17 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         Log.e("indexFragmentHandler","indexFragment has recycler ARTICLE_DOC");
                         break;
                     }
+//                    Log.e("indexFragmentHandler"," get : "+((ArrayList)msg.obj).size());
                     (fragment.get()).indexPagerAdapter.addDocList((ArrayList<ArticleDoctor>)msg.obj );
                     (fragment.get()).getDoctorBaseInfo((ArrayList<ArticleDoctor>)msg.obj );
+                    break;
+                case ARTICLE_PATIENT_ACCEPT:
+                    if(fragment.get() == null){
+                        Log.e("indexFragmentHandler","indexFragment has recycler ARTICLE_DOC");
+                        break;
+                    }
+                    (fragment.get()).indexPagerAdapter.addPatiList((ArrayList<ArticlePatient>)msg.obj );
+                    (fragment.get()).getPatientBaseInfo((ArrayList<ArticlePatient>)msg.obj );
                     break;
             }
         }
@@ -162,7 +172,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //article patient
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_article_patient,pager,false);
-        adapter = null;
+        adapter = new ArticlePatientAdapter(getContext(), null);
         recycler = item.findViewById(R.id.recycler_article_patient);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -170,7 +180,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //article doctor
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_article_doctor,pager,false);
-        adapter = new DoctorArticleAdapter(getContext(), null);
+        adapter = new ArticleDoctorAdapter(getContext(), null);
         recycler = item.findViewById(R.id.recycler_article_doctor);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -259,16 +269,14 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
 
                 break;
             case 2:
-
-                break;
-            case 3:
                 //更新
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<ArticleDoctor> docList = new ArrayList<>();
+                        ArrayList<ArticlePatient> patList = new ArrayList<>();
                         //TODO:get info
-                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/doctorarticle?"+"pid="+ BaseActivity.userInfo.getPid() +"&startpos="+indexPagerAdapter.communityCurrentPos;
+                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/patientarticle?"+"pid="+ BaseActivity.userInfo.getPid()
+                                +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=false";
                         URL url;
                         try {
                             //链接服务器请求验证
@@ -287,11 +295,69 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             }
                             //成功
                             line = br.readLine();
+                            //数量
                             int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
-                            //更新位置
-                            indexPagerAdapter.communityCurrentPos += num;
                             for(int i=0; i<num; i++){
                                 String temp;
+                                ArticlePatient ap = new ArticlePatient();
+                                //apid
+                                line = br.readLine();
+                                ap.setApid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+                                //pid
+                                line = br.readLine();
+                                ap.setPid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+                                //title
+                                line = br.readLine();
+                                ap.setTitle( line.substring(line.indexOf('=')+1) );
+                                //time
+                                line = br.readLine();
+                                ap.setTime( line.substring(line.indexOf('=')+1) );
+                                //不需要content
+                                ap.setContent(null);
+                                patList.add(ap);
+                            }
+                            //结束读取数据
+                            Message msg = new Message();
+                            msg.obj = patList;
+                            msg.what = ARTICLE_PATIENT_ACCEPT;
+                            handler.sendMessage(msg);
+                        }catch (IOException ioe){
+                            ioe.getStackTrace();
+                        }
+                        //function end
+                    }
+                }).start();
+                break;
+            case 3:
+                //更新
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<ArticleDoctor> docList = new ArrayList<>();
+                        //TODO:get info
+                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/doctorarticle?"+"pid="+ BaseActivity.userInfo.getPid()
+                                +"&startpos="+(1+indexPagerAdapter.docRecycler.getAdapter().getItemCount())+"&ndbody=false";
+                        URL url;
+                        try {
+                            //链接服务器请求验证
+                            url = new URL(request);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            InputStreamReader ins = new InputStreamReader( urlConnection.getInputStream());
+                            BufferedReader br = new BufferedReader(ins);
+                            //获得结果
+                            String line = br.readLine();
+                            if(line.matches("failed.*")){
+                                //说明失败
+                                return;
+                            }else if(!line.matches("accepted.*")){
+                                //其他情况
+                                return;
+                            }
+                            //成功
+                            line = br.readLine();
+                            //获得数量
+                            int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
+                            for(int i=0; i<num; i++){
                                 ArticleDoctor ad = new ArticleDoctor();
                                 //adid
                                 line = br.readLine();
@@ -305,24 +371,15 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 //time
                                 line = br.readLine();
                                 ad.setTime( line.substring(line.indexOf('=')+1) );
-                                //content
-                                line = br.readLine();
-                                temp = line.substring(line.indexOf('=')+1);
-                                do{
-                                    line = br.readLine();
-                                    if(line!=null && line.matches("end=end.*"))
-                                        break;
-                                    temp += line;
-                                    if(line == null)
-                                        line = "\n";
-                                }while(true);
-                                ad.setContent( temp );
+                                //不需要 content
+                                ad.setContent(null);
                                 docList.add(ad);
                             }
                             //结束读取数据
                             Message msg = new Message();
                             msg.obj = docList;
                             msg.what = ARTICLE_DOCTOR_ACCEPT;
+//                            Log.e("indexFragmentHandler","[size]"+docList.size());
                             handler.sendMessage(msg);
                         }catch (IOException ioe){
                             ioe.getStackTrace();
@@ -336,7 +393,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     @Override
                     public void run() {
                         ArrayList<PatientCommunity> commList = new ArrayList<>();
-                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/community?"+"pid="+ BaseActivity.userInfo.getPid() +"&startpos="+indexPagerAdapter.communityCurrentPos;
+                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/community?"+"pid="+ BaseActivity.userInfo.getPid()
+                                +"&startpos="+(1+indexPagerAdapter.commRecycler.getAdapter().getItemCount());
                         URL url;
                         try {
                             //链接服务器请求验证
@@ -355,9 +413,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             }
                             //成功
                             line = br.readLine();
+                            //数量
                             int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
-                            //更新位置
-                            indexPagerAdapter.communityCurrentPos += num;
                             for(int i=0; i<num; i++){
                                 String temp;
                                 PatientCommunity pc = new PatientCommunity();
@@ -422,6 +479,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             continue;
                         }
                         Patient patient = getPatientBaseInfo(pc.getErId());
+                        if(patient == null){
+                            Log.e("getBaseInfo","patient error");
+                            continue;
+                        }
                         content.put("PID",patient.getPid());
                         content.put("PNAME",patient.getPname());
                         content.put("PICON",patient.getPicon());
@@ -437,6 +498,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             continue;
                         }
                         Doctor doctor = getDoctorBaseInfo(pc.getErId());
+                        if(doctor== null){
+                            Log.e("getBaseInfo","doctor error");
+                            continue;
+                        }
                         content.put("DID",doctor.getDid());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
@@ -460,9 +525,46 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //function end
     }
 
-//    protected void getPatientBaseInfo(ArrayList<ArticlePatient> list){
-//
-//    }
+    protected void getPatientBaseInfo(final ArrayList<ArticlePatient> list){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int renewNum = 0;   //更新信息数
+                ContentValues content = new ContentValues();
+                if(list == null)
+                    return;
+                for(ArticlePatient ap: list){
+                    content.clear();
+                    Cursor cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
+                            , "PID=?",new String[]{""+ap.getPid()},null,null,null,null);
+                    if(cursor.moveToFirst()){
+                        cursor.close();
+                        continue;
+                    }
+                    Patient patient = getPatientBaseInfo(ap.getPid());
+                    if(patient == null){
+                        Log.e("getPatientBaseInfo","error");
+                        continue;
+                    }
+                    content.put("PID",patient.getPid());
+                    content.put("PNAME",patient.getPname());
+                    content.put("PICON",patient.getPicon());
+                    content.put("PSCORE",patient.getPscore());
+                    BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
+                    cursor.close();
+                    renewNum++;
+                }
+                //如果一条信息都未更新，不必刷新视图
+                if(renewNum == 0){
+                    return;
+                }
+                Message msg = new Message();
+                msg.what = BASE_INFO_ACCEPT;
+                handler.sendMessage(msg);
+            }
+        }).start();
+        //function end
+    }
 
     protected Patient getPatientBaseInfo(long pid) {
         Patient patient = new Patient();
@@ -531,6 +633,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         continue;
                     }
                     Doctor doctor = getDoctorBaseInfo(ad.getDid());
+                    if(doctor == null){
+                        Log.e("getDoctorBaseInfo","error");
+                        continue;
+                    }
                     content.put("DID",doctor.getDid());
                     content.put("DNAME",doctor.getDname());
                     content.put("DICON",doctor.getDicon());

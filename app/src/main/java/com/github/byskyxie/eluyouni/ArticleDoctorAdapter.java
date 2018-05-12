@@ -4,20 +4,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class DoctorArticleAdapter extends RecyclerView.Adapter<DoctorArticleAdapter.DoctorArticleHolder> {
+public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdapter.DoctorArticleHolder> {
 
     private Context context;
-    private ArrayList<ArticleDoctor> list = new ArrayList<ArticleDoctor>();
+    private ArrayList<ArticleDoctor> list = new ArrayList<>();
 
     static class DoctorArticleHolder extends RecyclerView.ViewHolder{
         private TextView title;
@@ -26,14 +24,14 @@ public class DoctorArticleAdapter extends RecyclerView.Adapter<DoctorArticleAdap
         private ImageView pic;
         DoctorArticleHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.text_view_doctor_article_title);
-            name = itemView.findViewById(R.id.text_view_doctor_article_name);
-            icon = itemView.findViewById(R.id.image_view_doctor_article_icon);
-            pic = itemView.findViewById(R.id.image_view_doctor_article_pic);
+            title = itemView.findViewById(R.id.text_view_article_doctor_title);
+            name = itemView.findViewById(R.id.text_view_article_doctor_name);
+            icon = itemView.findViewById(R.id.image_view_article_doctor_icon);
+            pic = itemView.findViewById(R.id.image_view_article_doctor_pic);
         }
     }
 
-    DoctorArticleAdapter(Context context, ArrayList<ArticleDoctor> list) {
+    ArticleDoctorAdapter(Context context, ArrayList<ArticleDoctor> list) {
         this.context = context;
         if(list != null)
             this.list.addAll(list);
@@ -59,7 +57,7 @@ public class DoctorArticleAdapter extends RecyclerView.Adapter<DoctorArticleAdap
     @NonNull
     @Override
     public DoctorArticleHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_doctor_article,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_article_doctor,parent,false);
         return new DoctorArticleHolder(view);
     }
 
@@ -75,7 +73,8 @@ public class DoctorArticleAdapter extends RecyclerView.Adapter<DoctorArticleAdap
             holder.name.setText( cursor.getString( cursor.getColumnIndex("DNAME") ) );
         }
         cursor.close();
-        //
+        //icon pic
+
     }
 
     @Override

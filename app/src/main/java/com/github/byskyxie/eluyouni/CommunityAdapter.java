@@ -3,13 +3,11 @@ package com.github.byskyxie.eluyouni;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.CommunityHolder> {
 
     private Context context;
-    private ArrayList<PatientCommunity> list = new ArrayList<PatientCommunity>();
+    private ArrayList<PatientCommunity> list = new ArrayList<>();
 
     static class CommunityHolder extends RecyclerView.ViewHolder{
         private ImageView icon;
