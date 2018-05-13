@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import static com.github.byskyxie.eluyouni.BaseActivity.IP_SERVER;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_DOCTOR_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_PATIENT_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_RECOMMEND_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.BASE_INFO_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ACCEPT;
 
@@ -60,7 +61,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     protected static class IndexHandler extends Handler {
         private final WeakReference<IndexFragment> fragment;
         IndexHandler(IndexFragment fragment){
-            this.fragment = new WeakReference<IndexFragment>(fragment);
+            this.fragment = new WeakReference<>(fragment);
         }
 
         @Override
@@ -73,7 +74,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         break;
                     }
                     (fragment.get()).indexPagerAdapter.addCommList((ArrayList<PatientCommunity>) msg.obj);
-                    (fragment.get()).getBaseInfo((ArrayList<PatientCommunity>)msg.obj);
+                    (fragment.get()).getBaseInfo_community((ArrayList<PatientCommunity>)msg.obj);
                     break;
                 case BASE_INFO_ACCEPT:
                     if(fragment.get() == null){
@@ -99,6 +100,14 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                     (fragment.get()).indexPagerAdapter.addPatiList((ArrayList<ArticlePatient>)msg.obj );
                     (fragment.get()).getPatientBaseInfo((ArrayList<ArticlePatient>)msg.obj );
+                    break;
+                case ARTICLE_RECOMMEND_ACCEPT:
+                    if(fragment.get() == null){
+                        Log.e("indexFragmentHandler","indexFragment has recycler ARTICLE_DOC");
+                        break;
+                    }
+                    (fragment.get()).indexPagerAdapter.addRecomList((ArrayList<ArticleRecommend>)msg.obj );
+                    (fragment.get()).getBaseInfo_recom((ArrayList<ArticleRecommend>)msg.obj );
                     break;
             }
         }
@@ -164,7 +173,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //recommend
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_recommend, pager,false);
-        adapter = null;
+        adapter = new ArticleRecommendAdapter(getContext(), null);
         recycler = item.findViewById(R.id.recycler_recommend);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -266,15 +275,73 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
 
                 break;
             case 1:
-
+                //推荐更新
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<ArticleRecommend> recomList = new ArrayList<>();
+                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/recommend?"+"pid="+ BaseActivity.userInfo.getPid()
+                                +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=false";
+                        URL url;
+                        try {
+                            //链接服务器请求验证
+                            url = new URL(request);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            InputStreamReader ins = new InputStreamReader( urlConnection.getInputStream());
+                            BufferedReader br = new BufferedReader(ins);
+                            //获得结果
+                            String line = br.readLine();
+                            if(line.matches("failed.*")){
+                                //说明失败
+                                return;
+                            }else if(!line.matches("accepted.*")){
+                                //其他情况
+                                return;
+                            }
+                            //成功
+                            line = br.readLine();
+                            //数量
+                            int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
+                            for(int i=0; i<num; i++){
+                                String temp;
+                                ArticleRecommend ar = new ArticleRecommend();
+                                //arid
+                                line = br.readLine();
+                                ar.setArid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+                                //erid
+                                line = br.readLine();
+                                ar.setErid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+                                //ertype
+                                line = br.readLine();
+                                ar.setErtype( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
+                                //title
+                                line = br.readLine();
+                                ar.setTitle( line.substring(line.indexOf('=')+1) );
+                                //time
+                                line = br.readLine();
+                                ar.setTime( line.substring(line.indexOf('=')+1) );
+                                //不需要content
+                                ar.setContent(null);
+                                recomList.add(ar);
+                            }
+                            //结束读取数据
+                            Message msg = new Message();
+                            msg.obj = recomList;
+                            msg.what = ARTICLE_RECOMMEND_ACCEPT;
+                            handler.sendMessage(msg);
+                        }catch (IOException ioe){
+                            ioe.getStackTrace();
+                        }
+                        //function end
+                    }
+                }).start();
                 break;
             case 2:
-                //更新
+                //患者文章更新
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         ArrayList<ArticlePatient> patList = new ArrayList<>();
-                        //TODO:get info
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/patientarticle?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=false";
                         URL url;
@@ -329,12 +396,11 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 }).start();
                 break;
             case 3:
-                //更新
+                //医生文章更新
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         ArrayList<ArticleDoctor> docList = new ArrayList<>();
-                        //TODO:get info
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/doctorarticle?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+(1+indexPagerAdapter.docRecycler.getAdapter().getItemCount())+"&ndbody=false";
                         URL url;
@@ -388,7 +454,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                 }).start();
             case 4:
-                //更新信息
+                //说说更新
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -458,8 +524,72 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         }
     }
 
+    private void getBaseInfo_recom(final ArrayList<ArticleRecommend> list){
 
-    private void getBaseInfo(final ArrayList<PatientCommunity> list){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int renewNum = 0;   //更新信息数
+                ContentValues content = new ContentValues();
+                if(list == null)
+                    return;
+                for(ArticleRecommend ar: list){
+                    Cursor cursor;
+                    content.clear();
+                    if(ar.getErtype() == 1){
+                        cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
+                                , "PID=?",new String[]{""+ar.getErid()},null,null,null,null);
+                        if(cursor.moveToFirst()){
+                            cursor.close();
+                            continue;
+                        }
+                        Patient patient = getPatientBaseInfo(ar.getErid());
+                        if(patient == null){
+                            Log.e("getBaseInfo","patient error");
+                            continue;
+                        }
+                        content.put("PID",patient.getPid());
+                        content.put("PNAME",patient.getPname());
+                        content.put("PICON",patient.getPicon());
+                        content.put("PSCORE",patient.getPscore());
+                        BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
+                        cursor.close();
+                        renewNum++;
+                    }else{
+                        cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
+                                , "DID=?",new String[]{""+ar.getErid()},null,null,null,null);
+                        if(cursor.moveToFirst()){
+                            cursor.close();
+                            continue;
+                        }
+                        Doctor doctor = getDoctorBaseInfo(ar.getErid());
+                        if(doctor== null){
+                            Log.e("getBaseInfo","doctor error");
+                            continue;
+                        }
+                        content.put("DID",doctor.getDid());
+                        content.put("DNAME",doctor.getDname());
+                        content.put("DICON",doctor.getDicon());
+                        content.put("DSECTION",doctor.getDsection());
+                        content.put("DGRADE",doctor.getDgrade());
+                        BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
+                        cursor.close();
+                        renewNum++;
+                    }
+                }
+                //如果一条信息都未更新，不必刷新视图
+                if(renewNum == 0){
+                    return;
+                }
+                Message msg = new Message();
+                msg.what = BASE_INFO_ACCEPT;
+                handler.sendMessage(msg);
+            }
+        }).start();
+        //function end
+    }
+
+    private void getBaseInfo_community(final ArrayList<PatientCommunity> list){
 
         new Thread(new Runnable() {
             @Override
