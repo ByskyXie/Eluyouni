@@ -3,6 +3,7 @@ package com.github.byskyxie.eluyouni;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,6 +72,11 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
         if(cursor.moveToFirst()){
             //设置姓名
             holder.name.setText( cursor.getString( cursor.getColumnIndex("DNAME") ) );
+            String icon = cursor.getString( cursor.getColumnIndex("DICON") );
+            if(icon == null || icon.equalsIgnoreCase("null")){
+                //默认头像
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor));
+            }
         }
         cursor.close();
         //icon pic

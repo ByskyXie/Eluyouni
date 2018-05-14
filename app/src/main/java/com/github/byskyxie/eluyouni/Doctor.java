@@ -2,6 +2,7 @@ package com.github.byskyxie.eluyouni;
 
 public class Doctor {
     private long did;
+    private int dsex;
     private String dname;
     private String dpwd;
     private String dicon;
@@ -14,10 +15,11 @@ public class Doctor {
     private int dpatient_num;
     private float dhot_level;
 
-    public Doctor(){}
-    public Doctor(long did, String dname, String dpwd, String dicon, String dsection, int dgrade,
-                  String dprofess, String dcareer, float dmarking, float d24hreply, int dpatient_num, float dhot_level) {
+    Doctor(){}
+
+    public Doctor(long did, int dsex, String dname, String dpwd, String dicon, String dsection, int dgrade, String dprofess, String dcareer, float dmarking, float d24hreply, int dpatient_num, float dhot_level) {
         this.did = did;
+        this.dsex = dsex;
         this.dname = dname;
         this.dpwd = dpwd;
         this.dicon = dicon;
@@ -30,6 +32,15 @@ public class Doctor {
         this.dpatient_num = dpatient_num;
         this.dhot_level = dhot_level;
     }
+
+    public int getDsex() {
+        return dsex;
+    }
+
+    public void setDsex(int dsex) {
+        this.dsex = dsex;
+    }
+
     public long getDid() {
         return did;
     }

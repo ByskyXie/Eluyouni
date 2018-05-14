@@ -18,6 +18,7 @@ public class IndexPagerAdapter extends PagerAdapter{
     static final int BASE_INFO_ACCEPT = 0x0100;
     static final int ARTICLE_DOCTOR_ACCEPT = 0x1000;
     static final int ARTICLE_PATIENT_ACCEPT = 0x1001;
+    static final int ARTICLE_RECOMMEND_ACCEPT = 0x1010;
 
     private Context context;
     private ArrayList<View> list;   //五个pager的示例
@@ -39,6 +40,14 @@ public class IndexPagerAdapter extends PagerAdapter{
         patiRecycler = list.get(2).findViewById(R.id.recycler_article_patient);
         docRecycler = list.get(3).findViewById(R.id.recycler_article_doctor);
         commRecycler = list.get(4).findViewById(R.id.recycler_community);
+    }
+
+    public void addRecomList(ArrayList<ArticleRecommend> recomList){
+        if(((ArticleRecommendAdapter)recomRecycler.getAdapter()).compareDataSetSame(recomList))
+            return;
+        //加入新元素
+        ((ArticleRecommendAdapter)recomRecycler.getAdapter()).addData(recomList);
+        commitDataChanged(1);
     }
 
     public void addPatiList(ArrayList<ArticlePatient> patiList){
@@ -102,10 +111,14 @@ public class IndexPagerAdapter extends PagerAdapter{
 
                 break;
             case 1:
-
+                if(recomRecycler == null)
+                    recomRecycler = container.findViewById(R.id.recycler_recommend);
+                recomRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 2:
-
+                if(patiRecycler == null)
+                    patiRecycler = container.findViewById(R.id.recycler_article_patient);
+                patiRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 3:
                 if(docRecycler == null)
@@ -133,6 +146,10 @@ public class IndexPagerAdapter extends PagerAdapter{
             case 0:
                 break;
             case 1:
+                if(recomRecycler == null || recomRecycler.getAdapter() == null){
+                    break;
+                }
+                recomRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 2:
                 if(patiRecycler == null || patiRecycler.getAdapter() == null){

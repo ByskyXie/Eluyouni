@@ -549,6 +549,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             continue;
                         }
                         content.put("PID",patient.getPid());
+                        content.put("PSEX",patient.getPsex());
                         content.put("PNAME",patient.getPname());
                         content.put("PICON",patient.getPicon());
                         content.put("PSCORE",patient.getPscore());
@@ -568,6 +569,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             continue;
                         }
                         content.put("DID",doctor.getDid());
+                        content.put("DSEX",doctor.getDsex());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
                         content.put("DSECTION",doctor.getDsection());
@@ -614,6 +616,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             continue;
                         }
                         content.put("PID",patient.getPid());
+                        content.put("PSEX",patient.getPsex());
                         content.put("PNAME",patient.getPname());
                         content.put("PICON",patient.getPicon());
                         content.put("PSCORE",patient.getPscore());
@@ -633,6 +636,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             continue;
                         }
                         content.put("DID",doctor.getDid());
+                        content.put("DSEX",doctor.getDsex());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
                         content.put("DSECTION",doctor.getDsection());
@@ -677,6 +681,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         continue;
                     }
                     content.put("PID",patient.getPid());
+                    content.put("PSEX",patient.getPsex());
                     content.put("PNAME",patient.getPname());
                     content.put("PICON",patient.getPicon());
                     content.put("PSCORE",patient.getPscore());
@@ -722,9 +727,12 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             patient.setPid(Long.parseLong( line.substring(line.indexOf('=')+1) ));
                             break;
                         case 1:
-                            patient.setPname( line.substring(line.indexOf('=')+1 ));
+                            patient.setPsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ));
                             break;
                         case 2:
+                            patient.setPname( line.substring(line.indexOf('=')+1 ));
+                            break;
+                        case 3:
                             String s = line.substring(line.indexOf('=')+1 );
                             if(!s.equals("null")){
                                 patient.setPicon(null);
@@ -732,7 +740,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 //TODO:图片路径，应该保存到本地
                                 patient.setPicon( s );
                             break;
-                        case 3:
+                        case 4:
                             patient.setPscore( Integer.parseInt(line.substring(line.indexOf('=')+1 )) );
                             break;
                     }
@@ -768,6 +776,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         continue;
                     }
                     content.put("DID",doctor.getDid());
+                    content.put("DSEX",doctor.getDsex());
                     content.put("DNAME",doctor.getDname());
                     content.put("DICON",doctor.getDicon());
                     content.put("DSECTION",doctor.getDsection());
@@ -814,9 +823,12 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             doctor.setDid(Long.parseLong( line.substring(line.indexOf('=')+1)) );
                             break;
                         case 1:
-                            doctor.setDname( line.substring(line.indexOf('=')+1 ) );
+                            doctor.setDsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );
                             break;
                         case 2:
+                            doctor.setDname( line.substring(line.indexOf('=')+1 ) );
+                            break;
+                        case 3:
                             String s = line.substring(line.indexOf('=')+1 );
                             if(!s.equals("null")){
                                 doctor.setDicon(null);
@@ -824,10 +836,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 //TODO:图片路径，应该保存到本地
                                 doctor.setDicon( s );
                             break;
-                        case 3:
+                        case 4:
                             doctor.setDsection( line.substring( line.indexOf('=')+1 ) );
                             break;
-                        case 4:
+                        case 5:
                             doctor.setDgrade( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );
                             break;
                     }

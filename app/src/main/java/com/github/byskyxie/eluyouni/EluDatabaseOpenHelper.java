@@ -8,6 +8,7 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE = "" +
             "CREATE TABLE PATIENT(" +
             "PID LONG PRIMARY KEY NOT NULL," +
+            "PSEX INT," +
             "PNAME VARCHAR(8) NOT NULL," +
             "PPWD VARCHAR(18) NOT NULL," +  //密码
             "PICON TEXT," +
@@ -17,6 +18,7 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_PATIENT_BASE_INFO = "" +
             "CREATE TABLE PATIENT_BASE_INFO(" +
             "PID LONG PRIMARY KEY," +
+            "PSEX INT," +
             "PNAME VARCHAR(8) NOT NULL," +
             "PICON TEXT," +
             "PSCORE INT NOT NULL " +
@@ -24,6 +26,7 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
     private static final String SQL_DOCTOR_BASE_INFO = "" +
             "CREATE TABLE DOCTOR_BASE_INFO(" +
             "DID LONG PRIMARY KEY," +
+            "DSEX INT," +
             "DNAME VARCHAR(8) NOT NULL," +
             "DICON TEXT," +
             "DSECTION TEXT," +

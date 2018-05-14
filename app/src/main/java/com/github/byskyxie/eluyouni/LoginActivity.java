@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -65,9 +66,9 @@ public class LoginActivity extends BaseActivity{
             goToIndex();
         }
         // Set up the login form.
-        mTelView = (AutoCompleteTextView) findViewById(R.id.email);
+        mTelView = findViewById(R.id.email);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -79,7 +80,8 @@ public class LoginActivity extends BaseActivity{
             }
         });
 
-        Button signInButton = (Button) findViewById(R.id.button_sign_in);
+        Button signInButton = findViewById(R.id.button_sign_in);
+        signInButton.setBackgroundColor(ContextCompat.getColor(this,R.color.colorGrayBlue));
         signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -252,12 +254,15 @@ public class LoginActivity extends BaseActivity{
                                 patient.setPid(Long.parseLong( line.substring(line.indexOf('=')+1) ));
                                 break;
                             case 1:
-                                patient.setPname( line.substring(line.indexOf('=')+1 ));
+                                patient.setPsex( Integer.parseInt( line.substring(line.indexOf('=')+1)) );
                                 break;
                             case 2:
-                                patient.setPwd( line.substring(line.indexOf('=')+1 ));
+                                patient.setPname( line.substring(line.indexOf('=')+1 ));
                                 break;
                             case 3:
+                                patient.setPwd( line.substring(line.indexOf('=')+1 ));
+                                break;
+                            case 4:
                                 String s = line.substring(line.indexOf('=')+1 );
                                 if(!s.equals("null")){
                                     //TODO:图片路径，应该保存到本地
@@ -265,10 +270,10 @@ public class LoginActivity extends BaseActivity{
                                 }else
                                 patient.setPicon( s );
                                 break;
-                            case 4:
+                            case 5:
                                 patient.setEcoin( Long.parseLong(line.substring(line.indexOf('=')+1)) );
                                 break;
-                            case 5:
+                            case 6:
                                 patient.setPscore( Integer.parseInt( line.substring(line.indexOf('=')+1)) );
                                 break;
                         }
@@ -282,7 +287,6 @@ public class LoginActivity extends BaseActivity{
                 Log.e(".LoginActivity",ioe.toString());
                 return  false;
             }
-            // TODO: register the new account here.
             return true;
         }
 
@@ -295,7 +299,6 @@ public class LoginActivity extends BaseActivity{
                 //进入主页
                 goToIndex();
             } else {
-                //TODO：判断结果
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }

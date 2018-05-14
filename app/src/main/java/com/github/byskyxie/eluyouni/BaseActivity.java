@@ -47,11 +47,11 @@ public class BaseActivity extends AppCompatActivity {
     private void readUserInfo(){
         if(userInfo!=null)
             return;
-        //TODO:从数据库读取资料
         userInfo = new Patient();
         Cursor cursor = userDatabaseRead.query("PATIENT", new String[]{"*"}, null, null, null, null, null);
         cursor.moveToFirst();
         userInfo.setPid(cursor.getLong(cursor.getColumnIndex("PID")));
+        userInfo.setPsex(cursor.getInt(cursor.getColumnIndex("PSEX")));
         userInfo.setPname(cursor.getString(cursor.getColumnIndex("PNAME")));
         userInfo.setPwd(cursor.getString(cursor.getColumnIndex("PPWD")));
         userInfo.setPicon(cursor.getString(cursor.getColumnIndex("PICON")));
@@ -85,6 +85,5 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
     
-
 
 }

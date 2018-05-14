@@ -3,6 +3,7 @@ package com.github.byskyxie.eluyouni;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
 
         CommunityHolder(View itemView) {
             super(itemView);
-            icon = itemView.findViewById(R.id.image_view_icon);
+            icon = itemView.findViewById(R.id.image_view_item_community_icon);
             erName = itemView.findViewById(R.id.text_view_item_community_ername);
             tag = itemView.findViewById(R.id.text_view_item_community_tag);
             time = itemView.findViewById(R.id.text_view_item_community_time);
@@ -80,6 +81,11 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
             if(cursor.moveToFirst()){
                 //设置姓名
                 holder.erName.setText( cursor.getString( cursor.getColumnIndex("PNAME") ) );
+                String icon = cursor.getString( cursor.getColumnIndex("PICON") );
+                if(icon == null || icon.equalsIgnoreCase("null")){
+                    //TODO:默认头像,男女
+                    holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient));
+                }
             }
             cursor.close();
         }else if(list.get(actPos).getErType() == 2){
@@ -90,6 +96,11 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
             if(cursor.moveToFirst()){
                 //设置姓名
                 holder.erName.setText( cursor.getString( cursor.getColumnIndex("DNAME") ) );
+                String icon = cursor.getString( cursor.getColumnIndex("DICON") );
+                if(icon == null || icon.equalsIgnoreCase("null")){
+                    //默认头像
+                    holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor));
+                }
             }
             cursor.close();
         }else{

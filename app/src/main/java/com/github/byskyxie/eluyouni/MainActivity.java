@@ -1,11 +1,17 @@
 package com.github.byskyxie.eluyouni;
 
+import android.app.Dialog;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +20,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -37,6 +47,7 @@ public class MainActivity extends BaseActivity
     private RadioButton radioButtonMedic;
     private RadioButton radioButtonDoc;
 
+    private Dialog dialogExit;
     private IndexFragment indexFragment;
     private ConsultFragment consultFragment;
     private MedicineFragment medicineFragment;
@@ -55,6 +66,7 @@ public class MainActivity extends BaseActivity
         navView = findViewById(R.id.nav_view);
         navView.setNavigationItemSelectedListener(this);
         navHeader = navView.inflateHeaderView(R.layout.nav_header_main);
+        setNavHeaderData(navHeader);
         navHeader.findViewById(R.id.heart_beat_view).setOnClickListener(this);
 
         radioButtonIndex = findViewById(R.id.radio_button_index);
@@ -68,6 +80,7 @@ public class MainActivity extends BaseActivity
         radioButtonMedic.setOnCheckedChangeListener(this);
         radioButtonDoc.setOnCheckedChangeListener(this);
 
+
         //TODO:setDrawableTopSize(radioButtonMedic,92);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -76,6 +89,24 @@ public class MainActivity extends BaseActivity
         toggle.syncState();
 
 
+    }
+
+    protected void setNavHeaderData(View header){
+        //用户头像
+        if(userInfo.getPicon()==null || userInfo.getPicon().equalsIgnoreCase("null"))
+            ((ImageView)header.findViewById(R.id.image_view_icon)).setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.patient)  );
+        //e币
+        ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(userInfo.getEcoin()+" e币");
+        //等级
+        ((TextView)header.findViewById(R.id.text_view_score)).setText(userInfo.getPscore()+" 积分");
+        //血压
+        ((TextView)header.findViewById(R.id.text_view_blood_press)).setText("血压：\n121");
+        //血脂
+        ((TextView)header.findViewById(R.id.text_view_blood_fat)).setText("血脂：\n81");
+        //血糖
+        ((TextView)header.findViewById(R.id.text_view_blood_sugar)).setText("血糖：\n60");
+        //睡眠
+        ((TextView)header.findViewById(R.id.text_view_sleep)).setText("睡眠：\n7小时");
     }
 
     @Override
@@ -89,7 +120,7 @@ public class MainActivity extends BaseActivity
     }
 
     /**
-     * set size of drawer
+     * set size of top drawer
      * */
     private void setDrawableTopSize(TextView view, int size){
         Drawable[] ds =  view.getCompoundDrawables();
@@ -99,12 +130,31 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            showExitDialog();
+//            super.onBackPressed();
         }
+    }
+
+    protected void showExitDialog(){
+        if(dialogExit != null){
+            dialogExit.show();
+            return;
+        }
+        dialogExit = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog);
+        dialogExit.setContentView(R.layout.dialog_exit);
+        dialogExit.findViewById(R.id.button_exit_cancel).setBackgroundColor(ContextCompat.getColor(this,R.color.white));
+        dialogExit.findViewById(R.id.button_exit_confirm).setBackgroundColor(ContextCompat.getColor(this,R.color.colorGrayBlue));
+        dialogExit.findViewById(R.id.button_exit_cancel).setOnClickListener(this);
+        dialogExit.findViewById(R.id.button_exit_confirm).setOnClickListener(this);
+        //设置位置
+        Window window = dialogExit.getWindow();
+        if(window != null)
+            window.setGravity(Gravity.CENTER);
+        dialogExit.show();
     }
 
     /**
@@ -138,7 +188,7 @@ public class MainActivity extends BaseActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id){
@@ -167,11 +217,11 @@ public class MainActivity extends BaseActivity
                 //亲情账号
                 break;
         }
-        if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+//        if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -272,6 +322,13 @@ public class MainActivity extends BaseActivity
         switch(v.getId()){
             case R.id.heart_beat_view:
                 ((HeartBeatView)v).startAnim();
+                break;
+            case R.id.button_exit_cancel:
+                dialogExit.dismiss();
+                break;
+            case R.id.button_exit_confirm:
+                finish();
+                System.exit(0);
                 break;
         }
     }

@@ -5,11 +5,20 @@ import android.util.Log;
 
 public class Patient {
     private long pid;
+    private int psex;
     private String pwd;
     private String pname;
     private String picon;
     private long ecoin;
     private int pscore;
+
+    public int getPsex() {
+        return psex;
+    }
+
+    public void setPsex(int psex) {
+        this.psex = psex;
+    }
 
     public long getPid() {
         return pid;
@@ -59,25 +68,25 @@ public class Patient {
         this.pwd = pwd;
     }
 
-    public Patient(){;}
+    Patient(){}
 
-    public Patient(long pid, String pname, String pwd, String picon, long ecoin, int pscore) {
-        super();
+    public Patient(long pid, int psex, String pwd, String pname, String picon, long ecoin, int pscore) {
         this.pid = pid;
-        this.pname = pname;
+        this.psex = psex;
         this.pwd = pwd;
+        this.pname = pname;
         this.picon = picon;
         this.ecoin = ecoin;
         this.pscore = pscore;
     }
 
     public void save(){
-        //TODO:to database
         ContentValues content = new ContentValues();
         BaseActivity.userDatabasewrit.delete("patient",null,null);
 
         content.clear();
         content.put("PID",pid);
+        content.put("PSEX",psex);
         content.put("PNAME",pname);
         content.put("PPWD",pwd);
         content.put("PICON",picon);
