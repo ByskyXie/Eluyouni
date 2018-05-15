@@ -2,6 +2,7 @@ package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +13,14 @@ import java.util.ArrayList;
 
 public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.MedicineHolder> {
     //名医达人  科室分类
-    private Context context;
-    private ArrayList<Doctor> docList = new ArrayList<>();
-    private ArrayList<Section> sectionList = new ArrayList<>();
+    private static final int FAME_COLUMN_NUM = 4;
+    private static final int SECTION_COLUMN_NUM = 4;
 
+    private Context context;
+    private ArrayList<Doctor> docList;
+    private ArrayList<Section> secList;
+    private MedicineFameAdapter fameAdapter;
+    private MedicineSectionAdapter sectionAdapter;
 
     static class MedicineHolder extends RecyclerView.ViewHolder{
         private View view;
@@ -26,29 +31,20 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         }
     }
 
-    public MedicineAdapter(Context context, ArrayList<Doctor> docList, ArrayList<Section> sectionList) {
+    MedicineAdapter(Context context, ArrayList<Doctor> docList, ArrayList<Section> sectionList) {
         this.context = context;
         if(docList != null)
-            this.docList.addAll(docList);
+            this.docList = docList;
         if(sectionList != null)
-            this.sectionList.addAll(sectionList);
+            this.secList = sectionList;
     }
 
-    protected void addFamousDoc(ArrayList<Doctor> list){
-        if(list != null)
-            this.docList.addAll(list);
+    public MedicineFameAdapter getFameAdapter() {
+        return fameAdapter;
     }
 
-    protected ArrayList<Doctor> getDocList(){
-        return docList;
-    }
-
-    protected boolean compareDocSetSame(ArrayList<Doctor> list){
-        if(list == null)
-            return true;
-        if(this.docList.isEmpty())
-            return false;
-        return this.docList.get(0).getDid() == list.get(0).getDid();
+    public MedicineSectionAdapter getSectionAdapter() {
+        return sectionAdapter;
     }
 
     @Override
@@ -70,10 +66,22 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
     @Override
     public MedicineHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = null;
-        if(viewType ==1)
-            view = LayoutInflater.from(context).inflate(R.layout.item_medicine_famous_doc, parent,false);
-        else if(viewType == 2)
+        if(viewType ==1){
+            if(fameAdapter == null)
+                fameAdapter = new MedicineFameAdapter(context,docList); //如果docList有数据就添加进去，没有为null
+            view = LayoutInflater.from(context).inflate(R.layout.item_medicine_famous, parent,false);
+            GridLayoutManager glm = new GridLayoutManager(context, FAME_COLUMN_NUM);
+            ((RecyclerView)view.findViewById(R.id.recycler_medicine_famous)).setLayoutManager(glm);
+            ((RecyclerView)view.findViewById(R.id.recycler_medicine_famous)).setAdapter(fameAdapter);
+        }
+        else if(viewType == 2){
+            if(sectionAdapter == null)
+               sectionAdapter = new MedicineSectionAdapter(context, secList);
             view = LayoutInflater.from(context).inflate(R.layout.item_medicine_section, parent,false);
+            GridLayoutManager glm = new GridLayoutManager(context, SECTION_COLUMN_NUM);
+            ((RecyclerView)view.findViewById(R.id.recycler_medicine_section)).setLayoutManager(glm);
+            ((RecyclerView)view.findViewById(R.id.recycler_medicine_section)).setAdapter(sectionAdapter);
+        }
         else
             Log.e("medicineAdapter","Error view type");
         return new MedicineHolder(view);
@@ -81,7 +89,12 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
 
     @Override
     public void onBindViewHolder(@NonNull MedicineHolder holder, int position) {
-
+        if(holder.getAdapterPosition() == 0){
+            //fame
+        }else if(holder.getAdapterPosition() == 1){
+            //section
+        }else
+            Log.e("medicineAdapter","Error position");
     }
 
     @Override

@@ -27,11 +27,6 @@
             android:title="@string/nav_menu_my_health_document" />
 
         <item
-            android:id="@+id/nav_menu_my_doctor"
-            android:icon="@drawable/ic_nav_doctor"
-            android:title="@string/nav_menu_my_doctor" />
-
-        <item
             android:id="@+id/nav_menu_my_consult_record"
             android:icon="@drawable/ic_nav_consult"
             android:title="@string/nav_menu_my_consult_record" />

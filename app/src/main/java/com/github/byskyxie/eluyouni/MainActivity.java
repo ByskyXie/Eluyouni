@@ -204,9 +204,6 @@ public class MainActivity extends BaseActivity
             case R.id.nav_menu_my_health_document:
                 //健康文档
                 break;
-            case R.id.nav_menu_my_doctor:
-                //私人医生
-                break;
             case R.id.nav_menu_my_consult_record:
                 //会诊记录
                 break;
