@@ -9,43 +9,41 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
-public class MedicineSectionAdapter extends RecyclerView.Adapter<MedicineSectionAdapter.MedicineSectionHolder> {
+public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllnessAdapter.MedicineSectionHolder> {
 
     private Context context;
-    private ArrayList<Section> secList;
+    private ArrayList<Illness> illList;
 
     static class MedicineSectionHolder extends RecyclerView.ViewHolder{
         private ImageView imageSection;
         private TextView nameSection;
         MedicineSectionHolder(View itemView) {
             super(itemView);
-            imageSection = itemView.findViewById(R.id.image_view_medicine_section_pic);
-            nameSection = itemView.findViewById(R.id.text_view_medicine_section_text);
+            imageSection = itemView.findViewById(R.id.image_view_medicine_illness_pic);
+            nameSection = itemView.findViewById(R.id.text_view_medicine_illness_text);
         }
     }
 
-    MedicineSectionAdapter(Context context, ArrayList<Section> secList) {
+    MedicineIllnessAdapter(Context context, ArrayList<Illness> secList) {
         this.context = context;
-        this.secList = secList;
+        this.illList = secList;
     }
 
-    protected void addData(ArrayList<Section> list){
+    protected void addData(ArrayList<Illness> list){
         if(list != null)
-            this.secList.addAll(list);
+            this.illList.addAll(list);
     }
 
-    protected ArrayList<Section> getData(){
-        return secList;
+    protected ArrayList<Illness> getData(){
+        return illList;
     }
 
-    protected boolean compareDataSetSame(ArrayList<Section> list){
+    protected boolean compareDataSetSame(ArrayList<Illness> list){
         if(list == null)
             return true;
-        if(this.secList.isEmpty())
+        if(this.illList.isEmpty())
             return false;
         //TODO:return section CMP
         return true;
@@ -54,7 +52,7 @@ public class MedicineSectionAdapter extends RecyclerView.Adapter<MedicineSection
     @NonNull
     @Override
     public MedicineSectionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_medicine_section_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_medicine_illness_item, parent, false);
         return new MedicineSectionHolder(view);
     }
 
@@ -65,7 +63,7 @@ public class MedicineSectionAdapter extends RecyclerView.Adapter<MedicineSection
 
     @Override
     public int getItemCount() {
-        return secList.size();
+        return illList.size();
     }
 
 }

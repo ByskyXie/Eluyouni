@@ -75,7 +75,8 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
             String icon = cursor.getString( cursor.getColumnIndex("DICON") );
             if(icon == null || icon.equalsIgnoreCase("null")){
                 //默认头像
-                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor));
+                    if( cursor.getInt(cursor.getColumnIndex("DSEX"))==2 )
+                        holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_woman));
             }
         }
         cursor.close();

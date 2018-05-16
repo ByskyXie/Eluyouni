@@ -1,12 +1,14 @@
 package com.github.byskyxie.eluyouni;
 
-public class Doctor {
+import java.io.Serializable;
+
+public class Doctor implements Serializable{
     private long did;
     private int dsex;
     private String dname;
     private String dpwd;
     private String dicon;
-    private String dsection;
+    private String dillness;
     private int dgrade;
     private String dprofess;
     private String dcareer;
@@ -17,13 +19,13 @@ public class Doctor {
 
     Doctor(){}
 
-    public Doctor(long did, int dsex, String dname, String dpwd, String dicon, String dsection, int dgrade, String dprofess, String dcareer, float dmarking, float d24hreply, int dpatient_num, float dhot_level) {
+    public Doctor(long did, int dsex, String dname, String dpwd, String dicon, String dillness, int dgrade, String dprofess, String dcareer, float dmarking, float d24hreply, int dpatient_num, float dhot_level) {
         this.did = did;
         this.dsex = dsex;
         this.dname = dname;
         this.dpwd = dpwd;
         this.dicon = dicon;
-        this.dsection = dsection;
+        this.dillness = dillness;
         this.dgrade = dgrade;
         this.dprofess = dprofess;
         this.dcareer = dcareer;
@@ -65,11 +67,11 @@ public class Doctor {
     public void setDicon(String dicon) {
         this.dicon = dicon;
     }
-    public String getDsection() {
-        return dsection;
+    public String getDillness() {
+        return dillness;
     }
-    public void setDsection(String dsection) {
-        this.dsection = dsection;
+    public void setDillness(String dillness) {
+        this.dillness = dillness;
     }
     public int getDgrade() {
         return dgrade;
@@ -112,5 +114,22 @@ public class Doctor {
     }
     public void setDhot_level(float dhot_level) {
         this.dhot_level = dhot_level;
+    }
+
+    public String getGradeName(){
+        switch (dgrade){
+            case 1:
+                return "青铜";
+            case 2:
+                return "白银";
+            case 3:
+                return "黄金";
+            case 4:
+                return "铂金";
+            case 5:
+                return "钻石";
+            default:
+                return "null";
+        }
     }
 }

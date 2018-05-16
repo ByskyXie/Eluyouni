@@ -8,7 +8,7 @@
 <!-- 展示具体名医的item -->
     <ImageView
         android:id="@+id/image_view_medicine_famous_icon"
-        android:src="@mipmap/doctor"
+        android:src="@mipmap/doctor_man"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

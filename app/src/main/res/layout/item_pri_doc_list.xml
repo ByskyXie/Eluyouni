@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/nano_border"
+    android:padding="@dimen/nano_border"
+    android:clickable="true"
+    android:background="@drawable/shape_for_private_doc_item"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/image_view_pri_icon"
+        android:src="@mipmap/doctor_man"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/text_view_pri_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="@id/image_view_pri_icon"
+        app:layout_constraintLeft_toRightOf="@id/image_view_pri_icon"/>
+
+    <TextView
+        android:id="@+id/text_view_pri_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/text_view_pri_name"
+        app:layout_constraintBottom_toBottomOf="@id/text_view_pri_name"/>
+
+    <TextView
+        android:id="@+id/text_view_talk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/image_view_pri_icon"
+        app:layout_constraintTop_toBottomOf="@id/text_view_pri_name"
+        app:layout_constraintBottom_toBottomOf="@id/image_view_pri_icon"/>
+</android.support.constraint.ConstraintLayout>

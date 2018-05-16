@@ -572,7 +572,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         content.put("DSEX",doctor.getDsex());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
-                        content.put("DSECTION",doctor.getDsection());
+                        content.put("DSECTION",doctor.getDillness());
                         content.put("DGRADE",doctor.getDgrade());
                         BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
@@ -639,7 +639,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         content.put("DSEX",doctor.getDsex());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
-                        content.put("DSECTION",doctor.getDsection());
+                        content.put("DSECTION",doctor.getDillness());
                         content.put("DGRADE",doctor.getDgrade());
                         BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
@@ -779,7 +779,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     content.put("DSEX",doctor.getDsex());
                     content.put("DNAME",doctor.getDname());
                     content.put("DICON",doctor.getDicon());
-                    content.put("DSECTION",doctor.getDsection());
+                    content.put("DSECTION",doctor.getDillness());
                     content.put("DGRADE",doctor.getDgrade());
                     BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                     cursor.close();
@@ -837,7 +837,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 doctor.setDicon( s );
                             break;
                         case 4:
-                            doctor.setDsection( line.substring( line.indexOf('=')+1 ) );
+                            doctor.setDillness( line.substring( line.indexOf('=')+1 ) );
                             break;
                         case 5:
                             doctor.setDgrade( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );

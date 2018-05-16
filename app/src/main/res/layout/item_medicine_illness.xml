@@ -10,16 +10,16 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/text_view_section_title"
-        android:text="@string/medicine_section"
+        android:id="@+id/text_view_illness_title"
+        android:text="@string/medicine_illness"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_medicine_section"
+        android:id="@+id/recycler_medicine_illness"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_border"
-        app:layout_constraintTop_toBottomOf="@id/text_view_section_title"/>
+        app:layout_constraintTop_toBottomOf="@id/text_view_illness_title"/>
 
 </android.support.constraint.ConstraintLayout>

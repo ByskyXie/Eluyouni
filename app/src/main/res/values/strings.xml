@@ -46,11 +46,12 @@
 
 
     <string name="medicine_famous_doctor">名医达人</string>
-    <string name="medicine_section">科室分类</string>
+    <string name="medicine_illness">疾病分类</string>
 
     <string name="doctor">医生</string>
-    <string name="section">科室</string>
+    <string name="illness">疾病</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_chat">ChatActivity</string>
 
 </resources>

@@ -15,8 +15,8 @@
 
     <ImageView
         android:id="@+id/image_view_article_doctor_pic"
-        android:layout_width="match_parent"
         android:background="@drawable/shape_for_article_pic"
+        android:layout_width="match_parent"
         android:layout_height="120dp"
         android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="parent"

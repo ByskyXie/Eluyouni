@@ -18,9 +18,9 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
 
     private Context context;
     private ArrayList<Doctor> docList;
-    private ArrayList<Section> secList;
+    private ArrayList<Illness> illList;
     private MedicineFameAdapter fameAdapter;
-    private MedicineSectionAdapter sectionAdapter;
+    private MedicineIllnessAdapter sectionAdapter;
 
     static class MedicineHolder extends RecyclerView.ViewHolder{
         private View view;
@@ -31,19 +31,19 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         }
     }
 
-    MedicineAdapter(Context context, ArrayList<Doctor> docList, ArrayList<Section> sectionList) {
+    MedicineAdapter(Context context, ArrayList<Doctor> docList, ArrayList<Illness> illnessList) {
         this.context = context;
         if(docList != null)
             this.docList = docList;
-        if(sectionList != null)
-            this.secList = sectionList;
+        if(illnessList != null)
+            this.illList = illnessList;
     }
 
     public MedicineFameAdapter getFameAdapter() {
         return fameAdapter;
     }
 
-    public MedicineSectionAdapter getSectionAdapter() {
+    public MedicineIllnessAdapter getSectionAdapter() {
         return sectionAdapter;
     }
 
@@ -76,11 +76,11 @@ public class MedicineAdapter extends RecyclerView.Adapter<MedicineAdapter.Medici
         }
         else if(viewType == 2){
             if(sectionAdapter == null)
-               sectionAdapter = new MedicineSectionAdapter(context, secList);
-            view = LayoutInflater.from(context).inflate(R.layout.item_medicine_section, parent,false);
+               sectionAdapter = new MedicineIllnessAdapter(context, illList);
+            view = LayoutInflater.from(context).inflate(R.layout.item_medicine_illness, parent,false);
             GridLayoutManager glm = new GridLayoutManager(context, SECTION_COLUMN_NUM);
-            ((RecyclerView)view.findViewById(R.id.recycler_medicine_section)).setLayoutManager(glm);
-            ((RecyclerView)view.findViewById(R.id.recycler_medicine_section)).setAdapter(sectionAdapter);
+            ((RecyclerView)view.findViewById(R.id.recycler_medicine_illness)).setLayoutManager(glm);
+            ((RecyclerView)view.findViewById(R.id.recycler_medicine_illness)).setAdapter(sectionAdapter);
         }
         else
             Log.e("medicineAdapter","Error view type");
