@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/nano_border"
     android:padding="@dimen/nano_border"
+    android:paddingStart="@dimen/mini_border"
+    android:paddingEnd="@dimen/mini_border"
     android:clickable="true"
+    android:focusable="true"
     android:background="@drawable/shape_for_private_doc_item"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 

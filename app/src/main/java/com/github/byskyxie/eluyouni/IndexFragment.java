@@ -572,7 +572,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         content.put("DSEX",doctor.getDsex());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
-                        content.put("DSECTION",doctor.getDillness());
+                        content.put("DILLNESS",doctor.getDillness());
+                        content.put("DHOSPITAL",doctor.getDhospital());
                         content.put("DGRADE",doctor.getDgrade());
                         BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
@@ -639,7 +640,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         content.put("DSEX",doctor.getDsex());
                         content.put("DNAME",doctor.getDname());
                         content.put("DICON",doctor.getDicon());
-                        content.put("DSECTION",doctor.getDillness());
+                        content.put("DILLNESS",doctor.getDillness());
+                        content.put("DHOSPITAL",doctor.getDhospital());
                         content.put("DGRADE",doctor.getDgrade());
                         BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
@@ -723,16 +725,16 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     if(line == null)
                         break;
                     switch (i){
-                        case 0:
+                        case 0://PID
                             patient.setPid(Long.parseLong( line.substring(line.indexOf('=')+1) ));
                             break;
-                        case 1:
+                        case 1://PSEX
                             patient.setPsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ));
                             break;
-                        case 2:
+                        case 2://PNAME
                             patient.setPname( line.substring(line.indexOf('=')+1 ));
                             break;
-                        case 3:
+                        case 3://PICON
                             String s = line.substring(line.indexOf('=')+1 );
                             if(!s.equals("null")){
                                 patient.setPicon(null);
@@ -740,7 +742,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 //TODO:图片路径，应该保存到本地
                                 patient.setPicon( s );
                             break;
-                        case 4:
+                        case 4://PSCORE
                             patient.setPscore( Integer.parseInt(line.substring(line.indexOf('=')+1 )) );
                             break;
                     }
@@ -779,7 +781,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     content.put("DSEX",doctor.getDsex());
                     content.put("DNAME",doctor.getDname());
                     content.put("DICON",doctor.getDicon());
-                    content.put("DSECTION",doctor.getDillness());
+                    content.put("DILLNESS",doctor.getDillness());
+                    content.put("DHOSPITAL",doctor.getDhospital());
                     content.put("DGRADE",doctor.getDgrade());
                     BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                     cursor.close();
@@ -819,16 +822,16 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     if(line == null)
                         break;
                     switch (i){
-                        case 0:
+                        case 0://DID
                             doctor.setDid(Long.parseLong( line.substring(line.indexOf('=')+1)) );
                             break;
-                        case 1:
+                        case 1://DSEX
                             doctor.setDsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );
                             break;
-                        case 2:
+                        case 2://DNAME
                             doctor.setDname( line.substring(line.indexOf('=')+1 ) );
                             break;
-                        case 3:
+                        case 3://DICON
                             String s = line.substring(line.indexOf('=')+1 );
                             if(!s.equals("null")){
                                 doctor.setDicon(null);
@@ -836,10 +839,13 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 //TODO:图片路径，应该保存到本地
                                 doctor.setDicon( s );
                             break;
-                        case 4:
+                        case 4://DILLNESS
                             doctor.setDillness( line.substring( line.indexOf('=')+1 ) );
                             break;
-                        case 5:
+                        case 5://DHOSPITAL
+                            doctor.setDhospital( line.substring( line.indexOf('=')+1 ) );
+                            break;
+                        case 6://DGRADE
                             doctor.setDgrade( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );
                             break;
                     }

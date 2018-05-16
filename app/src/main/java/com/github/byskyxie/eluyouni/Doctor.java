@@ -12,6 +12,7 @@ public class Doctor implements Serializable{
     private int dgrade;
     private String dprofess;
     private String dcareer;
+    private String dhospital;
     private float dmarking;
     private float d24hreply ;
     private int dpatient_num;
@@ -19,7 +20,7 @@ public class Doctor implements Serializable{
 
     Doctor(){}
 
-    public Doctor(long did, int dsex, String dname, String dpwd, String dicon, String dillness, int dgrade, String dprofess, String dcareer, float dmarking, float d24hreply, int dpatient_num, float dhot_level) {
+    public Doctor(long did, int dsex, String dname, String dpwd, String dicon, String dillness, int dgrade, String dprofess, String dcareer, String dhospital, float dmarking, float d24hreply, int dpatient_num, float dhot_level) {
         this.did = did;
         this.dsex = dsex;
         this.dname = dname;
@@ -29,20 +30,25 @@ public class Doctor implements Serializable{
         this.dgrade = dgrade;
         this.dprofess = dprofess;
         this.dcareer = dcareer;
+        this.dhospital = dhospital;
         this.dmarking = dmarking;
         this.d24hreply = d24hreply;
         this.dpatient_num = dpatient_num;
         this.dhot_level = dhot_level;
     }
 
+    public String getDhospital() {
+        return dhospital;
+    }
+    public void setDhospital(String dhospital) {
+        this.dhospital = dhospital;
+    }
     public int getDsex() {
         return dsex;
     }
-
     public void setDsex(int dsex) {
         this.dsex = dsex;
     }
-
     public long getDid() {
         return did;
     }

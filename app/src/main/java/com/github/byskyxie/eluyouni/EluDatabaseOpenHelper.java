@@ -29,7 +29,8 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
             "DSEX INT," +
             "DNAME VARCHAR(8) NOT NULL," +
             "DICON TEXT," +
-            "DSECTION TEXT," +
+            "DILLNESS TEXT," +
+            "DHOSPITAL TINYTEXT," +
             "DGRADE INT" +
             ");";
 

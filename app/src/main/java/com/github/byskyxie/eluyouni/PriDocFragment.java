@@ -170,7 +170,9 @@ public class PriDocFragment extends Fragment {
                         //dgrade
                         line = br.readLine();
                         doctor.setDgrade( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
-
+                        //dhospital
+                        line = br.readLine();
+                        doctor.setDhospital( line.substring(line.indexOf('=')+1) );
                         docList.add(doctor);
                     }
                     //结束读取数据
