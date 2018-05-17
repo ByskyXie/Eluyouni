@@ -1,10 +1,12 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -22,10 +24,9 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = findViewById(R.id.toolbar_chat);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null){
-            getSupportActionBar().setTitle(null);
+        if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+//        findViewById(R.id.button_chat_send).setBackgroundColor(ContextCompat.getColor(this, R.color.colorGrayBlue));
         //
         getInitialInfo(getIntent());
         //
@@ -39,11 +40,22 @@ public class ChatActivity extends AppCompatActivity {
         if(intent.getIntExtra("TargetType",-1) == TARGET_TYPE_DOCTOR){
             targetType = TARGET_TYPE_DOCTOR;
             doctor = (Doctor) intent.getSerializableExtra("Target");
+            getSupportActionBar().setTitle(doctor.getDname());
+            getSupportActionBar().setSubtitle("医生");
         }else if(intent.getIntExtra("TargetType",-1) == TARGET_TYPE_PATIENT){
             targetType = TARGET_TYPE_PATIENT;
             patient = (Patient) intent.getSerializableExtra("Target");
+            getSupportActionBar().setTitle(patient.getPname());
+            getSupportActionBar().setSubtitle("患者");
         }
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

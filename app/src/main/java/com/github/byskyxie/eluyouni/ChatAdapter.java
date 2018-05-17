@@ -5,9 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
 
-
+    private ArrayList<ChatItem> list = new ArrayList<>();
 
     static class ChatHolder extends RecyclerView.ViewHolder{
         public ChatHolder(View itemView) {

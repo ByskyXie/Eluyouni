@@ -8,12 +8,14 @@
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_chat"
+        android:theme="@style/AppTheme.AppBarOverlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_chat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -28,8 +30,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/lightGray"
         app:layout_constraintBottom_toBottomOf="parent">
-
+        <EditText
+            android:id="@+id/edit_text_chat_send"
+            android:layout_weight="1"
+            android:overScrollMode="always"
+            android:layout_margin="@dimen/small_border"
+            android:background="@drawable/shape_for_chat_edit"
+            android:textSize="18sp"
+            android:inputType="text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/button_chat_send"
+            android:layout_weight="0"
+            android:textColor="@color/white"
+            android:text="@string/send"
+            android:background="@drawable/shape_for_button_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

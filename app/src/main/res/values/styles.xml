@@ -28,5 +28,9 @@
 
     <style name="NewTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!--<style name="NewPopupOverlay" parent="@style/ThemeOverlay.AppCompat.ActionBar">-->
+        <!--<item name="android:colorBackground">@color/colorGrayBlue</item>-->
+        <!--<item name="android:textColorPrimary">@color/white</item>-->
+    <!--</style>-->
 
 </resources>
