@@ -3,7 +3,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_desc">ICON</string>
-    <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -37,6 +36,8 @@
     <string name="nav_menu_my_consult_record">会诊记录</string>
     <string name="nav_menu_my_health_manage">健康管理</string>
     <string name="nav_menu_my_relate_account">亲情账号</string>
+
+    <string name="emergency">紧急呼救</string>
 
     <!-- exit -->
     <string name="exit_hint">你确定要退出医路有你吗</string>

@@ -36,14 +36,18 @@
         <EditText
             android:id="@+id/edit_text_chat_send"
             android:layout_weight="1"
-            android:overScrollMode="always"
+            android:maxLines="4"
+            android:minLines="1"
+            android:scrollHorizontally="false"
+            android:gravity="top"
             android:layout_margin="@dimen/small_border"
             android:background="@drawable/shape_for_chat_edit"
             android:textSize="18sp"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:layout_width="0dp"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
         <Button
+            android:layout_gravity="bottom"
             android:id="@+id/button_chat_send"
             android:layout_weight="0"
             android:textColor="@color/white"

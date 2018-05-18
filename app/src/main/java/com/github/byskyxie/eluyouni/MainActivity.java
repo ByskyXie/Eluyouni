@@ -163,9 +163,8 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        return false;
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     /**
@@ -179,7 +178,8 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_emergency) {
+            //TODO：发送紧急信息
             return true;
         }
 
