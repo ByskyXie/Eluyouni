@@ -38,8 +38,8 @@ public class PriDocFragment extends Fragment {
     private static final int PRIVATE_DOCTOR_ACCEPT = 0x002;
 
     private PriHandler handler;
-    private RecyclerView recyclerPri;
     private PriDocAdapter adapter;
+    protected RecyclerView recyclerPri;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

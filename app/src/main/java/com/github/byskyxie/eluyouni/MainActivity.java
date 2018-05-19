@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -238,6 +239,16 @@ public class MainActivity extends BaseActivity
         transaction.replace(R.id.fragment_show, indexFragment);
         transaction.commit();
         checkedOpt = CHECKED_INDEX;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ChatActivity.CHAT_ACTIVITY_CODE && resultCode == RESULT_OK){
+            int pos = data.getIntExtra("ClickedPos",-1);
+            //更新信息
+            priDocFragment.recyclerPri.getAdapter().notifyItemChanged(pos,"null");
+        }
     }
 
     @Override

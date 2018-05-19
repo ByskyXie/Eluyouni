@@ -21,7 +21,9 @@
         android:id="@+id/text_view_pri_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/nano_border"
+        android:layout_marginStart="@dimen/small_border"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/mini_border"
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="@id/image_view_pri_icon"
         app:layout_constraintLeft_toRightOf="@id/image_view_pri_icon"/>
@@ -43,7 +45,9 @@
         android:id="@+id/text_view_talk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/image_view_pri_icon"
+        android:textColor="@color/darkGray"
+        android:maxLines="1"
+        app:layout_constraintLeft_toLeftOf="@id/text_view_pri_name"
         app:layout_constraintTop_toBottomOf="@id/text_view_pri_name"
         app:layout_constraintBottom_toBottomOf="@id/image_view_pri_icon"/>
 </android.support.constraint.ConstraintLayout>

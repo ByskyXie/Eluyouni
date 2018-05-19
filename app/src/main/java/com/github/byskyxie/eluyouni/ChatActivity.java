@@ -10,26 +10,23 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class ChatActivity extends BaseActivity
         implements View.OnClickListener{
 
+    public static final int CHAT_ACTIVITY_CODE = 0X1000;
     public static final int TARGET_TYPE_DOCTOR = 0X0010;
     public static final int TARGET_TYPE_PATIENT = 0X0100;
 
     private SendWatcher watcher = new SendWatcher();
     private int targetType;
+    private int clickedPos;
     private Doctor doctorTalker;
     private Patient patientTalker;
     private RecyclerView recyclerChat;
@@ -81,6 +78,7 @@ public class ChatActivity extends BaseActivity
     private void getInitialInfo(Intent intent){
         if(intent == null)
             return;
+        clickedPos = intent.getIntExtra("ClickedPos",-1);
         if(intent.getIntExtra("TargetType",-1) == TARGET_TYPE_DOCTOR){
             targetType = TARGET_TYPE_DOCTOR;
             doctorTalker = (Doctor) intent.getSerializableExtra("Target");
@@ -180,5 +178,10 @@ public class ChatActivity extends BaseActivity
                 BaseActivity.userDatabasewrit.insert("CHAT_RECORD",null,content);
             }
         }
+        Intent intent = new Intent();
+        intent.putExtra("ClickedPos",clickedPos);
+        setResult(RESULT_OK, intent);
+        //返回参数
     }
+
 }

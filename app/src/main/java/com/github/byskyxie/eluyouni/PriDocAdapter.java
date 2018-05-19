@@ -77,6 +77,13 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
             if(list.get(actPos).getDsex()==2 )
                 holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.doctor_woman));
         }
+        //更新聊天记录
+        if(BaseActivity.mapEridToPosition.containsKey(list.get(actPos).getDid()) ){
+            ArrayList<ChatItem> cis = BaseActivity.chatRecordList.get(BaseActivity.mapEridToPosition.get(list.get(actPos).getDid())).getList();
+            if(cis.size() > 0){
+                holder.talk.setText( cis.get( cis.size()-1 ).getContent() );
+            }
+        }
     }
 
     @Override
@@ -90,6 +97,7 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("TargetType",ChatActivity.TARGET_TYPE_DOCTOR);
         intent.putExtra("Target",list.get(pos));
-        context.startActivity(intent);
+        intent.putExtra("ClickedPos",pos);
+        ((BaseActivity)context).startActivityForResult(intent, ChatActivity.CHAT_ACTIVITY_CODE);
     }
 }

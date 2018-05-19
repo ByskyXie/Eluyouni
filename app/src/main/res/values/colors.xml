@@ -25,6 +25,7 @@
     <color name="lightGray">#EAEAEA</color>
     <color name="gray">#C0C0C0</color>
     <color name="coldGray">#808A87</color>
+    <color name="darkGray">#303030</color>
     <color name="black">#000000</color>
 
     <color name="fullTransparent">#00000000</color>
