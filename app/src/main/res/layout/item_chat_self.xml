@@ -12,6 +12,7 @@
         android:id="@+id/text_view_chat_time_self"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_border"
         android:paddingStart="@dimen/small_border"
         android:paddingEnd="@dimen/small_border"
         android:textColor="@color/white"

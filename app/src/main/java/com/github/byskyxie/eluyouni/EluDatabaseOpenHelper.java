@@ -33,6 +33,16 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
             "DHOSPITAL TINYTEXT," +
             "DGRADE INT" +
             ");";
+    private static final String SQL_CHAT_RECORD = "" +
+            "CREATE TABLE CHAT_RECORD(" +
+            "ID LONG NOT NULL," +
+            "ERID LONG NOT NULL," +
+            "ERTYPE INT," +
+            "TIME DATE," +
+            "CHATTYPE INT," +
+            "CONTENT TEXT," +
+            "PRIMARY KEY(ID,ERID,TIME)" +
+            ");";
 
     EluDatabaseOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -44,6 +54,7 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE);
         db.execSQL(SQL_PATIENT_BASE_INFO);
         db.execSQL(SQL_DOCTOR_BASE_INFO);
+        db.execSQL(SQL_CHAT_RECORD);
     }
 
     @Override

@@ -10,14 +10,26 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
     public static final String IP_SERVER = "192.168.137.1";  //"192.168.137.1"  "119.23.62.71"
+    public static final String DATE_FORMAT = "yyyy-M-d HH:mm:ss";
 
     protected static Patient userInfo = null;
     protected static SQLiteDatabase userDatabaseRead;
     protected static SQLiteDatabase userDatabasewrit;
     private static EluDatabaseOpenHelper eluDatabaseOpenHelper;
+
+    protected static HashMap<Long,Integer> mapEridToPosition = new HashMap<>();
+    protected static ArrayList<ChatRecord> chatRecordList ;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +42,9 @@ public class BaseActivity extends AppCompatActivity {
         }
         if(isLogin())
             readUserInfo();
+        if(chatRecordList == null){
+            getChatRecord();
+        }
     }
 
     protected boolean isLogin(){
@@ -72,6 +87,48 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    private void getChatRecord(){
+        chatRecordList = new ArrayList<>();
+        Cursor cursor = userDatabaseRead.query("CHAT_RECORD",new String[]{"*"}, null,
+                null, null,null,"ID ASC,ERID ASC, TIME ASC");
+        if(!cursor.moveToFirst()){
+            cursor.close();
+            return;
+        }
+        //begin
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT, Locale.CHINA);
+        long id,erid;
+        int ertype,chattype;
+        Date time;
+        String content;
+        do{
+            // id erid ertype time chattype content
+            id = cursor.getLong(cursor.getColumnIndex("ID"));
+            if(id != userInfo.getPid())
+                continue;   //非当前用户的记录不读取
+            erid = cursor.getLong(cursor.getColumnIndex("ERID"));
+            ertype = cursor.getInt(cursor.getColumnIndex("ERTYPE"));
+            try{
+                time = sdf.parse(cursor.getString(cursor.getColumnIndex("TIME")) );
+            }catch (ParseException pe){
+                Log.e(".BaseActivity","Time parse error:"+pe);
+                continue;//跳过该记录
+            }
+            chattype = cursor.getInt(cursor.getColumnIndex("CHATTYPE"));
+            content = cursor.getString(cursor.getColumnIndex("CONTENT"));
+            if(!mapEridToPosition.containsKey(erid)){
+                //没有该聊天方的记录集，加入新ChatRecord
+                mapEridToPosition.put(erid,chatRecordList.size());
+                chatRecordList.add(new ChatRecord(userInfo.getPid(), erid, ertype, null));
+            }
+            if(chattype == ChatItem.CHAT_TYPE_OTHER_SIDE)   //是对方的发言
+                chatRecordList.get(mapEridToPosition.get(erid)).addChatItem( new ChatItem(content,chattype,time,erid,ertype) );
+            else if(chattype == ChatItem.CHAT_TYPE_SELF)    //用户的发言
+                chatRecordList.get(mapEridToPosition.get(erid)).addChatItem( new ChatItem(content,chattype,time,userInfo.getPid(),1) );
+        }while(cursor.moveToNext());
+        cursor.close();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -84,6 +141,5 @@ public class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
-    
 
 }

@@ -38,6 +38,7 @@
     <string name="nav_menu_my_relate_account">亲情账号</string>
 
     <string name="emergency">紧急呼救</string>
+    <string name="hint">提示</string>
 
     <!-- exit -->
     <string name="exit_hint">你确定要退出医路有你吗</string>

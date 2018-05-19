@@ -80,6 +80,18 @@ public class Patient {
         this.pscore = pscore;
     }
 
+    public String getGradeName(){
+        if(pscore>150)
+            return "钻石";
+        if(pscore>120)
+            return "铂金";
+        if(pscore>90)
+            return "黄金";
+        if(pscore>60)
+            return "白银";
+        return "青铜";
+    }
+
     public void save(){
         ContentValues content = new ContentValues();
         BaseActivity.userDatabasewrit.delete("patient",null,null);

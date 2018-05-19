@@ -11,15 +11,17 @@ public class ChatItem {
     private String content;
     private int chatType;
     private Date time;
-    private String icon;
+    private long erid;
+    private int ertype;
 
     ChatItem(){}
 
-    public ChatItem(String content, int chatType, Date time, String icon) {
+    public ChatItem(String content, int chatType, Date time, long erid, int ertype) {
         this.content = content;
         this.chatType = chatType;
         this.time = time;
-        this.icon = icon;
+        this.erid = erid;
+        this.ertype = ertype;
     }
 
     public String getDayTime(){
@@ -32,8 +34,8 @@ public class ChatItem {
         return sdf.format(time);
     }
 
-    public String getFullTime(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-M-d HH:mm", Locale.CHINA);
+    public String getFormatTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat(BaseActivity.DATE_FORMAT, Locale.CHINA);
         return sdf.format(time);
     }
 
@@ -63,11 +65,19 @@ public class ChatItem {
         this.chatType = chatType;
     }
 
-    public String getIcon() {
-        return icon;
+    public long getErid() {
+        return erid;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setErid(long erid) {
+        this.erid = erid;
+    }
+
+    public int getErtype() {
+        return ertype;
+    }
+
+    public void setErtype(int ertype) {
+        this.ertype = ertype;
     }
 }
