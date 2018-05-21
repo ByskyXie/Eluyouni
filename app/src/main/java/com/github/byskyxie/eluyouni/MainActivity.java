@@ -245,9 +245,14 @@ public class MainActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ChatActivity.CHAT_ACTIVITY_CODE && resultCode == RESULT_OK){
+            if(data == null){
+                Log.e("MainActivity","data is null");
+                return;
+            }
             int pos = data.getIntExtra("ClickedPos",-1);
             //更新信息
-            priDocFragment.recyclerPri.getAdapter().notifyItemChanged(pos,"null");
+            if(pos!=-1)
+                priDocFragment.recyclerPri.getAdapter().notifyItemChanged(pos,"null");
         }
     }
 

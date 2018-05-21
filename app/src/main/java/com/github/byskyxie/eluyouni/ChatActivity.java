@@ -112,6 +112,15 @@ public class ChatActivity extends BaseActivity
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        intent.putExtra("ClickedPos",clickedPos);
+        setResult(RESULT_OK, intent);
+        super.onBackPressed();
+        onStop();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.button_chat_send:
@@ -130,8 +139,8 @@ public class ChatActivity extends BaseActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
         if(adapter == null || adapter.getItemCount()==0 )
             return;
         //保存聊天记录
@@ -178,9 +187,6 @@ public class ChatActivity extends BaseActivity
                 BaseActivity.userDatabasewrit.insert("CHAT_RECORD",null,content);
             }
         }
-        Intent intent = new Intent();
-        intent.putExtra("ClickedPos",clickedPos);
-        setResult(RESULT_OK, intent);
         //返回参数
     }
 

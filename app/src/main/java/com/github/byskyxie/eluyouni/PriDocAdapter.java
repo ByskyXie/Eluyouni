@@ -82,8 +82,10 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
             ArrayList<ChatItem> cis = BaseActivity.chatRecordList.get(BaseActivity.mapEridToPosition.get(list.get(actPos).getDid())).getList();
             if(cis.size() > 0){
                 holder.talk.setText( cis.get( cis.size()-1 ).getContent() );
-            }
-        }
+            }else
+                holder.talk.setText("暂无聊天记录");
+        }else
+            holder.talk.setText("暂无聊天记录");
     }
 
     @Override
