@@ -6,16 +6,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ConsultFragment">
 
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_line_consult_tp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_consult_doc_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:padding="@dimen/nano_border"
+        android:background="@drawable/shape_for_recycler_border"
+        app:layout_constraintTop_toTopOf="@id/guide_line_consult_tp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_consult_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_border"
+        android:padding="@dimen/nano_border"
+        android:background="@drawable/shape_for_recycler_border"
         app:layout_constraintTop_toBottomOf="@id/recycler_consult_doc_list"/>
 
     <EditText
@@ -25,6 +38,7 @@
         android:inputType="textMultiLine"
         android:gravity="top"
         android:hint="@string/describe_hint"
+        android:layout_marginTop="@dimen/small_border"
         app:layout_constraintBottom_toTopOf="@id/button_consult_submit"
         app:layout_constraintTop_toBottomOf="@id/recycler_consult_data"/>
 
@@ -32,8 +46,17 @@
         android:id="@+id/button_consult_submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/big_border"
+        android:layout_marginEnd="@dimen/big_border"
         android:text="@string/begin_consult"
         style="@style/Widget.AppCompat.Button.Colored"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@id/guide_line_consult_bt"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_line_consult_bt"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.9"/>
 
 </android.support.constraint.ConstraintLayout>

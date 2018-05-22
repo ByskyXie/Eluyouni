@@ -12,7 +12,7 @@
     <style name="NewTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorGrayBlue</item>
         <item name="colorPrimaryDark">@color/colorDarkGrayBlue</item>
-        <item name="colorAccent">@color/deepSkyBlue</item>
+        <item name="colorAccent">@color/lightSkyBlue</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
