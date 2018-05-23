@@ -14,43 +14,62 @@
         android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_consult_doc_list"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/nano_border"
-        android:background="@drawable/shape_for_recycler_border"
-        app:layout_constraintTop_toTopOf="@id/guide_line_consult_tp"/>
+        app:layout_constraintTop_toTopOf="@id/guide_line_consult_tp"
+        app:layout_constraintBottom_toBottomOf="@id/guide_line_consult_bt">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_consult_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/small_border"
-        android:padding="@dimen/nano_border"
-        android:background="@drawable/shape_for_recycler_border"
-        app:layout_constraintTop_toBottomOf="@id/recycler_consult_doc_list"/>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/edit_text_consult_describe"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:inputType="textMultiLine"
-        android:gravity="top"
-        android:hint="@string/describe_hint"
-        android:layout_marginTop="@dimen/small_border"
-        app:layout_constraintBottom_toTopOf="@id/button_consult_submit"
-        app:layout_constraintTop_toBottomOf="@id/recycler_consult_data"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_consult_doc_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/nano_border"
+                android:background="@drawable/shape_for_recycler_border"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-    <Button
-        android:id="@+id/button_consult_submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/big_border"
-        android:layout_marginEnd="@dimen/big_border"
-        android:text="@string/begin_consult"
-        style="@style/Widget.AppCompat.Button.Colored"
-        app:layout_constraintBottom_toBottomOf="@id/guide_line_consult_bt"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_consult_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_border"
+                android:padding="@dimen/nano_border"
+                android:background="@drawable/shape_for_recycler_border"
+                app:layout_constraintTop_toBottomOf="@id/recycler_consult_doc_list"/>
+
+            <EditText
+                android:id="@+id/edit_text_consult_describe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:minLines="7"
+                android:hint="@string/describe_hint"
+                android:layout_marginTop="@dimen/small_border"
+                app:layout_constraintBottom_toTopOf="@id/button_consult_submit"
+                app:layout_constraintTop_toBottomOf="@id/recycler_consult_data"/>
+
+            <Button
+                android:id="@+id/button_consult_submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/big_border"
+                android:layout_marginEnd="@dimen/big_border"
+                android:layout_marginBottom="@dimen/large_border"
+                android:text="@string/begin_consult"
+                style="@style/Widget.AppCompat.Button.Colored"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </ScrollView>
+
+
 
     <android.support.constraint.Guideline
         android:id="@+id/guide_line_consult_bt"
