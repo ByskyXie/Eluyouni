@@ -42,8 +42,7 @@ public class ConsultDataAdapter extends RecyclerView.Adapter<ConsultDataAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        if(list.size()==0){
-            //无选择资料
+        if(list.size() == position){//最后选择资料
             return 1;
         }
         return 2;
@@ -64,7 +63,6 @@ public class ConsultDataAdapter extends RecyclerView.Adapter<ConsultDataAdapter.
     public void onBindViewHolder(@NonNull ConsultDataAdapter.ConsultDataHolder holder, int position) {
         if(list.size() == 0){
             //说明当前列表为空 TODO:设置添加图片事件
-
             return;
         }
         int actPos = holder.getAdapterPosition();
@@ -76,6 +74,6 @@ public class ConsultDataAdapter extends RecyclerView.Adapter<ConsultDataAdapter.
     public int getItemCount() {
         if(list.size() == 0)
             return 1;
-        return list.size();
+        return list.size()+1;
     }
 }

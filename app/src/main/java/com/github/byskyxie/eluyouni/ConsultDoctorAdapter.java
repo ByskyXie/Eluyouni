@@ -11,7 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdapter.ConsultDoctorHolder> {
+public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdapter.ConsultDoctorHolder>
+        implements View.OnClickListener{
 
     private Context context;
     private ArrayList<Doctor> list = new ArrayList<>();
@@ -44,8 +45,7 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
 
     @Override
     public int getItemViewType(int position) {
-        if(list.size()==0){
-            //无选择医生
+        if(list.size()==position){ //添加医生
             return 1;
         }
         return 2;
@@ -64,9 +64,16 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
 
     @Override
     public void onBindViewHolder(@NonNull ConsultDoctorHolder holder, int position) {
-        if(list.size() == 0){
+        if(list.size() == position){
             //说明当前列表为空 TODO:设置点击事件
-
+            holder.view.setOnClickListener(this);
+            if(list.size()==0){
+                //如果列表为空，改变宽度
+                holder.view.setMinimumWidth(64);
+            }else{
+                //TODO:MATCH_PARENT
+                //holder.view.setMinimumWidth();
+            }
             return;
         }
         int actPos = holder.getAdapterPosition();
@@ -78,5 +85,14 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
         if(list.size() == 0)
             return 1;
         return list.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.text_view_consult_add_doc:
+                ((MainActivity)context).setRadioButtonChecked(3);
+            break;
+        }
     }
 }

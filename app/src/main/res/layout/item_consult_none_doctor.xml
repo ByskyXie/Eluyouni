@@ -5,6 +5,7 @@
     android:layout_height="92dp">
 
     <TextView
+        android:id="@+id/text_view_consult_add_doc"
         android:text="@string/blank_doctor_list"
         android:textSize="18sp"
         android:padding="@dimen/mid_border"

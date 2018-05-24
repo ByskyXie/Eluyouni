@@ -345,4 +345,25 @@ public class MainActivity extends BaseActivity
                 break;
         }
     }
+
+    public void setRadioButtonChecked(int position){
+        switch (position){
+            case 0:
+                if(!radioButtonIndex.isChecked())
+                    radioButtonIndex.setChecked(true);
+                break;
+            case 1:
+                if(!radioButtonConsult.isChecked())
+                    radioButtonConsult.setChecked(true);
+                break;
+            case 2:
+                if(!radioButtonMedic.isChecked())
+                    radioButtonMedic.setChecked(true);
+                break;
+            case 3:
+                if(!radioButtonDoc.isChecked())
+                    radioButtonDoc.setChecked(true);
+                break;
+        }
+    }
 }
