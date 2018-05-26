@@ -181,6 +181,7 @@ public class MainActivity extends BaseActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_emergency) {
             //TODO：发送紧急信息
+            
             return true;
         }
 
@@ -215,11 +216,6 @@ public class MainActivity extends BaseActivity
                 //亲情账号
                 break;
         }
-//        if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

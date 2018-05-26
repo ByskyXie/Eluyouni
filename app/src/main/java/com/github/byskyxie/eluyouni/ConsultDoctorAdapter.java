@@ -25,7 +25,7 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
         }
     }
 
-    public ConsultDoctorAdapter(Context context, ArrayList<Doctor> list) {
+    ConsultDoctorAdapter(Context context, ArrayList<Doctor> list) {
         this.context = context;
         if(list!=null)
             this.list.addAll( list);
