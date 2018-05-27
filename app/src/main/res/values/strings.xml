@@ -55,8 +55,11 @@
     <string name="send">发送</string>
     <string name="begin_consult">发起会诊</string>
     <string name="describe_hint">在此输入病情描述</string>
-    <string name="blank_doctor_list">添加医生至会诊室</string>
+    <string name="blank_doctor_list">邀请医生</string>
     <string name="blank_data_list">添加资料</string>
+    <string name="consult_doc_title">医生列表</string>
+    <string name="consult_data_title">提交材料</string>
+
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_chat">ChatActivity</string>

@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_margin="@dimen/nano_border"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/text_view_consult_add_data"
         android:text="@string/blank_data_list"
         android:drawableTop="@drawable/ic_add_pic"
         android:textSize="18sp"
-        android:padding="@dimen/mid_border"
-        android:background="@color/lightGray"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingStart="@dimen/mid_border"
+        android:paddingEnd="@dimen/mid_border"
+        android:background="@drawable/shape_for_consult_add_button"
         android:gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
 </LinearLayout>

@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.net.URL;
 
 
 /**
@@ -109,6 +112,13 @@ public class ConsultFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    protected void addDataItem(String uri){
+        if(uri==null || uri.isEmpty())
+            return;
+        dataAdapter.addData(uri);
+        dataAdapter.notifyDataSetChanged();
     }
 
     /**

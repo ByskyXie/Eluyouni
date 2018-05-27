@@ -22,6 +22,8 @@ import java.util.Locale;
 public class BaseActivity extends AppCompatActivity {
     public static final String IP_SERVER = "192.168.137.1";  //"192.168.137.1"  "119.23.62.71"
     public static final String DATE_FORMAT = "yyyy-M-d HH:mm:ss";
+    private static final int REQUEST_INTERNET = 10086;
+    private static final int REQUEST_FILE_READ = 10010;
 
     protected static Patient userInfo = null;
     protected static SQLiteDatabase userDatabaseRead;
@@ -83,7 +85,38 @@ public class BaseActivity extends AppCompatActivity {
         if(code == PackageManager.PERMISSION_GRANTED)
             return;
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            requestPermissions(new String[]{Manifest.permission.INTERNET}, 10086);
+            requestPermissions(new String[]{Manifest.permission.INTERNET}, REQUEST_INTERNET);
+        }
+    }
+
+    /**
+     * function: to apply read file data
+     * */
+    protected void applyReadFile(){
+        int code = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if(code == PackageManager.PERMISSION_GRANTED)
+            return;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_INTERNET);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_INTERNET:
+                if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                    //不允许联网, 再次请求
+                    applyConnectNet();
+                }
+                break;
+            case REQUEST_FILE_READ:
+                if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
+                    //不允许读取文件, 再次请求
+                    applyReadFile();
+                }
+                break;
         }
     }
 
@@ -129,17 +162,5 @@ public class BaseActivity extends AppCompatActivity {
         cursor.close();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
-            case 10086:
-                if(grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                    //不允许联网, 再次请求
-                    applyConnectNet();
-                }
-                break;
-        }
-    }
 
 }

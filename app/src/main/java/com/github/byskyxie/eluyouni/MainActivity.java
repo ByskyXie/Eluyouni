@@ -2,9 +2,11 @@ package com.github.byskyxie.eluyouni;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -181,7 +183,7 @@ public class MainActivity extends BaseActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_emergency) {
             //TODO：发送紧急信息
-            
+
             return true;
         }
 
@@ -240,8 +242,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ChatActivity.CHAT_ACTIVITY_CODE && resultCode == RESULT_OK){
-            if(data == null){
+        if(requestCode == ChatActivity.CHAT_ACTIVITY_CODE ){
+            if(resultCode != RESULT_OK && data == null){
                 Log.e("MainActivity","data is null");
                 return;
             }
@@ -249,6 +251,17 @@ public class MainActivity extends BaseActivity
             //更新信息
             if(pos!=-1)
                 priDocFragment.recyclerPri.getAdapter().notifyItemChanged(pos,"null");
+        }else if(requestCode == ConsultDataAdapter.CONSULT_DATA_ADAPTER){
+            //获得图片URL
+            if(resultCode != RESULT_OK || data == null || data.getData()==null)
+                return;
+            Uri uri = data.getData();
+            Cursor cursor = getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+            if(cursor == null)
+                return;
+            cursor.moveToFirst();
+            consultFragment.addDataItem( cursor.getString( cursor.getColumnIndex(MediaStore.Images.Media.DATA) ) );
+            cursor.close();
         }
     }
 

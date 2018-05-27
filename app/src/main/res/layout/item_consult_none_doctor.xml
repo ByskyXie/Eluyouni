@@ -9,7 +9,9 @@
         android:text="@string/blank_doctor_list"
         android:textSize="18sp"
         android:padding="@dimen/mid_border"
-        android:background="@color/lightGray"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/shape_for_consult_add_button"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/small_border"
+    android:layout_margin="@dimen/nano_border"
+    android:padding="@dimen/nano_border"
+    android:background="@drawable/shape_for_consult_doc_item"
     android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/image_view_consult_doc_icon"
+        android:scaleType="fitXY"
         android:layout_width="48dp"
         android:layout_height="48dp" />
 

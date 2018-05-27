@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdapter.ConsultDoctorHolder>
         implements View.OnClickListener{
 
+    private int docNumLimit = 5;
     private Context context;
     private ArrayList<Doctor> list = new ArrayList<>();
 
@@ -27,25 +28,31 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
 
     ConsultDoctorAdapter(Context context, ArrayList<Doctor> list) {
         this.context = context;
-        if(list!=null)
-            this.list.addAll( list);
+        if(list==null)
+            return;
+        this.list.addAll( list);
+        while(list.size()>docNumLimit)
+            list.remove(list.size()-1 );
     }
 
     public void addData(ArrayList<Doctor> list){
         if(list==null)
             return;
         this.list.addAll(list);
+        while(list.size()>docNumLimit)
+            list.remove(list.size()-1 );
     }
 
     public void addData(Doctor doctor){
-        if(doctor==null)
+        if(doctor==null || list.size()>docNumLimit)
             return;
         list.add(doctor);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(list.size()==position){ //添加医生
+        if(list.size() == position && list.size()!=docNumLimit){
+            //添加医生
             return 1;
         }
         return 2;
@@ -64,19 +71,20 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
 
     @Override
     public void onBindViewHolder(@NonNull ConsultDoctorHolder holder, int position) {
-        if(list.size() == position){
-            //说明当前列表为空 TODO:设置点击事件
-            holder.view.setOnClickListener(this);
+        int actPos = holder.getAdapterPosition();
+        if(list.size() == position && list.size()!=docNumLimit){
+            //说明当前列表为空
+            ViewGroup.LayoutParams param = holder.view.getLayoutParams();
             if(list.size()==0){
                 //如果列表为空，改变宽度
-                holder.view.setMinimumWidth(64);
+                param.width = ViewGroup.LayoutParams.MATCH_PARENT;
             }else{
-                //TODO:MATCH_PARENT
-                //holder.view.setMinimumWidth();
+                param.width = ViewGroup.LayoutParams.WRAP_CONTENT;
             }
+            holder.view.findViewById(R.id.text_view_consult_add_doc).setOnClickListener(this);
             return;
         }
-        int actPos = holder.getAdapterPosition();
+
         ((TextView)holder.view.findViewById(R.id.text_view_consult_doc_name)).setText( list.get(actPos).getDname() );
     }
 
@@ -91,7 +99,7 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.text_view_consult_add_doc:
-                ((MainActivity)context).setRadioButtonChecked(3);
+                ((MainActivity)context).setRadioButtonChecked(2);
             break;
         }
     }
