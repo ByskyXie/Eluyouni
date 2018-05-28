@@ -35,7 +35,8 @@ import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ACCEPT;
  */
 public class PriDocFragment extends Fragment {
 
-    private static final int PRIVATE_DOCTOR_ACCEPT = 0x002;
+    public static final int PRIVATE_DOCTOR_ACCEPT = 0x002;
+    public static final int DOCTOR_ICON_ACCEPT = 0x003;
 
     private PriHandler handler;
     private PriDocAdapter adapter;
@@ -59,7 +60,7 @@ public class PriDocFragment extends Fragment {
     protected static class PriHandler extends Handler{
         private final WeakReference<PriDocFragment> fragment;
 
-        public PriHandler(WeakReference<PriDocFragment> fragment) {
+        PriHandler(WeakReference<PriDocFragment> fragment) {
             this.fragment = fragment;
         }
 
@@ -74,6 +75,15 @@ public class PriDocFragment extends Fragment {
                     if(!fragment.get().adapter.compareDataSetSame((ArrayList<Doctor>) msg.obj))
                         fragment.get().adapter.addData((ArrayList<Doctor>) msg.obj);
                     fragment.get().adapter.notifyDataSetChanged();
+                    break;
+                case DOCTOR_ICON_ACCEPT:
+                    try {
+                        while(fragment.get().recyclerPri.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        Log.e("priDoc",ie.getStackTrace().toString());
+                    }
+                    fragment.get().adapter.notifyItemChanged((int)msg.obj);
                     break;
             }
         }
@@ -116,7 +126,7 @@ public class PriDocFragment extends Fragment {
         recyclerPri = view.findViewById(R.id.recycler_pri_doc);
         LinearLayoutManager llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         recyclerPri.setLayoutManager(llm);
-        adapter = new PriDocAdapter(getContext(),null);
+        adapter = new PriDocAdapter(getContext(),null, handler);
         recyclerPri.setAdapter( adapter );
         getPrivateList();
         return view;

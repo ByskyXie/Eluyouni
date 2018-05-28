@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -84,6 +85,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     public void onBindViewHolder(@NonNull ChatHolder holder, int position) {
         int actPos = holder.getAdapterPosition();
         holder.content.setText(list.get(actPos).getContent());
+        holder.icon.setImageURI(Uri.parse("http://wx2.sinaimg.cn/large/006ajDf8ly1frq8d37sfxj30sh0shgpa.jpg"));
         if(actPos>0 && (list.get(actPos).getRealTime()-list.get(actPos-1).getRealTime()) < 1000*60*2 )
             holder.time.setVisibility(View.GONE);  //小于2分钟不显示时间
         else{
