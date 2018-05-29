@@ -28,6 +28,10 @@
 
     <style name="NewTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="NewTheme.SearchView" parent="Widget.AppCompat.SearchView">
+
+    </style>
+
     <!--<style name="NewPopupOverlay" parent="@style/ThemeOverlay.AppCompat.ActionBar">-->
         <!--<item name="android:colorBackground">@color/colorGrayBlue</item>-->
         <!--<item name="android:textColorPrimary">@color/white</item>-->

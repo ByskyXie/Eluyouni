@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:gravity="center"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:background="@drawable/shape_for_layout_background"
+    android:layout_width="match_parent"
+    android:layout_height="128dp">
     <!-- 展示具体疾病的item -->
     <ImageView
         android:id="@+id/image_view_medicine_illness_pic"
@@ -14,6 +15,10 @@
     <TextView
         android:id="@+id/text_view_medicine_illness_text"
         android:text="@string/illness"
+        android:textSize="17sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

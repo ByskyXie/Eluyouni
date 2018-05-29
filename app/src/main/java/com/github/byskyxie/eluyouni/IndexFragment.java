@@ -373,6 +373,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 recomList.add(ar);
                             }
                             //结束读取数据
+                            br.close();
                             Message msg = new Message();
                             msg.obj = recomList;
                             msg.what = ARTICLE_RECOMMEND_ACCEPT;
@@ -432,6 +433,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 patList.add(ap);
                             }
                             //结束读取数据
+                            br.close();
                             Message msg = new Message();
                             msg.obj = patList;
                             msg.what = ARTICLE_PATIENT_ACCEPT;
@@ -490,6 +492,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 docList.add(ad);
                             }
                             //结束读取数据
+                            br.close();
                             Message msg = new Message();
                             msg.obj = docList;
                             msg.what = ARTICLE_DOCTOR_ACCEPT;
@@ -559,6 +562,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                                 commList.add(pc);
                             }
                             //结束读取数据
+                            br.close();
                             Message msg = new Message();
                             msg.obj = commList;
                             msg.what = COMMUNITY_ACCEPT;
@@ -812,6 +816,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                 }
             }
+            br.close();
         }catch (IOException ioe){
             ioe.printStackTrace();
             return  null;
@@ -919,6 +924,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                 }
             }
+            br.close();
         }catch (IOException ioe){
             ioe.printStackTrace();
             return  null;

@@ -11,18 +11,18 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllnessAdapter.MedicineSectionHolder> {
+public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllnessAdapter.MedicineIllnessHolder> {
 
     private Context context;
     private ArrayList<Illness> illList = new ArrayList<>();
 
-    static class MedicineSectionHolder extends RecyclerView.ViewHolder{
-        private ImageView imageSection;
-        private TextView nameSection;
-        MedicineSectionHolder(View itemView) {
+    static class MedicineIllnessHolder extends RecyclerView.ViewHolder{
+        private ImageView imageIllness;
+        private TextView nameIllness;
+        MedicineIllnessHolder(View itemView) {
             super(itemView);
-            imageSection = itemView.findViewById(R.id.image_view_medicine_illness_pic);
-            nameSection = itemView.findViewById(R.id.text_view_medicine_illness_text);
+            imageIllness = itemView.findViewById(R.id.image_view_medicine_illness_pic);
+            nameIllness = itemView.findViewById(R.id.text_view_medicine_illness_text);
         }
     }
 
@@ -48,20 +48,21 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
             return true;
         if(this.illList.isEmpty())
             return false;
-        //TODO:return section CMP
+        //TODO:return illness CMP
         return true;
     }
 
     @NonNull
     @Override
-    public MedicineSectionHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MedicineIllnessHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_medicine_illness_item, parent, false);
-        return new MedicineSectionHolder(view);
+        return new MedicineIllnessHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MedicineSectionHolder holder, int position) {
-        //TODO:add actual section info and OnClick
+    public void onBindViewHolder(@NonNull MedicineIllnessHolder holder, int position) {
+        int actPos = holder.getAdapterPosition();
+        holder.nameIllness.setText(illList.get(actPos).getName());
     }
 
     @Override
