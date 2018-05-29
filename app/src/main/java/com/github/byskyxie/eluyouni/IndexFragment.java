@@ -29,6 +29,11 @@ import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_PATIENT_ACC
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.ARTICLE_RECOMMEND_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.BASE_INFO_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ICON_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.DOCTOR_ICON_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.FOCUS_ICON_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.PATIENT_ICON_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.RECOMMEND_ICON_ACCEPT;
 
 
 /**
@@ -81,7 +86,6 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         Log.e("indexFragmentHandler","indexFragment has recycler BASE_INFO");
                         break;
                     }
-                    //TODO:没用，考虑怎么提醒数据项更新
                     (fragment.get()).indexPagerAdapter.commitDataChanged();
                     break;
                 case ARTICLE_DOCTOR_ACCEPT:
@@ -89,7 +93,6 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         Log.e("indexFragmentHandler","indexFragment has recycler ARTICLE_DOC");
                         break;
                     }
-//                    Log.e("indexFragmentHandler"," get : "+((ArrayList)msg.obj).size());
                     (fragment.get()).indexPagerAdapter.addDocList((ArrayList<ArticleDoctor>)msg.obj );
                     (fragment.get()).getDoctorBaseInfo((ArrayList<ArticleDoctor>)msg.obj );
                     break;
@@ -108,6 +111,51 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                     (fragment.get()).indexPagerAdapter.addRecomList((ArrayList<ArticleRecommend>)msg.obj );
                     (fragment.get()).getBaseInfo_recom((ArrayList<ArticleRecommend>)msg.obj );
+                    break;
+                case RECOMMEND_ICON_ACCEPT:
+                    try {
+                        while(fragment.get().indexPagerAdapter.recomRecycler.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().indexPagerAdapter.recomRecycler.getAdapter().notifyItemChanged((int)msg.obj);
+                    break;
+                case COMMUNITY_ICON_ACCEPT:
+                    try {
+                        while(fragment.get().indexPagerAdapter.commRecycler.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().indexPagerAdapter.commRecycler.getAdapter().notifyItemChanged((int)msg.obj);
+                    break;
+                case DOCTOR_ICON_ACCEPT:
+                    try {
+                        while(fragment.get().indexPagerAdapter.docRecycler.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().indexPagerAdapter.docRecycler.getAdapter().notifyItemChanged((int)msg.obj);
+                    break;
+                case PATIENT_ICON_ACCEPT:
+                    try {
+                        while(fragment.get().indexPagerAdapter.patiRecycler.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().indexPagerAdapter.patiRecycler.getAdapter().notifyItemChanged((int)msg.obj);
+                    break;
+                case FOCUS_ICON_ACCEPT:
+                    try {
+                        while(fragment.get().indexPagerAdapter.focusRecycler.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().indexPagerAdapter.focusRecycler.getAdapter().notifyItemChanged((int)msg.obj);
                     break;
             }
         }
@@ -173,7 +221,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //recommend
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_recommend, pager,false);
-        adapter = new ArticleRecommendAdapter(getContext(), null);
+        adapter = new ArticleRecommendAdapter(getContext(), null,handler);
         recycler = item.findViewById(R.id.recycler_recommend);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -181,7 +229,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //article patient
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_article_patient,pager,false);
-        adapter = new ArticlePatientAdapter(getContext(), null);
+        adapter = new ArticlePatientAdapter(getContext(), null, handler);
         recycler = item.findViewById(R.id.recycler_article_patient);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -189,7 +237,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //article doctor
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_article_doctor,pager,false);
-        adapter = new ArticleDoctorAdapter(getContext(), null);
+        adapter = new ArticleDoctorAdapter(getContext(), null,handler);
         recycler = item.findViewById(R.id.recycler_article_doctor);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -197,7 +245,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //community
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_community,pager,false);
-        adapter = new CommunityAdapter(getContext(), null);
+        adapter = new CommunityAdapter(getContext(), null, handler);
         recycler = item.findViewById(R.id.recycler_community);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -556,6 +604,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
                         cursor.close();
                         renewNum++;
+                        //下载头像
+                        if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+                                ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
+                            ((BaseActivity)getContext()).downloadPicon(patient);
                     }else{
                         cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                                 , "DID=?",new String[]{""+ar.getErid()},null,null,null,null);
@@ -578,6 +630,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
                         renewNum++;
+                        //下载头像
+                        if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+                                ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
+                            ((BaseActivity)getContext()).downloadDicon(doctor);
                     }
                 }
                 //如果一条信息都未更新，不必刷新视图
@@ -613,7 +669,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         }
                         Patient patient = getPatientBaseInfo(pc.getErId());
                         if(patient == null){
-                            Log.e("getBaseInfo","patient error");
+                            Log.e("getBaseInfo","patient error:"+pc.getErId());
                             continue;
                         }
                         content.put("PID",patient.getPid());
@@ -624,6 +680,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
                         cursor.close();
                         renewNum++;
+                        //下载头像
+                        if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+                                ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
+                            ((BaseActivity)getContext()).downloadPicon(patient);
                     }else{
                         cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                                 , "DID=?",new String[]{""+pc.getErId()},null,null,null,null);
@@ -646,6 +706,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
                         renewNum++;
+                        //下载头像
+                        if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+                                ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
+                            ((BaseActivity)getContext()).downloadDicon(doctor);
                     }
 
                 }
@@ -690,6 +754,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
                     cursor.close();
                     renewNum++;
+                    //下载头像
+                    if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+                            ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
+                        ((BaseActivity)getContext()).downloadPicon(patient);
                 }
                 //如果一条信息都未更新，不必刷新视图
                 if(renewNum == 0){
@@ -736,11 +804,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             break;
                         case 3://PICON
                             String s = line.substring(line.indexOf('=')+1 );
-                            if(!s.equals("null")){
-                                patient.setPicon(null);
-                            }else
-                                //TODO:图片路径，应该保存到本地
-                                patient.setPicon( s );
+                            patient.setPicon( s );
                             break;
                         case 4://PSCORE
                             patient.setPscore( Integer.parseInt(line.substring(line.indexOf('=')+1 )) );
@@ -749,9 +813,13 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 }
             }
         }catch (IOException ioe){
-            Log.e(".BaseActivity",ioe.toString());
+            ioe.printStackTrace();
             return  null;
         }
+        //下载头像
+        if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+                ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
+            ((BaseActivity)getContext()).downloadPicon(patient);
         return patient;
     }
 
@@ -787,6 +855,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                     cursor.close();
                     renewNum++;
+                    //下载头像
+                    if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+                            ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
+                        ((BaseActivity)getContext()).downloadDicon(doctor);
                 }
                 //如果一条信息都未更新，不必刷新视图
                 if(renewNum == 0){
@@ -833,11 +905,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             break;
                         case 3://DICON
                             String s = line.substring(line.indexOf('=')+1 );
-                            if(!s.equals("null")){
-                                doctor.setDicon(null);
-                            }else
-                                //TODO:图片路径，应该保存到本地
-                                doctor.setDicon( s );
+                            doctor.setDicon( s );
                             break;
                         case 4://DILLNESS
                             doctor.setDillness( line.substring( line.indexOf('=')+1 ) );
@@ -852,9 +920,13 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 }
             }
         }catch (IOException ioe){
-            Log.e(".BaseActivity",ioe.toString());
+            ioe.printStackTrace();
             return  null;
         }
+        //下载头像
+        if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+                ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
+            ((BaseActivity)getContext()).downloadDicon(doctor);
         return doctor;
     }
 

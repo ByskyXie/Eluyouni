@@ -61,6 +61,7 @@ public class LoginActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        createFolder();
         //check login
         if(isLogin()){
             goToIndex();
@@ -264,10 +265,6 @@ public class LoginActivity extends BaseActivity{
                                 break;
                             case 4:
                                 String s = line.substring(line.indexOf('=')+1 );
-                                if(!s.equals("null")){
-                                    //TODO:图片路径，应该保存到本地
-                                    s = "http://"+IP_SERVER+":8080/eluyouni"+s;
-                                }else
                                 patient.setPicon( s );
                                 break;
                             case 5:
@@ -281,6 +278,8 @@ public class LoginActivity extends BaseActivity{
                     //保存到数据库
                     userInfo = patient;
                     userInfo.save();
+                    if(patient.getPicon()!=null && !patient.getPicon().isEmpty())
+                        downloadPicon(userInfo); //下载头像
                 }
 
             }catch (IOException ioe){

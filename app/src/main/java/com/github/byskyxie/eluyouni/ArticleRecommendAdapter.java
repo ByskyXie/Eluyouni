@@ -2,6 +2,8 @@ package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +14,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecommendAdapter.ArticleRecommendHolder> {
     private ArrayList<ArticleRecommend> list = new ArrayList<>();
     private Context context;
+    private IndexFragment.IndexHandler handler;
 
     static class ArticleRecommendHolder extends RecyclerView.ViewHolder{
         private TextView title;
@@ -32,8 +36,9 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
         }
     }
 
-    ArticleRecommendAdapter(Context context, ArrayList<ArticleRecommend> list) {
+    ArticleRecommendAdapter(Context context, ArrayList<ArticleRecommend> list, IndexFragment.IndexHandler handler) {
         this.context = context;
+        this.handler = handler;
         if(list != null)
             this.list.addAll(list);
     }
@@ -74,9 +79,16 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
                 //设置姓名
                 holder.name.setText( cursor.getString( cursor.getColumnIndex("PNAME") ) );
                 String icon = cursor.getString( cursor.getColumnIndex("PICON") );
-                if(icon == null || icon.equalsIgnoreCase("null")){
-                    //默认头像
-                    holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient));
+                //默认头像
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient));
+                if(icon != null && !icon.isEmpty() && !icon.equalsIgnoreCase("null")){
+                    //查看picon有没有下载
+                    if(new File(context.getFilesDir().getAbsolutePath()+"/icon/picon/"+icon).exists() ){
+                        holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
+                                .getFilesDir().getAbsolutePath()+"/icon/picon/"+icon) );
+                    }else{//下载并notify
+                        downloadPicon(icon,actPos);
+                    }
                 }
             }
             cursor.close();
@@ -88,18 +100,53 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
                 //设置姓名
                 holder.name.setText( cursor.getString( cursor.getColumnIndex("DNAME") ) );
                 String icon = cursor.getString( cursor.getColumnIndex("DICON") );
-                if(icon == null || icon.equalsIgnoreCase("null")){
-                    //默认头像
-                    if( cursor.getInt(cursor.getColumnIndex("DSEX"))==2 )
-                        holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_woman));
-                    else
-                        holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_man));
+                //默认头像
+                if( cursor.getInt(cursor.getColumnIndex("DSEX"))==2 )
+                    holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_woman));//女默认
+                else
+                    holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_man));   //男默认
+                if(icon != null && !icon.isEmpty() && !icon.equalsIgnoreCase("null")){
+                    //查看dicon有没有下载
+                    if(new File(context.getFilesDir().getAbsolutePath()+"/icon/dicon/"+icon).exists() ){
+                        holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
+                                .getFilesDir().getAbsolutePath()+"/icon/dicon/"+icon) );
+                    }else{//下载并notify
+                        downloadDicon(icon,actPos);
+                    }
                 }
             }
             cursor.close();
         }else{
             Log.e("ArticleRecomAdapter","Error er type!");
         }
+    }
+
+    private void downloadDicon(final String dicon, final int position){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(! ((BaseActivity)context).downloadDicon(dicon) )
+                    return; //下载失败就算了
+                Message msg = new Message();
+                msg.what = IndexPagerAdapter.RECOMMEND_ICON_ACCEPT;
+                msg.obj = position;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    private void downloadPicon(final String picon, final int position){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(! ((BaseActivity)context).downloadPicon(picon) )
+                    return; //下载失败就算了
+                Message msg = new Message();
+                msg.what = IndexPagerAdapter.RECOMMEND_ICON_ACCEPT;
+                msg.obj = position;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     @Override

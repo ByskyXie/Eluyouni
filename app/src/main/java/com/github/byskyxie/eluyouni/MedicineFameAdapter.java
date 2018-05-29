@@ -28,13 +28,15 @@ public class MedicineFameAdapter extends RecyclerView.Adapter<MedicineFameAdapte
 
     MedicineFameAdapter(Context context, ArrayList<Doctor> docList) {
         this.context = context;
-        if(docList != null)
-            this.docList.addAll(docList);
+        if(docList == null)
+            return;
+        this.docList.addAll(docList);
     }
 
     protected void addData(ArrayList<Doctor> list){
-        if(list != null)
-            this.docList.addAll(list);
+        if(list == null)
+            return;
+        this.docList.addAll(list);
     }
 
     protected ArrayList<Doctor> getData(){

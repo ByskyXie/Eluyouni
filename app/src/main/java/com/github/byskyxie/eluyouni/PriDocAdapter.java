@@ -42,6 +42,7 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
         private TextView name;
         private TextView grade;
         private TextView talk;
+        private TextView time;
         PriDocHolder(View itemView) {
             super(itemView);
             view = itemView;
@@ -49,6 +50,7 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
             name = itemView.findViewById(R.id.text_view_pri_name);
             grade = itemView.findViewById(R.id.text_view_pri_grade);
             talk = itemView.findViewById(R.id.text_view_talk);
+            time = itemView.findViewById(R.id.text_view_pri_time);
         }
     }
 
@@ -105,62 +107,32 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
             }else{
                 downloadDicon(list.get(actPos), actPos);
             }
-
         }
         //更新聊天记录
+        holder.talk.setText("暂无聊天记录");
+        holder.time.setText(null);
         if(BaseActivity.mapEridToPosition.containsKey(list.get(actPos).getDid()) ){
             ArrayList<ChatItem> cis = BaseActivity.chatRecordList.get(BaseActivity.mapEridToPosition.get(list.get(actPos).getDid())).getList();
             if(cis.size() > 0){
                 holder.talk.setText( cis.get( cis.size()-1 ).getContent() );
-            }else
-                holder.talk.setText("暂无聊天记录");
-        }else
-            holder.talk.setText("暂无聊天记录");
+                holder.time.setText( cis.get( cis.size()-1 ).getDayTime() );
+            }
+        }
+
     }
 
     private void downloadDicon(final Doctor doctor, final int position){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+doctor.getDicon()
-                        +"&pictype=dicon";
-                File file = new File( context.getFilesDir()+"/icon/dicon/"+doctor.getDicon() );
-                try{
-                    createFolder();
-                    file.createNewFile();
-                    URL url = new URL(request);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    FileOutputStream fos = new FileOutputStream(file);
-                    BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-                    do{
-                        byte[] bytes = new byte[2000];
-                        int i = bis.read(bytes);
-                        if(i == -1){
-                            bis.close();
-                            fos.close();
-                            break;
-                        }
-                        fos.write(bytes, 0, i);
-                    }while(true);
-                    if(file.length()==0) {    //图片接收失败
-                        file.delete();
-                        return;
-                    }
-                }catch (IOException ioe){
-                    ioe.printStackTrace();
-                }
+                if(! ((BaseActivity)context).downloadDicon(doctor) )
+                    return; //下载失败就算了
                 Message msg = new Message();
                 msg.what = PriDocFragment.DOCTOR_ICON_ACCEPT;
                 msg.obj = position;
                 handler.sendMessage(msg);
             }
         }).start();
-    }
-
-    private void createFolder(){
-        File file = new File( context.getFilesDir()+"/icon/dicon/");
-        if(!file.exists())
-            file.mkdirs();
     }
 
     @Override

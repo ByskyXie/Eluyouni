@@ -12,6 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,11 +48,167 @@ public class BaseActivity extends AppCompatActivity {
             userDatabaseRead = eluDatabaseOpenHelper.getReadableDatabase();
             userDatabasewrit = eluDatabaseOpenHelper.getWritableDatabase();
         }
-        if(isLogin())
-            readUserInfo();
-        if(chatRecordList == null){
-            getChatRecord();
+    }
+
+    protected void createFolder(){
+        File file = new File( getFilesDir()+"/icon/dicon/");
+        if(!file.exists())
+            file.mkdirs();
+        file = new File(getFilesDir()+"/icon/picon/");
+        if(!file.exists())
+            file.mkdirs();
+    }
+
+    protected boolean isPiconExists(String name){
+        return new File(getFilesDir()+"/icon/picon/"+name).exists();
+    }
+
+    protected boolean isDiconExists(String name){
+        return new File(getFilesDir()+"/icon/dicon/"+name).exists();
+    }
+
+    protected boolean downloadDicon(Doctor doctor){
+        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+doctor.getDicon()
+                +"&pictype=dicon";
+        File file = new File( getFilesDir()+"/icon/dicon/"+doctor.getDicon() );
+        try{
+            if(file.exists() && file.length()!=0){
+                Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
+                return false;
+            }
+            file.createNewFile();
+            URL url = new URL(request);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+            do{
+                byte[] bytes = new byte[2000];
+                int i = bis.read(bytes);
+                if(i == -1){
+                    bis.close();
+                    fos.close();
+                    break;
+                }
+                fos.write(bytes, 0, i);
+            }while(true);
+            if(file.length()==0) {    //图片接收失败
+                file.delete();
+                Log.e("BaseActivity","download dicon failed "+doctor.getDicon());
+                return false;
+            }
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            return false;
         }
+        return true;
+    }
+
+    protected boolean downloadDicon(String dicon){
+        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+dicon
+                +"&pictype=dicon";
+        File file = new File( getFilesDir()+"/icon/dicon/"+dicon );
+        try{
+            if(file.exists() && file.length()!=0){
+                Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
+                return false;
+            }
+            file.createNewFile();
+            URL url = new URL(request);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+            do{
+                byte[] bytes = new byte[2000];
+                int i = bis.read(bytes);
+                if(i == -1){
+                    bis.close();
+                    fos.close();
+                    break;
+                }
+                fos.write(bytes, 0, i);
+            }while(true);
+            if(file.length()==0) {    //图片接收失败
+                file.delete();
+                Log.e("BaseActivity","download dicon failed "+dicon);
+                return false;
+            }
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean downloadPicon(Patient patient){
+        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+patient.getPicon()
+                +"&pictype=picon";
+        File file = new File( getFilesDir()+"/icon/picon/"+patient.getPicon() );
+        try{
+            if(file.exists() && file.length()!=0){
+                Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
+                return false;
+            }
+            file.createNewFile();
+            URL url = new URL(request);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+            do{
+                byte[] bytes = new byte[2000];
+                int i = bis.read(bytes);
+                if(i == -1){
+                    bis.close();
+                    fos.close();
+                    break;
+                }
+                fos.write(bytes, 0, i);
+            }while(true);
+            if(file.length()==0) {    //图片接收失败
+                file.delete();
+                Log.e("BaseActivity","download picon failed "+patient.getPicon());
+                return false;
+            }
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean downloadPicon(String picon){
+        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+picon
+                +"&pictype=picon";
+        File file = new File( getFilesDir()+"/icon/picon/"+picon );
+        try{
+            if(file.exists() && file.length()!=0){
+                Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
+                return false;
+            }
+            file.createNewFile();
+            URL url = new URL(request);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
+            do{
+                byte[] bytes = new byte[2000];
+                int i = bis.read(bytes);
+                if(i == -1){
+                    bis.close();
+                    fos.close();
+                    break;
+                }
+                fos.write(bytes, 0, i);
+            }while(true);
+            if(file.length()==0) {    //图片接收失败
+                file.delete();
+                Log.e("BaseActivity","download picon failed "+picon);
+                return false;
+            }
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     protected boolean isLogin(){
@@ -61,7 +223,7 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
-    private void readUserInfo(){
+    protected void readUserInfo(){
         if(userInfo!=null)
             return;
         userInfo = new Patient();
@@ -120,7 +282,7 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void getChatRecord(){
+    protected void getChatRecord(){
         chatRecordList = new ArrayList<>();
         Cursor cursor = userDatabaseRead.query("CHAT_RECORD",new String[]{"*"}, null,
                 null, null,null,"ID ASC,ERID ASC, TIME ASC");
@@ -137,7 +299,7 @@ public class BaseActivity extends AppCompatActivity {
         do{
             // id erid ertype time chattype content
             id = cursor.getLong(cursor.getColumnIndex("ID"));
-            if(id != userInfo.getPid())
+            if(userInfo == null || id != userInfo.getPid())
                 continue;   //非当前用户的记录不读取
             erid = cursor.getLong(cursor.getColumnIndex("ERID"));
             ertype = cursor.getInt(cursor.getColumnIndex("ERTYPE"));

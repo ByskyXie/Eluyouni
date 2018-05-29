@@ -4,9 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 
 /**
@@ -18,6 +22,14 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class MedicineFragment extends Fragment {
+    private static final int FAME_COLUMN_NUM = 4;
+    private static final int SECTION_COLUMN_NUM = 4;
+
+    private RecyclerView recyclerFame;
+    private RecyclerView recyclerSection;
+    private MedicineFameAdapter fameAdapter;
+    private MedicineIllnessAdapter sectionAdapter;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,7 +76,17 @@ public class MedicineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_medicine, container, false);
+        View view = inflater.inflate(R.layout.fragment_medicine, container, false);
+        recyclerFame = view.findViewById(R.id.recycler_medicine_famous);
+        fameAdapter = new MedicineFameAdapter(getContext(), null);
+        recyclerFame.setLayoutManager( new GridLayoutManager(getContext(), FAME_COLUMN_NUM) );
+        recyclerFame.setAdapter(fameAdapter);
+
+        recyclerSection = view.findViewById(R.id.recycler_medicine_illness);
+        sectionAdapter = new MedicineIllnessAdapter(getContext(), null);
+        recyclerSection.setLayoutManager( new GridLayoutManager(getContext(), SECTION_COLUMN_NUM) );
+        recyclerSection.setAdapter(sectionAdapter);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

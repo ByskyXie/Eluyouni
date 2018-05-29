@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -92,6 +93,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
             holder.time.setVisibility(View.VISIBLE);
             holder.time.setText(list.get(actPos).getDayTime());
         }
+        if(list.get(actPos).getChatType() == ChatItem.CHAT_TYPE_SELF || list.get(actPos).getErtype()==1 )
+            holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
+                .getFilesDir().getAbsolutePath()+"/icon/picon/"+BaseActivity.userInfo.getPicon()));
     }
 
     @Override

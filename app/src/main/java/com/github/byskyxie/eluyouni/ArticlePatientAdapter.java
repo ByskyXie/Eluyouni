@@ -4,21 +4,25 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAdapter.ArticlePatientHolder> {
 
     private ArrayList<ArticlePatient> list = new ArrayList<>();
     private Context context;
+    private IndexFragment.IndexHandler handler;
 
     static class ArticlePatientHolder extends RecyclerView.ViewHolder{
         private TextView title;
@@ -34,8 +38,9 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
         }
     }
 
-    ArticlePatientAdapter(Context context, ArrayList<ArticlePatient> list) {
+    ArticlePatientAdapter(Context context, ArrayList<ArticlePatient> list, IndexFragment.IndexHandler handler) {
         this.context = context;
+        this.handler = handler;
         if(list != null)
             this.list.addAll(list);
     }
@@ -75,12 +80,34 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
             //设置姓名
             holder.name.setText( cursor.getString( cursor.getColumnIndex("PNAME") ) );
             String icon = cursor.getString( cursor.getColumnIndex("PICON") );
-            if(icon == null || icon.equalsIgnoreCase("null")){
-                //默认头像
-                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient));
+            //默认头像
+            holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient));
+            if(icon != null && !icon.isEmpty() && !icon.equalsIgnoreCase("null")){
+                //查看picon有没有下载
+                if( new File(context.getFilesDir().getAbsolutePath()+"/icon/picon/"+icon).exists() ){
+                    holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
+                            .getFilesDir().getAbsolutePath()+"/icon/picon/"+icon) );
+                }else{//下载并notify
+                    downloadPicon(icon,actPos);
+                }
             }
         }
         cursor.close();
+    }
+
+    private void downloadPicon(final String picon, final int position){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(! ((BaseActivity)context).downloadPicon(picon) ) {
+                    return; //下载失败就算了
+                }
+                Message msg = new Message();
+                msg.what = IndexPagerAdapter.PATIENT_ICON_ACCEPT;
+                msg.obj = position;
+                handler.sendMessage(msg);
+            }
+        }).start();
     }
 
     @Override

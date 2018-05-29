@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllnessAdapter.MedicineSectionHolder> {
 
     private Context context;
-    private ArrayList<Illness> illList;
+    private ArrayList<Illness> illList = new ArrayList<>();
 
     static class MedicineSectionHolder extends RecyclerView.ViewHolder{
         private ImageView imageSection;
@@ -28,12 +28,15 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
 
     MedicineIllnessAdapter(Context context, ArrayList<Illness> secList) {
         this.context = context;
-        this.illList = secList;
+        if(secList == null || secList.isEmpty())
+            return;
+        this.illList.addAll( secList );
     }
 
     protected void addData(ArrayList<Illness> list){
-        if(list != null)
-            this.illList.addAll(list);
+        if(list == null)
+            return;
+        this.illList.addAll(list);
     }
 
     protected ArrayList<Illness> getData(){

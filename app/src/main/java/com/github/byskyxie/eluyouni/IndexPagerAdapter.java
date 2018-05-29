@@ -19,6 +19,12 @@ public class IndexPagerAdapter extends PagerAdapter{
     static final int ARTICLE_DOCTOR_ACCEPT = 0x1000;
     static final int ARTICLE_PATIENT_ACCEPT = 0x1001;
     static final int ARTICLE_RECOMMEND_ACCEPT = 0x1010;
+    static final int FOCUS_ICON_ACCEPT  = 0x2010;
+    static final int RECOMMEND_ICON_ACCEPT  = 0x2011;
+    static final int PATIENT_ICON_ACCEPT  = 0x2012;
+    static final int DOCTOR_ICON_ACCEPT  = 0x2013;
+    static final int COMMUNITY_ICON_ACCEPT  = 0x2014;
+
 
     private Context context;
     private ArrayList<View> list;   //五个pager的示例

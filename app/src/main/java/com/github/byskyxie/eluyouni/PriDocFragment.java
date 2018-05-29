@@ -81,7 +81,7 @@ public class PriDocFragment extends Fragment {
                         while(fragment.get().recyclerPri.isComputingLayout())
                             Thread.sleep(200);
                     }catch (InterruptedException ie){
-                        Log.e("priDoc",ie.getStackTrace().toString());
+                        ie.printStackTrace();
                     }
                     fragment.get().adapter.notifyItemChanged((int)msg.obj);
                     break;

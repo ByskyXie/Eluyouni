@@ -3,6 +3,7 @@ package com.github.byskyxie.eluyouni;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,6 +60,11 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(isLogin())
+            readUserInfo();
+        if(chatRecordList == null){
+            getChatRecord();
+        }
         //进入主页
 
         setContentView(R.layout.activity_main);
@@ -98,6 +104,9 @@ public class MainActivity extends BaseActivity
         //用户头像
         if(userInfo.getPicon()==null || userInfo.getPicon().equalsIgnoreCase("null"))
             ((ImageView)header.findViewById(R.id.image_view_icon)).setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.patient)  );
+        else
+            ((ImageView)header.findViewById(R.id.image_view_icon)).setImageBitmap( BitmapFactory.decodeFile(
+                    getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
         //e币
         ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(userInfo.getEcoin()+" e币");
         //等级
