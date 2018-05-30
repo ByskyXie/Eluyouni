@@ -30,8 +30,14 @@ public class EluDatabaseOpenHelper extends SQLiteOpenHelper {
             "DNAME VARCHAR(8) NOT NULL," +
             "DICON TEXT," +
             "DILLNESS TEXT," +
+            "DGRADE INT," +
+            "DPROFESS TEXT," +
+            "DCAREER TEXT," +
             "DHOSPITAL TINYTEXT," +
-            "DGRADE INT" +
+            "DMARKING REAL," +
+            "D24HREPLY REAL," +
+            "DPATIENT_NUM REAL," +
+            "DHOT_LEVEL REAL" +
             ");";
     private static final String SQL_CHAT_RECORD = "" +
             "CREATE TABLE CHAT_RECORD(" +

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/shape_for_layout_background"
+    android:background="@drawable/shape_for_medicine_recycler_item"
     android:layout_width="match_parent"
     android:layout_height="128dp">
     <!-- 展示具体疾病的item -->

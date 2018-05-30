@@ -17,12 +17,12 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
     private ArrayList<Illness> illList = new ArrayList<>();
 
     static class MedicineIllnessHolder extends RecyclerView.ViewHolder{
-        private ImageView imageIllness;
-        private TextView nameIllness;
+        private ImageView image;
+        private TextView name;
         MedicineIllnessHolder(View itemView) {
             super(itemView);
-            imageIllness = itemView.findViewById(R.id.image_view_medicine_illness_pic);
-            nameIllness = itemView.findViewById(R.id.text_view_medicine_illness_text);
+            image = itemView.findViewById(R.id.image_view_medicine_illness_pic);
+            name = itemView.findViewById(R.id.text_view_medicine_illness_text);
         }
     }
 
@@ -48,8 +48,7 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
             return true;
         if(this.illList.isEmpty())
             return false;
-        //TODO:return illness CMP
-        return true;
+        return illList.get(0).getName().equals( list.get(0).getName() );
     }
 
     @NonNull
@@ -62,7 +61,8 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
     @Override
     public void onBindViewHolder(@NonNull MedicineIllnessHolder holder, int position) {
         int actPos = holder.getAdapterPosition();
-        holder.nameIllness.setText(illList.get(actPos).getName());
+        holder.name.setText(illList.get(actPos).getName());
+
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.github.byskyxie.eluyouni;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,12 +33,16 @@ import java.util.ArrayList;
 public class MedicineFragment extends Fragment {
     private static final int FAME_COLUMN_NUM = 4;
     private static final int SECTION_COLUMN_NUM = 4;
+    private static final int ACCEPT_ILLNESS_LIST = 0x0010;
+    private static final int ACCEPT_FAME_LIST = 0x0020;
 
     private RecyclerView recyclerFame;
-    private RecyclerView recyclerSection;
+    private RecyclerView recyclerIllness;
     private MedicineFameAdapter fameAdapter;
-    private MedicineIllnessAdapter sectionAdapter;
+    private MedicineIllnessAdapter illnessAdapter;
     private ArrayList<Illness> illnessList;
+    private ArrayList<Doctor> fameList;
+    private MedicineHandler handler = new MedicineHandler(new WeakReference<MedicineFragment>(this));
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,6 +57,44 @@ public class MedicineFragment extends Fragment {
 
     public MedicineFragment() {
         // Required empty public constructor
+    }
+
+    class MedicineHandler extends Handler {
+        private WeakReference<MedicineFragment> fragment;
+
+        MedicineHandler(WeakReference<MedicineFragment> fragment) {
+            this.fragment = fragment;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case ACCEPT_ILLNESS_LIST:
+                    if(fragment.get() == null || fragment.get().illnessAdapter.getItemCount()!=0)
+                        return; //只接受一次，为0时
+                    fragment.get().illnessAdapter.addData(illnessList);
+                    try{
+                    while(recyclerIllness.isComputingLayout())
+                        Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().illnessAdapter.notifyDataSetChanged();
+                    break;
+                case ACCEPT_FAME_LIST:
+                    if(fragment.get() == null || fragment.get().fameAdapter.getItemCount()!=0)
+                        return;//只接受一次，为0时
+                    fragment.get().fameAdapter.addData(fameList);
+                    try{
+                        while(recyclerFame.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().fameAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
     }
 
     /**
@@ -75,6 +119,7 @@ public class MedicineFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getIllnessList();
+        getFameList();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -91,10 +136,10 @@ public class MedicineFragment extends Fragment {
         recyclerFame.setLayoutManager( new GridLayoutManager(getContext(), FAME_COLUMN_NUM) );
         recyclerFame.setAdapter(fameAdapter);
 
-        recyclerSection = view.findViewById(R.id.recycler_medicine_illness);
-        sectionAdapter = new MedicineIllnessAdapter(getContext(), illnessList);
-        recyclerSection.setLayoutManager( new GridLayoutManager(getContext(), SECTION_COLUMN_NUM) );
-        recyclerSection.setAdapter(sectionAdapter);
+        recyclerIllness = view.findViewById(R.id.recycler_medicine_illness);
+        illnessAdapter = new MedicineIllnessAdapter(getContext(), illnessList);
+        recyclerIllness.setLayoutManager( new GridLayoutManager(getContext(), SECTION_COLUMN_NUM) );
+        recyclerIllness.setAdapter(illnessAdapter);
         return view;
     }
 
@@ -162,10 +207,53 @@ public class MedicineFragment extends Fragment {
                         illnessList.add( new Illness( line.substring(line.indexOf('=')+1) ) );
                     }
                     br.close();
+                    Message msg = new Message();
+                    msg.what = ACCEPT_ILLNESS_LIST;
+                    handler.sendMessage(msg);
                 }catch (IOException e){
                     e.printStackTrace();
                 }
             }
         }).start();
     }
+
+    private void getFameList(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(fameList == null)
+                    fameList = new ArrayList<>();
+                else
+                    fameList.clear();
+                //下载
+                String req = "http://"+ BaseActivity.IP_SERVER+":8080/"+"eluyouni/medicine?pid="+BaseActivity.userInfo.getPid()+"&req=fame";
+                try{
+                    URL url = new URL(req);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    BufferedReader br = new BufferedReader( new InputStreamReader( conn.getInputStream() ) );
+                    String line = br.readLine();
+                    if(line==null){
+                        Log.e("MedicinFragment","connect medicine failed");
+                        return;
+                    }
+                    int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
+                    for(int i=0;i<num;i++){
+                        Doctor doctor = ((BaseActivity)getContext()).downloadOneDoctorBaseInfo(br);
+                        if(doctor != null)
+                            fameList.add( doctor );
+                    }
+                    //插入数据库
+                    ((BaseActivity)getContext()).writeDoctorBaseInfo(fameList);
+                    br.close();
+                    Message msg = new Message();
+                    msg.what = ACCEPT_FAME_LIST;
+                    handler.sendMessage(msg);
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+
 }

@@ -4,6 +4,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/mini_border"
+    android:clickable="true"
+    android:focusable="true"
     android:padding="@dimen/nano_border"
     android:background="@drawable/shape_for_consult_doc_item"
     android:gravity="center"

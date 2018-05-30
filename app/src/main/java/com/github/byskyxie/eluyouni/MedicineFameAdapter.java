@@ -11,16 +11,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MedicineFameAdapter extends RecyclerView.Adapter<MedicineFameAdapter.MedicineFameHolder> {
+public class MedicineFameAdapter extends RecyclerView.Adapter<MedicineFameAdapter.MedicineFameHolder>
+            implements View.OnClickListener{
 
     private Context context;
     private ArrayList<Doctor> docList = new ArrayList<>();
 
     static class MedicineFameHolder extends RecyclerView.ViewHolder{
+        private View view;
         private ImageView icon;
         private TextView name;
         MedicineFameHolder(View itemView) {
             super(itemView);
+            view = itemView;
             icon = itemView.findViewById(R.id.image_view_medicine_famous_icon);
             name = itemView.findViewById(R.id.text_view_medicine_famous_name);
         }
@@ -28,7 +31,7 @@ public class MedicineFameAdapter extends RecyclerView.Adapter<MedicineFameAdapte
 
     MedicineFameAdapter(Context context, ArrayList<Doctor> docList) {
         this.context = context;
-        if(docList == null)
+        if(docList == null || docList.isEmpty())
             return;
         this.docList.addAll(docList);
     }
@@ -48,23 +51,32 @@ public class MedicineFameAdapter extends RecyclerView.Adapter<MedicineFameAdapte
             return true;
         if(this.docList.isEmpty())
             return false;
-        return this.docList.get(0).getDid() == list.get(0).getDid();
+        return docList.get(0).getDid() == list.get(0).getDid();
     }
 
     @NonNull
     @Override
     public MedicineFameHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_medicine_illness_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_medicine_famous_item, parent, false);
         return new MedicineFameHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MedicineFameHolder holder, int position) {
-        //TODO:add actual doc info and OnClick
+        int actPos = holder.getAdapterPosition();
+        holder.name.setText( docList.get(actPos).getDname() );
+        holder.view.setOnClickListener(this);
+        //设置头像
+
     }
 
     @Override
     public int getItemCount() {
         return docList.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        //TODO:跳转医生详情页
     }
 }

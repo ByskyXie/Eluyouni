@@ -595,19 +595,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             cursor.close();
                             continue;
                         }
-                        Patient patient = getPatientBaseInfo(ar.getErid());
-                        if(patient == null){
-                            Log.e("getBaseInfo","patient error");
-                            continue;
-                        }
-                        content.put("PID",patient.getPid());
-                        content.put("PSEX",patient.getPsex());
-                        content.put("PNAME",patient.getPname());
-                        content.put("PICON",patient.getPicon());
-                        content.put("PSCORE",patient.getPscore());
-                        BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
                         cursor.close();
-                        renewNum++;
+                        Patient patient = getPatientBaseInfo(ar.getErid());
+                        if(((BaseActivity)getContext()).writePatientBaseInfo(patient))
+                            renewNum++;
                         //下载头像
                         if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
                                 ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
@@ -619,21 +610,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             cursor.close();
                             continue;
                         }
-                        Doctor doctor = getDoctorBaseInfo(ar.getErid());
-                        if(doctor== null){
-                            Log.e("getBaseInfo","doctor error");
-                            continue;
-                        }
-                        content.put("DID",doctor.getDid());
-                        content.put("DSEX",doctor.getDsex());
-                        content.put("DNAME",doctor.getDname());
-                        content.put("DICON",doctor.getDicon());
-                        content.put("DILLNESS",doctor.getDillness());
-                        content.put("DHOSPITAL",doctor.getDhospital());
-                        content.put("DGRADE",doctor.getDgrade());
-                        BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
                         cursor.close();
-                        renewNum++;
+                        Doctor doctor = getDoctorBaseInfo(ar.getErid());
+                        if(((BaseActivity)getContext()).writeDoctorBaseInfo(doctor))
+                            renewNum++;
                         //下载头像
                         if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
                                 ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
@@ -745,19 +725,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         cursor.close();
                         continue;
                     }
-                    Patient patient = getPatientBaseInfo(ap.getPid());
-                    if(patient == null){
-                        Log.e("getPatientBaseInfo","error");
-                        continue;
-                    }
-                    content.put("PID",patient.getPid());
-                    content.put("PSEX",patient.getPsex());
-                    content.put("PNAME",patient.getPname());
-                    content.put("PICON",patient.getPicon());
-                    content.put("PSCORE",patient.getPscore());
-                    BaseActivity.userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
                     cursor.close();
-                    renewNum++;
+                    Patient patient = getPatientBaseInfo(ap.getPid());
+                    if(((BaseActivity)getContext()).writePatientBaseInfo(patient))
+                        renewNum++;
                     //下载头像
                     if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
                             ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
@@ -776,7 +747,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     }
 
     protected Patient getPatientBaseInfo(long pid) {
-        Patient patient = new Patient();
+        Patient patient = null;
         String request = "http://"+IP_SERVER+":8080/"+"eluyouni/baseinfo?"+"reqid="+BaseActivity.userInfo.getPid()+"&erid="+pid+"&ertype="+1;
         URL url;
         try {
@@ -792,29 +763,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 return null;
             }else if(line.matches("accepted.*")){
                 //成功
-                for(int i=0; ;i++){
-                    line = br.readLine();
-                    if(line == null)
-                        break;
-                    switch (i){
-                        case 0://PID
-                            patient.setPid(Long.parseLong( line.substring(line.indexOf('=')+1) ));
-                            break;
-                        case 1://PSEX
-                            patient.setPsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ));
-                            break;
-                        case 2://PNAME
-                            patient.setPname( line.substring(line.indexOf('=')+1 ));
-                            break;
-                        case 3://PICON
-                            String s = line.substring(line.indexOf('=')+1 );
-                            patient.setPicon( s );
-                            break;
-                        case 4://PSCORE
-                            patient.setPscore( Integer.parseInt(line.substring(line.indexOf('=')+1 )) );
-                            break;
-                    }
-                }
+                patient = ((BaseActivity)getContext()).downloadOnePatientBaseInfo(br);
             }
             br.close();
         }catch (IOException ioe){
@@ -822,7 +771,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
             return  null;
         }
         //下载头像
-        if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+        if( patient!=null && patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
                 ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
             ((BaseActivity)getContext()).downloadPicon(patient);
         return patient;
@@ -834,32 +783,23 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
             @Override
             public void run() {
                 int renewNum = 0;   //更新信息数
-                ContentValues content = new ContentValues();
                 if(list == null)
                     return;
                 for(ArticleDoctor ad: list){
-                    content.clear();
                     Cursor cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                             , "DID=?",new String[]{""+ad.getDid()},null,null,null,null);
                     if(cursor.moveToFirst()){
                         cursor.close();
                         continue;
                     }
+                    cursor.close();
                     Doctor doctor = getDoctorBaseInfo(ad.getDid());
                     if(doctor == null){
                         Log.e("getDoctorBaseInfo","error");
                         continue;
                     }
-                    content.put("DID",doctor.getDid());
-                    content.put("DSEX",doctor.getDsex());
-                    content.put("DNAME",doctor.getDname());
-                    content.put("DICON",doctor.getDicon());
-                    content.put("DILLNESS",doctor.getDillness());
-                    content.put("DHOSPITAL",doctor.getDhospital());
-                    content.put("DGRADE",doctor.getDgrade());
-                    BaseActivity.userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
-                    cursor.close();
-                    renewNum++;
+                    if(((BaseActivity)getContext()).writeDoctorBaseInfo(doctor))
+                        renewNum++;
                     //下载头像
                     if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
                             ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
@@ -878,7 +818,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     }
 
     protected Doctor getDoctorBaseInfo(long did) {
-        Doctor doctor = new Doctor();
+        Doctor doctor = null;
         String request = "http://"+IP_SERVER+":8080/"+"eluyouni/baseinfo?"+"reqid="+BaseActivity.userInfo.getPid()+"&erid="+did+"&ertype="+2;
         URL url;
         try {
@@ -894,35 +834,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 return null;
             }else if(line.matches("accepted.*")){
                 //成功
-                for(int i=0;;i++){
-                    line = br.readLine();
-                    if(line == null)
-                        break;
-                    switch (i){
-                        case 0://DID
-                            doctor.setDid(Long.parseLong( line.substring(line.indexOf('=')+1)) );
-                            break;
-                        case 1://DSEX
-                            doctor.setDsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );
-                            break;
-                        case 2://DNAME
-                            doctor.setDname( line.substring(line.indexOf('=')+1 ) );
-                            break;
-                        case 3://DICON
-                            String s = line.substring(line.indexOf('=')+1 );
-                            doctor.setDicon( s );
-                            break;
-                        case 4://DILLNESS
-                            doctor.setDillness( line.substring( line.indexOf('=')+1 ) );
-                            break;
-                        case 5://DHOSPITAL
-                            doctor.setDhospital( line.substring( line.indexOf('=')+1 ) );
-                            break;
-                        case 6://DGRADE
-                            doctor.setDgrade( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ) );
-                            break;
-                    }
-                }
+                doctor = ((BaseActivity)getContext()).downloadOneDoctorBaseInfo(br);
             }
             br.close();
         }catch (IOException ioe){
@@ -930,7 +842,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
             return  null;
         }
         //下载头像
-        if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+        if(doctor != null && doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
                 ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
             ((BaseActivity)getContext()).downloadDicon(doctor);
         return doctor;

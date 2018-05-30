@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -218,7 +220,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean isLogin(){
-        Cursor cursor = userDatabaseRead.query("PATIENT",new String[]{"*"}, null, null,null,null,null);
+        Cursor cursor = userDatabaseRead.query("PATIENT",new String[]{"*"}
+            , null, null,null,null,null);
         if(cursor == null )
             return false;
         else if(cursor.getCount() == 0){
@@ -233,7 +236,8 @@ public class BaseActivity extends AppCompatActivity {
         if(userInfo!=null)
             return;
         userInfo = new Patient();
-        Cursor cursor = userDatabaseRead.query("PATIENT", new String[]{"*"}, null, null, null, null, null);
+        Cursor cursor = userDatabaseRead.query("PATIENT", new String[]{"*"}
+            , null, null, null, null, null);
         cursor.moveToFirst();
         userInfo.setPid(cursor.getLong(cursor.getColumnIndex("PID")));
         userInfo.setPsex(cursor.getInt(cursor.getColumnIndex("PSEX")));
@@ -330,5 +334,148 @@ public class BaseActivity extends AppCompatActivity {
         cursor.close();
     }
 
+    protected Patient downloadOnePatientBaseInfo(BufferedReader br) throws IOException{
+        Patient patient = new Patient();
+        String line;
+        line = br.readLine();//PID
+        patient.setPid(Long.parseLong( line.substring(line.indexOf('=')+1) ));
+        line = br.readLine();//PSEX
+        patient.setPsex( Integer.parseInt( line.substring(line.indexOf('=')+1 ) ));
+        line = br.readLine();//PNAME
+        patient.setPname( line.substring(line.indexOf('=')+1 ));
+        line = br.readLine();//PICON
+        patient.setPicon( line.substring(line.indexOf('=')+1 ) );
+        line = br.readLine();//PSCORE
+        patient.setPscore( Integer.parseInt(line.substring(line.indexOf('=')+1 )) );
+        return patient;
+    }
+
+    protected int writePatientBaseInfo(ArrayList<Patient> list){
+        int num = 0;
+        if(list == null)
+            return num;
+        for(Patient p: list){
+            if(writePatientBaseInfo(p))
+                num++;
+        }
+        return num;
+    }
+
+    protected boolean writePatientBaseInfo(Patient patient){
+        if(patient == null)
+            return false;
+        ContentValues content = new ContentValues();
+        Cursor cursor = userDatabaseRead.query("PATIENT_BASE_INFO", new String[]{"*"}
+                , "PID=? ", new String[]{""+patient.getPid()}, null, null, null);
+        if(cursor.getCount()!=0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        //写入
+        content.clear();
+        content.put("PID",patient.getPid());
+        content.put("PSEX",patient.getPsex());
+        content.put("PNAME",patient.getPname());
+        content.put("PICON",patient.getPicon());
+        content.put("PSCORE",patient.getPscore());
+        userDatabasewrit.insert("PATIENT_BASE_INFO", null, content);
+        return true;
+    }
+
+    protected Doctor downloadOneDoctorBaseInfo(BufferedReader br) throws IOException{
+        Doctor doctor = new Doctor();
+        String line;
+        StringBuilder temp = new StringBuilder();
+        line = br.readLine();//did
+        doctor.setDid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        line = br.readLine();//dsex
+        doctor.setDsex( Integer.parseInt( line.substring(line.indexOf('=')+1)) );
+        line = br.readLine();//dname
+        doctor.setDname( line.substring(line.indexOf('=')+1) );
+        line = br.readLine();//dicon
+        doctor.setDicon( line.substring(line.indexOf('=')+1) );
+        line = br.readLine();//dillness
+        doctor.setDillness( line.substring(line.indexOf('=')+1) );
+        line = br.readLine();//dgrade
+        doctor.setDgrade( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
+        line = br.readLine();//dprofess
+        temp.append( line.substring( line.indexOf('=')+1 ) );
+        do{
+            line = br.readLine();
+            if(line == null)
+                return null;
+            if(line.matches("dcareer=.*")){
+                doctor.setDprofess(temp.toString());
+                break;
+            }
+            temp.append(line);
+        }while(true);
+
+        //dcareer
+        temp.delete(0, temp.length());
+        temp.append( line.substring( line.indexOf('=')+1 ) );
+        do{
+            line = br.readLine();
+            if(line == null)
+                return null;
+            if(line.matches("dhospital=.*")){
+                doctor.setDcareer(temp.toString());
+                break;
+            }
+            temp.append(line);
+        }while(true);
+        doctor.setDhospital( line.substring(line.indexOf('=')+1) );//dhospital
+        line = br.readLine();//dmarking
+        doctor.setDmarking( Float.parseFloat( line.substring(line.indexOf('=')+1) ) );
+        line = br.readLine();//d24hreply
+        doctor.setD24hreply( Float.parseFloat( line.substring(line.indexOf('=')+1) ) );
+        line = br.readLine();//dpatient_num
+        doctor.setDpatient_num( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
+        line = br.readLine();//dhot_level
+        doctor.setDhot_level( Float.parseFloat( line.substring(line.indexOf('=')+1) ) );
+        return doctor;
+    }
+
+    protected int writeDoctorBaseInfo(ArrayList<Doctor> list){
+        int num = 0;
+        if(list == null)
+            return num;
+        for(Doctor d: list){
+            if(writeDoctorBaseInfo(d))
+                num++;
+        }
+        return num;
+    }
+
+    protected boolean writeDoctorBaseInfo(Doctor doctor){
+        if(doctor == null)
+            return false;
+        ContentValues content = new ContentValues();
+        Cursor cursor = userDatabaseRead.query("DOCTOR_BASE_INFO", new String[]{"*"}
+                , "DID=? ", new String[]{""+doctor.getDid()}, null, null, null);
+        if(cursor.getCount()!=0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        //写入
+        content.clear();
+        content.put("DID",doctor.getDid());
+        content.put("DSEX",doctor.getDsex());
+        content.put("DNAME",doctor.getDname());
+        content.put("DICON",doctor.getDicon());
+        content.put("DILLNESS",doctor.getDillness());
+        content.put("DGRADE",doctor.getDgrade());
+        content.put("DPROFESS",doctor.getDprofess());
+        content.put("DCAREER",doctor.getDcareer());
+        content.put("DHOSPITAL",doctor.getDhospital());
+        content.put("DMARKING",doctor.getDmarking());
+        content.put("D24HREPLY",doctor.getD24hreply());
+        content.put("DPATIENT_NUM",doctor.getDpatient_num());
+        content.put("DHOT_LEVEL",doctor.getDhot_level());
+        userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
+        return true;
+    }
 
 }
