@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +93,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
             holder.time.setVisibility(View.VISIBLE);
             holder.time.setText(list.get(actPos).getDayTime());
         }
+        holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_patient_male));
         if(list.get(actPos).getChatType() == ChatItem.CHAT_TYPE_SELF || list.get(actPos).getErtype()==1 )
             holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
                 .getFilesDir().getAbsolutePath()+"/icon/picon/"+BaseActivity.userInfo.getPicon()));

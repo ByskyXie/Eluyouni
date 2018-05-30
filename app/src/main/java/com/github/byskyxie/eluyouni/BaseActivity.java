@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -26,6 +27,11 @@ import java.util.HashMap;
 import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity {
+
+    static{
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
+
     public static final String IP_SERVER = "192.168.137.1";  //"192.168.137.1"  "119.23.62.71"
     public static final String DATE_FORMAT = "yyyy-M-d HH:mm:ss";
     private static final int REQUEST_INTERNET = 10086;

@@ -80,9 +80,9 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
             String icon = cursor.getString( cursor.getColumnIndex("DICON") );
             //默认头像
             if( cursor.getInt(cursor.getColumnIndex("DSEX"))==2 )
-                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_woman));//女默认
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_doctor_female));//女默认
             else
-                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.doctor_man));   //男默认
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_doctor_male));   //男默认
             if(icon != null && !icon.isEmpty() && !icon.equalsIgnoreCase("null")){
                 //查看dicon有没有下载
                 if(new File(context.getFilesDir().getAbsolutePath()+"/icon/dicon/"+icon).exists() ){

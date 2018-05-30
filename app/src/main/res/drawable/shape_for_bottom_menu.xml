@@ -2,7 +2,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_enabled="true">
         <shape>
-            <solid android:color="@color/colorGrayBlue"/>
+            <solid android:color="@color/white"/>
+            <stroke
+                android:width="0.5dp"
+                android:color="@color/lightGray"/>
+            <padding
+                android:top="1dp"/>
         </shape>
     </item>
 </selector>

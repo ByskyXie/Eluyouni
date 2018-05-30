@@ -80,8 +80,12 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
             //设置姓名
             holder.name.setText( cursor.getString( cursor.getColumnIndex("PNAME") ) );
             String icon = cursor.getString( cursor.getColumnIndex("PICON") );
+            int sex = cursor.getInt( cursor.getColumnIndex("PSEX") );
             //默认头像
-            holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient));
+            if(sex == 2)
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_patient_female));
+            else
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_patient_male));
             if(icon != null && !icon.isEmpty() && !icon.equalsIgnoreCase("null")){
                 //查看picon有没有下载
                 if( new File(context.getFilesDir().getAbsolutePath()+"/icon/picon/"+icon).exists() ){

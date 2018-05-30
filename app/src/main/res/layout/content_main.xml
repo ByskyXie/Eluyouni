@@ -39,11 +39,10 @@
             android:id="@+id/radio_button_index"
             android:layout_width="0dp"
             android:textColor="@drawable/color_for_bottom_text"
-            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
-            android:drawableTop="@drawable/ic_index"
+            android:drawableTop="@drawable/shape_for_option_index"
             android:text="@string/main_menu_index"
             android:layout_weight="1"/>
 
@@ -51,24 +50,21 @@
             android:id="@+id/radio_button_consult"
             android:layout_width="0dp"
             android:textColor="@drawable/color_for_bottom_text"
-            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
-            android:drawableTop="@drawable/ic_consult"
+            android:drawableTop="@drawable/shape_for_option_consult"
             android:text="@string/main_menu_consult"
             android:layout_weight="1"/>
-
 
         <RadioButton
             android:id="@+id/radio_button_medicine"
             android:layout_width="0dp"
             android:textColor="@drawable/color_for_bottom_text"
-            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
-            android:drawableTop="@drawable/ic_medicine"
+            android:drawableTop="@drawable/shape_for_option_medicine"
             android:text="@string/main_menu_medicine"
             android:layout_weight="1"/>
 
@@ -76,11 +72,10 @@
             android:id="@+id/radio_button_private_doc"
             android:layout_width="0dp"
             android:textColor="@drawable/color_for_bottom_text"
-            android:drawableTint="@color/white"
             android:gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:button="@null"
-            android:drawableTop="@drawable/ic_doc"
+            android:drawableTop="@drawable/shape_for_option_doc"
             android:text="@string/main_menu_private_doc"
             android:layout_weight="1"/>
 

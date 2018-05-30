@@ -69,6 +69,7 @@ public class MainActivity extends BaseActivity
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.main_menu_index);
         setSupportActionBar(toolbar);
         setDefaultFragment();
         //设置点击事件
@@ -282,8 +283,8 @@ public class MainActivity extends BaseActivity
         FragmentTransaction transaction = manager.beginTransaction();
         switch (buttonView.getId()){
             case R.id.radio_button_index:
-                //Toast.makeText(this,"new Frag",Toast.LENGTH_SHORT).show();
                 if(isChecked && checkedOpt != CHECKED_INDEX){
+                    getSupportActionBar().setTitle(R.string.main_menu_index);
                     checkedOpt = CHECKED_INDEX;
                     if(indexFragment == null){
                         indexFragment = new IndexFragment();
@@ -296,6 +297,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.radio_button_consult:
                 if(isChecked && checkedOpt != CHECKED_CONSULT){
+                    getSupportActionBar().setTitle(R.string.main_menu_consult);
                     checkedOpt = CHECKED_CONSULT;
                     if(consultFragment == null){
                         consultFragment = new ConsultFragment();
@@ -308,6 +310,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.radio_button_medicine:
                 if(isChecked && checkedOpt != CHECKED_MEDICINE){
+                    getSupportActionBar().setTitle(R.string.main_menu_medicine);
                     checkedOpt = CHECKED_MEDICINE;
                     if(medicineFragment == null){
                         medicineFragment = new MedicineFragment();
@@ -320,6 +323,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.radio_button_private_doc:
                 if(isChecked && checkedOpt != CHECKED_DOCTOR){
+                    getSupportActionBar().setTitle(R.string.main_menu_private_doc);
                     checkedOpt = CHECKED_DOCTOR;
                     if(priDocFragment == null){
                         priDocFragment = new PriDocFragment();

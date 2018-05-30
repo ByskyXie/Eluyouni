@@ -95,9 +95,9 @@ public class PriDocAdapter extends RecyclerView.Adapter<PriDocAdapter.PriDocHold
         holder.grade.setText( list.get(actPos).getGradeName() );
         //设置默认头像
         if(list.get(actPos).getDsex()==2 )
-            holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.doctor_woman));
+            holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_doctor_female));
         else
-            holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.doctor_man));
+            holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_doctor_male));
         //头像
         if(list.get(actPos).getDicon()!=null && !list.get(actPos).getDicon().isEmpty()){
             String iconPath =  context.getFilesDir().getAbsolutePath()+"/icon/dicon/"+list.get(actPos).getDicon();
