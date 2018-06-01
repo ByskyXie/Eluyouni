@@ -38,15 +38,22 @@ public class ConsultDoctorAdapter extends RecyclerView.Adapter<ConsultDoctorAdap
     public void addData(ArrayList<Doctor> list){
         if(list==null)
             return;
-        this.list.addAll(list);
-        while(list.size()>docNumLimit)
-            list.remove(list.size()-1 );
+        for(Doctor d: list){
+            if(list.size()>=docNumLimit)
+                break;
+            addData(d);
+        }
     }
 
     public void addData(Doctor doctor){
         if(doctor==null || list.size()>docNumLimit)
             return;
-        list.add(doctor);
+        int i;
+        for(i=0; i<list.size(); i++)
+            if(list.get(i).getDid()==doctor.getDid())
+                break;
+        if( i>=list.size() )
+            list.add(doctor);
     }
 
     @Override

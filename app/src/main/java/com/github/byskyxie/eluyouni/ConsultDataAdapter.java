@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class ConsultDataAdapter extends RecyclerView.Adapter<ConsultDataAdapter.ConsultDataHolder>
             implements View.OnClickListener{
-    public static final int CONSULT_DATA_ADAPTER = 0x0100;
+    public static final int CONSULT_DATA_ADAPTER = 0x0101;
 
     private int dataNumLimit = 5;
     private Context context;

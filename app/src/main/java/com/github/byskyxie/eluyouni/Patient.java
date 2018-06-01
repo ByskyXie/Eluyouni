@@ -3,7 +3,9 @@ package com.github.byskyxie.eluyouni;
 import android.content.ContentValues;
 import android.util.Log;
 
-public class Patient {
+import java.io.Serializable;
+
+public class Patient implements Serializable{
     private long pid;
     private int psex;
     private String pwd;

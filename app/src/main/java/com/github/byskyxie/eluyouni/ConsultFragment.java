@@ -121,6 +121,13 @@ public class ConsultFragment extends Fragment {
         dataAdapter.notifyDataSetChanged();
     }
 
+    protected void addDoctorItem(Doctor doctor){
+        if(doctor == null )
+            return;
+        doctorAdapter.addData(doctor);
+        doctorAdapter.notifyDataSetChanged();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

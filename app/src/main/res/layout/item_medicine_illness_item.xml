@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
+    android:focusable="true"
+    android:clickable="true"
     android:background="@drawable/shape_for_medicine_recycler_item"
     android:layout_width="match_parent"
-    android:layout_height="128dp">
+    android:layout_height="96dp">
     <!-- 展示具体疾病的item -->
     <ImageView
         android:id="@+id/image_view_medicine_illness_pic"

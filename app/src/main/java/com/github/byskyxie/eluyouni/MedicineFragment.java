@@ -31,10 +31,11 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class MedicineFragment extends Fragment {
-    private static final int FAME_COLUMN_NUM = 4;
+    private static final int FAME_COLUMN_NUM = 3;
     private static final int SECTION_COLUMN_NUM = 4;
     private static final int ACCEPT_ILLNESS_LIST = 0x0010;
     private static final int ACCEPT_FAME_LIST = 0x0020;
+    protected static final int ACCEPT_FAME_ICON = 0x0030;
 
     private RecyclerView recyclerFame;
     private RecyclerView recyclerIllness;
@@ -93,6 +94,15 @@ public class MedicineFragment extends Fragment {
                     }
                     fragment.get().fameAdapter.notifyDataSetChanged();
                     break;
+                case ACCEPT_FAME_ICON:
+                    try {
+                        while(fragment.get().recyclerFame.isComputingLayout())
+                            Thread.sleep(200);
+                    }catch (InterruptedException ie){
+                        ie.printStackTrace();
+                    }
+                    fragment.get().fameAdapter.notifyItemChanged((int)msg.obj);
+                    break;
             }
         }
     }
@@ -132,13 +142,15 @@ public class MedicineFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medicine, container, false);
         recyclerFame = view.findViewById(R.id.recycler_medicine_famous);
-        fameAdapter = new MedicineFameAdapter(getContext(), null);
+        fameAdapter = new MedicineFameAdapter(getContext(), null, handler);
         recyclerFame.setLayoutManager( new GridLayoutManager(getContext(), FAME_COLUMN_NUM) );
+        recyclerFame.setNestedScrollingEnabled(false);  //禁止嵌套滑动，使有惯性
         recyclerFame.setAdapter(fameAdapter);
 
         recyclerIllness = view.findViewById(R.id.recycler_medicine_illness);
         illnessAdapter = new MedicineIllnessAdapter(getContext(), illnessList);
         recyclerIllness.setLayoutManager( new GridLayoutManager(getContext(), SECTION_COLUMN_NUM) );
+        recyclerIllness.setNestedScrollingEnabled(false);   //禁止嵌套滑动，使有惯性
         recyclerIllness.setAdapter(illnessAdapter);
         return view;
     }
@@ -238,6 +250,8 @@ public class MedicineFragment extends Fragment {
                     }
                     int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
                     for(int i=0;i<num;i++){
+                        if(getContext() == null)
+                            continue;
                         Doctor doctor = ((BaseActivity)getContext()).downloadOneDoctorBaseInfo(br);
                         if(doctor != null)
                             fameList.add( doctor );

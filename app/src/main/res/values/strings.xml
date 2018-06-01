@@ -46,10 +46,24 @@
     <string name="exit">退出</string>
     <string name="confirm">确定</string>
 
+    <!-- medicine -->
+    <string name="marking">评分:</string>
+    <string name="d24h_reply">24小时回复率:</string>
+    <string name="hot_level">推荐热度(综合):</string>
     <string name="medicine_more">查看更多</string>
     <string name="medicine_famous_doctor">名医达人</string>
     <string name="medicine_illness">疾病分类</string>
+    <string name="medicine_query">咨询</string>
+    <string name="medicine_focus">关注</string>
+    <string name="medicine_recipe">开处方</string>
+    <string name="medicine_plan">医疗方案</string>
+    <string name="medicine_consult">添加到会诊室</string>
+    <string name="medicine_pri_add">添加为私人医生</string>
+    <string name="medicine_profess">专业擅长</string>
+    <string name="medicine_career">执业经历</string>
+    <string name="medicine_pri">私人医生</string>
 
+    <!-- consult -->
     <string name="doctor">医生</string>
     <string name="illness">疾病</string>
     <string name="send">发送</string>

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="orchid">#DA70D6</color>
     <color name="colorGold">#E9E255</color>
     <color name="mediumSlateBlue">#7B68EE</color>
     <color name="colorLightGrayBlue">#a6bff3</color>
@@ -17,7 +18,14 @@
     <color name="deepSkyBlue">#00BFFF</color>
     <color name="dodgerblue">#1E90FF</color>
     <color name="aquamarine">#7FFFD4</color>
+    <color name="leafGreen">#00c957</color>
+    <color name="orangeGreen">#3fdd42</color>
     <color name="paleGreen">#98FB98</color>
+    <color name="springGreen">#00FF7F</color>
+
+    <color name="red">#FF0000</color>
+    <color name="crimson">#DC143C</color>
+    <color name="orangeRed">#FF4500</color>
 
     <color name="heart_default">#E48674</color>
     <color name="heart_select">#E48674</color>

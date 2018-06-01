@@ -20,9 +20,9 @@ import java.util.Date;
 public class ChatActivity extends BaseActivity
         implements View.OnClickListener{
 
-    public static final int CHAT_ACTIVITY_CODE = 0X1000;
     public static final int TARGET_TYPE_DOCTOR = 0X0010;
     public static final int TARGET_TYPE_PATIENT = 0X0100;
+    public static final int CHAT_ACTIVITY_CODE = 0X1005;
 
     private SendWatcher watcher = new SendWatcher();
     private int targetType;

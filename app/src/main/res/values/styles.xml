@@ -28,8 +28,20 @@
 
     <style name="NewTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="NewTheme.SearchView" parent="Widget.AppCompat.SearchView">
+    <style name="NewTheme.Activity.Anim" parent="NewTheme">
+        <item name="android:windowAnimationStyle">@style/ActivityAnim</item>
+    </style>
 
+    <!-- 从名为A的activity跳转到B，B也可以跳转到C，其中转场动画设置在B上。 -->
+    <style name="ActivityAnim">
+        <!-- 进入B时的动画 -->
+        <item name="android:activityOpenEnterAnimation">@anim/activity_in</item>
+        <!-- 进入B时A的动画 -->
+        <item name="android:activityOpenExitAnimation">@anim/activity_still</item>
+        <!-- 跳转到C后再回退到B时，B的进入动画 -->
+        <item name="android:activityCloseEnterAnimation">@anim/activity_still</item>
+        <!-- 跳转到C后再回退到B时，C的退出动画 -->
+        <item name="android:activityCloseExitAnimation">@anim/activity_out</item>
     </style>
 
     <!--<style name="NewPopupOverlay" parent="@style/ThemeOverlay.AppCompat.ActionBar">-->
