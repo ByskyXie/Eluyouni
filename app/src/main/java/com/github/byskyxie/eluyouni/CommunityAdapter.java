@@ -77,7 +77,6 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
     @Override
     public void onBindViewHolder(@NonNull CommunityHolder holder, final int position) {
         int actPos = holder.getAdapterPosition();
-        holder.content.setText(list.get(actPos).getCcontent());
         if(list.get(actPos).getErType() == 1){
             holder.tag.setText("患者");
             //获取患者姓名
@@ -134,7 +133,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
         }
         holder.time.setText( list.get(actPos).getTime());
         holder.content.setText( list.get(actPos).getCcontent());
-        holder.assent.setText( list.get(actPos).getAssentNum()+" ");
+        holder.assent.setText( list.get(actPos).getAssentNum()+" ");//TODO:点赞按钮
     }
 
     private void downloadDicon(final String dicon, final int position){

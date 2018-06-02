@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,13 +32,14 @@ import java.util.ArrayList;
  * Use the {@link MedicineFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MedicineFragment extends Fragment {
+public class MedicineFragment extends Fragment implements View.OnClickListener{
     private static final int FAME_COLUMN_NUM = 3;
     private static final int SECTION_COLUMN_NUM = 4;
     private static final int ACCEPT_ILLNESS_LIST = 0x0010;
     private static final int ACCEPT_FAME_LIST = 0x0020;
     protected static final int ACCEPT_FAME_ICON = 0x0030;
 
+    private TextView textMoreDoc;
     private RecyclerView recyclerFame;
     private RecyclerView recyclerIllness;
     private MedicineFameAdapter fameAdapter;
@@ -152,7 +155,24 @@ public class MedicineFragment extends Fragment {
         recyclerIllness.setLayoutManager( new GridLayoutManager(getContext(), SECTION_COLUMN_NUM) );
         recyclerIllness.setNestedScrollingEnabled(false);   //禁止嵌套滑动，使有惯性
         recyclerIllness.setAdapter(illnessAdapter);
+
+        textMoreDoc = view.findViewById(R.id.text_view_famous_more);
+        textMoreDoc.setOnClickListener(this);
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.text_view_famous_more:
+                Intent intent = new Intent(getContext(), DoctorListActivity.class);
+                intent.putExtra("ILLNESS",new Illness("名医达人"));
+                if(getContext() != null)
+                    getContext().startActivity(intent);
+                else
+                    Log.e("MedicineFrag","getContext() Revoke.");
+                break;
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

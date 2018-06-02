@@ -78,6 +78,10 @@ public class DoctorListActivity extends BaseActivity {
             return;
         ill = (Illness) intent.getSerializableExtra("ILLNESS");
         getSupportActionBar().setTitle(ill.getName());
+        if(ill.getName().equals("名医达人")){
+            //说明是从名医达人进来的
+            adapter.setShowFame(true);
+        }
         //下载列表
         new Thread(new Runnable() {
             @Override

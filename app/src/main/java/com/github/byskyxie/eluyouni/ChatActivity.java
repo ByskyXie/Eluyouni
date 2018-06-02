@@ -122,6 +122,7 @@ public class ChatActivity extends BaseActivity
                 //会诊室 TODO:显示医生加入聊天室
                 targetType = TARGET_TYPE_CONSULT;
                 getSupportActionBar().setTitle("会诊室");
+                //提前加入文本
                 initialConsult();
                 break;
             case -1:
@@ -137,6 +138,12 @@ public class ChatActivity extends BaseActivity
         if(intent==null)
             return;
         ((TextView)findViewById(R.id.text_view_chat_descri)).setText(intent.getStringExtra("DESCRI"));
+        adapter = new ChatAdapter(this, null);
+        for(int i=0; i<consultList.size(); i++){
+            ChatItem item =  new ChatItem("医生"+consultList.get(i).getDname()+"加入会诊室"
+                    , ChatItem.CHAT_TYPE_SYS, new Date(), 0, 3 );
+            adapter.addData(item);
+        }
     }
 
     @Override

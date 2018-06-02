@@ -213,7 +213,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //focus
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_focus,pager,false);
-        adapter = null;
+        adapter = new FocusAdapter(getContext(), null, handler);
         recycler = item.findViewById(R.id.recycler_focus);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -221,7 +221,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //recommend
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_recommend, pager,false);
-        adapter = new ArticleRecommendAdapter(getContext(), null,handler);
+        adapter = new ArticleRecommendAdapter(getContext(), null, handler);
         recycler = item.findViewById(R.id.recycler_recommend);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -237,7 +237,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         //article doctor
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_article_doctor,pager,false);
-        adapter = new ArticleDoctorAdapter(getContext(), null,handler);
+        adapter = new ArticleDoctorAdapter(getContext(), null, handler);
         recycler = item.findViewById(R.id.recycler_article_doctor);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
@@ -320,6 +320,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         indexPagerAdapter.checkedPage = position;
         switch (position){
             case 0:
+                //更新关注
 
                 break;
             case 1:
@@ -351,26 +352,11 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             //数量
                             int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
                             for(int i=0; i<num; i++){
-                                String temp;
-                                ArticleRecommend ar = new ArticleRecommend();
-                                //arid
-                                line = br.readLine();
-                                ar.setArid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //erid
-                                line = br.readLine();
-                                ar.setErid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //ertype
-                                line = br.readLine();
-                                ar.setErtype( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
-                                //title
-                                line = br.readLine();
-                                ar.setTitle( line.substring(line.indexOf('=')+1) );
-                                //time
-                                line = br.readLine();
-                                ar.setTime( line.substring(line.indexOf('=')+1) );
-                                //不需要content
-                                ar.setContent(null);
-                                recomList.add(ar);
+                                if(getContext() == null){
+                                    Log.e("IndexFrag","getContext() has revoke");
+                                    return;
+                                }//下载推荐文章
+                                recomList.add( ((BaseActivity)getContext()).downloadOneArticleRecommend(br) );
                             }
                             //结束读取数据
                             br.close();
@@ -414,23 +400,11 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             //数量
                             int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
                             for(int i=0; i<num; i++){
-                                String temp;
-                                ArticlePatient ap = new ArticlePatient();
-                                //apid
-                                line = br.readLine();
-                                ap.setApid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //pid
-                                line = br.readLine();
-                                ap.setPid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //title
-                                line = br.readLine();
-                                ap.setTitle( line.substring(line.indexOf('=')+1) );
-                                //time
-                                line = br.readLine();
-                                ap.setTime( line.substring(line.indexOf('=')+1) );
-                                //不需要content
-                                ap.setContent(null);
-                                patList.add(ap);
+                                if(getContext() == null){
+                                    Log.e("IndexFrag","getContext() has revoke");
+                                    return;
+                                }//下载患者文章
+                                patList.add( ((BaseActivity)getContext()).downloadOneArticlePatient(br) );
                             }
                             //结束读取数据
                             br.close();
@@ -474,29 +448,17 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             //获得数量
                             int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
                             for(int i=0; i<num; i++){
-                                ArticleDoctor ad = new ArticleDoctor();
-                                //adid
-                                line = br.readLine();
-                                ad.setAdid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //did
-                                line = br.readLine();
-                                ad.setDid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //title
-                                line = br.readLine();
-                                ad.setTitle( line.substring(line.indexOf('=')+1) );
-                                //time
-                                line = br.readLine();
-                                ad.setTime( line.substring(line.indexOf('=')+1) );
-                                //不需要 content
-                                ad.setContent(null);
-                                docList.add(ad);
+                                if(getContext() == null){
+                                    Log.e("IndexFrag","getContext() has revoke");
+                                    return;
+                                }//下载医生文章
+                                docList.add( ((BaseActivity)getContext()).downloadOneArticleDoctor(br) );
                             }
                             //结束读取数据
                             br.close();
                             Message msg = new Message();
                             msg.obj = docList;
                             msg.what = ARTICLE_DOCTOR_ACCEPT;
-//                            Log.e("indexFragmentHandler","[size]"+docList.size());
                             handler.sendMessage(msg);
                         }catch (IOException ioe){
                             ioe.getStackTrace();
@@ -533,33 +495,11 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                             //数量
                             int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
                             for(int i=0; i<num; i++){
-                                String temp;
-                                PatientCommunity pc = new PatientCommunity();
-                                //cid
-                                line = br.readLine();
-                                pc.setCid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //erid
-                                line = br.readLine();
-                                pc.setErId( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
-                                //ertype
-                                line = br.readLine();
-                                pc.setErType( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
-                                //time
-                                line = br.readLine();
-                                pc.setTime( line.substring(line.indexOf('=')+1) );
-                                //content
-                                line = br.readLine();
-                                temp = line.substring(line.indexOf('=')+1);
-                                do{
-                                    line = br.readLine();
-                                    if(line.matches("assent=.+"))
-                                        break;
-                                    temp += line;
-                                }while(true);
-                                pc.setCcontent( temp );
-                                //assent 直到遇见assent
-                                pc.setAssentNum( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
-                                commList.add(pc);
+                                if(getContext() == null){
+                                    Log.e("IndexFrag","getContext() has revoke");
+                                    return;
+                                }//下载状态
+                                commList.add( ((BaseActivity)getContext()).downloadOnePatientCommunity(br) );
                             }
                             //结束读取数据
                             br.close();

@@ -62,4 +62,11 @@
         app:layout_constraintLeft_toRightOf="@id/text_view_doc_list_hot"
         app:layout_constraintBottom_toBottomOf="@id/text_view_doc_list_hot"/>
 
+    <TextView
+        android:id="@+id/text_view_doc_list_ill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/text_view_doc_list_name"
+        app:layout_constraintRight_toRightOf="parent"/>
+
 </android.support.constraint.ConstraintLayout>

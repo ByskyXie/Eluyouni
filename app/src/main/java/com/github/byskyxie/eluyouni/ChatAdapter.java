@@ -38,6 +38,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
                 icon = itemView.findViewById(R.id.image_view_chat_icon_other);
                 time = itemView.findViewById(R.id.text_view_chat_time_other);
                 content = itemView.findViewById(R.id.text_view_chat_content_other);
+            }else if(viewType == ChatItem.CHAT_TYPE_SYS){
+                icon = itemView.findViewById(R.id.image_view_chat_icon_sys);
+                time = itemView.findViewById(R.id.text_view_chat_time_sys);
+                content = itemView.findViewById(R.id.text_view_chat_content_sys);
             }
         }
     }
@@ -77,6 +81,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
             view = LayoutInflater.from(context).inflate(R.layout.item_chat_self, parent,false);
         }else if(viewType == ChatItem.CHAT_TYPE_OTHER_SIDE){
             view = LayoutInflater.from(context).inflate(R.layout.item_chat_other_side, parent,false);
+        }else if(viewType == ChatItem.CHAT_TYPE_SYS){
+            view = LayoutInflater.from(context).inflate(R.layout.item_chat_system, parent,false);
         }else{
             Log.e("ChatAdapter","error view type");
         }
@@ -86,7 +92,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
     @Override
     public void onBindViewHolder(@NonNull ChatHolder holder, int position) {
         int actPos = holder.getAdapterPosition();
+        if(holder.viewType == ChatItem.CHAT_TYPE_SYS){
+            //系统消息
+            holder.content.setText( list.get(actPos).getContent() );
+            return;
+        }
         holder.content.setText(list.get(actPos).getContent());
+        //要保证前一条信息
         if(actPos>0 && (list.get(actPos).getRealTime()-list.get(actPos-1).getRealTime()) < 1000*60*2 )
             holder.time.setVisibility(View.GONE);  //小于2分钟不显示时间
         else{

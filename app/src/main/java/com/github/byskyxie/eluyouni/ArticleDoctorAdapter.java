@@ -94,8 +94,6 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
             }
         }
         cursor.close();
-        //icon pic
-
     }
 
     private void downloadDicon(final String dicon, final int position){

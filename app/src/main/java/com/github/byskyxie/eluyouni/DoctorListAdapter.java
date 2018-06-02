@@ -13,12 +13,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 
 public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.DoctorListHolder>
         implements View.OnClickListener{
 
+    private boolean isShowFame = false;
     private Context context;
     private ArrayList<Doctor> list = new ArrayList<>();
 
@@ -30,6 +33,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
         private TextView marking;
         private TextView hospital;
         private TextView grade;
+        private TextView ill;
         DoctorListHolder(View itemView) {
             super(itemView);
             view = itemView;
@@ -39,6 +43,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
             marking = itemView.findViewById(R.id.text_view_doc_list_marking);
             hospital = itemView.findViewById(R.id.text_view_doc_list_hospital);
             grade = itemView.findViewById(R.id.text_view_doc_list_grade);
+            ill = itemView.findViewById(R.id.text_view_doc_list_ill);
         }
     }
 
@@ -60,6 +65,14 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
         list.add(doctor);
     }
 
+    public boolean isShowFame() {
+        return isShowFame;
+    }
+
+    public void setShowFame(boolean showFame) {
+        isShowFame = showFame;
+    }
+
     @NonNull
     @Override
     public DoctorListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -77,6 +90,9 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
         holder.grade.setText( list.get(actPos).getGradeName() );
         holder.hot.setText( "推荐热度（综合）："+list.get(actPos).getDhot_level() );
         holder.marking.setText( "评分："+list.get(actPos).getDmarking() );
+        //名医要显示擅长领域
+        if(isShowFame)
+            holder.ill.setText("主治："+list.get(actPos).getDillness());
         //设置默认头像
         if(list.get(actPos).getDsex()==2 )
             holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_doctor_female));

@@ -480,6 +480,100 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    protected ArticleRecommend downloadOneArticleRecommend(BufferedReader br) throws IOException{
+        String line;
+        ArticleRecommend ar = new ArticleRecommend();
+        //arid
+        line = br.readLine();
+        ar.setArid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //erid
+        line = br.readLine();
+        ar.setErid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //ertype
+        line = br.readLine();
+        ar.setErtype( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
+        //title
+        line = br.readLine();
+        ar.setTitle( line.substring(line.indexOf('=')+1) );
+        //time
+        line = br.readLine();
+        ar.setTime( line.substring(line.indexOf('=')+1) );
+        //不需要content
+        ar.setContent(null);
+        return ar;
+    }
+
+    protected ArticlePatient downloadOneArticlePatient(BufferedReader br) throws IOException{
+        ArticlePatient ap = new ArticlePatient();
+        String line;
+        //apid
+        line = br.readLine();
+        ap.setApid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //pid
+        line = br.readLine();
+        ap.setPid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //title
+        line = br.readLine();
+        ap.setTitle( line.substring(line.indexOf('=')+1) );
+        //time
+        line = br.readLine();
+        ap.setTime( line.substring(line.indexOf('=')+1) );
+        //不需要content
+        ap.setContent(null);
+        return ap;
+    }
+
+    protected ArticleDoctor downloadOneArticleDoctor(BufferedReader br) throws IOException{
+        ArticleDoctor ad = new ArticleDoctor();
+        String line;
+        //adid
+        line = br.readLine();
+        ad.setAdid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //did
+        line = br.readLine();
+        ad.setDid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //title
+        line = br.readLine();
+        ad.setTitle( line.substring(line.indexOf('=')+1) );
+        //time
+        line = br.readLine();
+        ad.setTime( line.substring(line.indexOf('=')+1) );
+        //不需要 content
+        ad.setContent(null);
+        return ad;
+    }
+
+    protected PatientCommunity downloadOnePatientCommunity(BufferedReader br) throws IOException{
+        String line;
+        StringBuilder temp = new StringBuilder();
+        PatientCommunity pc = new PatientCommunity();
+        //cid
+        line = br.readLine();
+        pc.setCid( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //erid
+        line = br.readLine();
+        pc.setErId( Long.parseLong( line.substring(line.indexOf('=')+1) ) );
+        //ertype
+        line = br.readLine();
+        pc.setErType( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
+        //time
+        line = br.readLine();
+        pc.setTime( line.substring(line.indexOf('=')+1) );
+        //content
+        line = br.readLine();
+        temp.append( line.substring(line.indexOf('=')+1) );
+        do{
+            line = br.readLine();
+            if(line.matches("assent=.+"))
+                break;
+            temp.append( line );
+        }while(true);
+        pc.setCcontent( temp.toString() );
+        //assent 直到遇见assent
+        pc.setAssentNum( Integer.parseInt( line.substring(line.indexOf('=')+1) ) );
+        return pc;
+    }
+
     protected boolean addConsultDoctor(Doctor doctor){
         if(doctor == null || consultList.size()>=DOC_NUM_LIMIT || isConsultContain(doctor.getDid()))
             return false;
