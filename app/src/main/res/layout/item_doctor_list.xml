@@ -20,6 +20,7 @@
         android:id="@+id/text_view_doc_list_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="18sp"
         android:layout_marginStart="@dimen/small_border"
         android:layout_marginTop="@dimen/mini_border"
         app:layout_constraintLeft_toRightOf="@id/image_view_doc_list_icon"
@@ -30,6 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_border"
+        android:textColor="@color/white"
         android:background="@drawable/shape_for_doctor_grade"
         app:layout_constraintLeft_toRightOf="@id/text_view_doc_list_name"
         app:layout_constraintBottom_toBottomOf="@id/text_view_doc_list_name"/>
@@ -38,6 +40,7 @@
         android:id="@+id/text_view_doc_list_hospital"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="17sp"
         android:layout_marginTop="@dimen/small_border"
         android:layout_marginStart="@dimen/small_border"
         app:layout_constraintTop_toBottomOf="@id/text_view_doc_list_name"
@@ -48,7 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/small_border"
-        app:layout_constraintTop_toBottomOf="@id/image_view_doc_list_icon"/>
+        app:layout_constraintTop_toBottomOf="@id/text_view_doc_list_hospital"
+        app:layout_constraintLeft_toRightOf="@id/image_view_doc_list_icon"/>
 
     <TextView
         android:id="@+id/text_view_doc_list_marking"

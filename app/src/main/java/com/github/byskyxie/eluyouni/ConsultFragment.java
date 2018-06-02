@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.URL;
 
@@ -23,7 +28,7 @@ import java.net.URL;
  * Use the {@link ConsultFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ConsultFragment extends Fragment {
+public class ConsultFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,6 +42,8 @@ public class ConsultFragment extends Fragment {
     private RecyclerView recyclerFile;
     private ConsultDoctorAdapter doctorAdapter;
     private ConsultDataAdapter dataAdapter;
+    private Button buttonOpenConsult;
+    private EditText descri;    //病情描述
 
     private OnFragmentInteractionListener mListener;
 
@@ -77,10 +84,13 @@ public class ConsultFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_consult, container, false);
 //        view.findViewById(R.id.button_consult_submit).setBackgroundColor(ContextCompat.getColor(getContext(),R.color.deepSkyBlue));
+        descri = view.findViewById(R.id.edit_text_consult_describe);
+        buttonOpenConsult = view.findViewById(R.id.button_consult_submit);
+        buttonOpenConsult.setOnClickListener(this);
 
         recyclerDoc = view.findViewById(R.id.recycler_consult_doc_list);
         recyclerDoc.setLayoutManager( new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-        doctorAdapter = new ConsultDoctorAdapter( getContext(),null);
+        doctorAdapter = new ConsultDoctorAdapter( (BaseActivity) getContext());
         recyclerDoc.setAdapter(doctorAdapter);
 
         recyclerFile = view.findViewById(R.id.recycler_consult_data);
@@ -121,11 +131,26 @@ public class ConsultFragment extends Fragment {
         dataAdapter.notifyDataSetChanged();
     }
 
-    protected void addDoctorItem(Doctor doctor){
-        if(doctor == null )
+    protected void notifyDoctorList(){
+        if(recyclerDoc == null || recyclerDoc.isComputingLayout())
             return;
-        doctorAdapter.addData(doctor);
         doctorAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.button_consult_submit:
+                if(doctorAdapter.getDoctorCount() == 0){
+                    Toast.makeText(getContext(), "你还未选择会诊医生", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(getContext(), ChatActivity.class);
+                    intent.putExtra("TargetType",ChatActivity.TARGET_TYPE_CONSULT);
+                    intent.putExtra("DESCRI", descri.getText().toString());
+                    startActivity(intent);
+                }
+                break;
+        }
     }
 
     /**

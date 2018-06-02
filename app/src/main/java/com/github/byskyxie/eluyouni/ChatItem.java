@@ -16,7 +16,7 @@ public class ChatItem {
 
     ChatItem(){}
 
-    public ChatItem(String content, int chatType, Date time, long erid, int ertype) {
+    ChatItem(String content, int chatType, Date time, long erid, int ertype) {
         this.content = content;
         this.chatType = chatType;
         this.time = time;

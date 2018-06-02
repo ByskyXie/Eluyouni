@@ -8,12 +8,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,6 +26,7 @@ public class ChatActivity extends BaseActivity
 
     public static final int TARGET_TYPE_DOCTOR = 0X0010;
     public static final int TARGET_TYPE_PATIENT = 0X0100;
+    public static final int TARGET_TYPE_CONSULT= 0X1000;
     public static final int CHAT_ACTIVITY_CODE = 0X1005;
 
     private SendWatcher watcher = new SendWatcher();
@@ -33,6 +38,9 @@ public class ChatActivity extends BaseActivity
     private EditText edit;
     private Button buttonSend;
     private ChatAdapter adapter;
+    private LinearLayout layoutDescri;
+
+    private String contri;  //病情描述
 
     class SendWatcher implements TextWatcher{
         @Override
@@ -60,6 +68,7 @@ public class ChatActivity extends BaseActivity
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        layoutDescri = findViewById(R.id.layout_chat_descri);
         buttonSend = findViewById(R.id.button_chat_send);
         buttonSend.setOnClickListener(this);
         buttonSend.setEnabled(false);
@@ -79,27 +88,55 @@ public class ChatActivity extends BaseActivity
         if(intent == null)
             return;
         clickedPos = intent.getIntExtra("ClickedPos",-1);
-        if(intent.getIntExtra("TargetType",-1) == TARGET_TYPE_DOCTOR){
-            targetType = TARGET_TYPE_DOCTOR;
-            doctorTalker = (Doctor) intent.getSerializableExtra("Target");
-            getSupportActionBar().setTitle(doctorTalker.getDname());
-            getSupportActionBar().setSubtitle("医生");
-            if(BaseActivity.mapEridToPosition.containsKey(doctorTalker.getDid())){
-                adapter = new ChatAdapter(this, BaseActivity.chatRecordList
-                        .get( BaseActivity.mapEridToPosition.get(doctorTalker.getDid()) ).getList());
-            }
-        }else if(intent.getIntExtra("TargetType",-1) == TARGET_TYPE_PATIENT){
-            targetType = TARGET_TYPE_PATIENT;
-            patientTalker = (Patient) intent.getSerializableExtra("Target");
-            getSupportActionBar().setTitle(patientTalker.getPname());
-            getSupportActionBar().setSubtitle("患者");
-            if(BaseActivity.mapEridToPosition.containsKey(patientTalker.getPid())){
-                adapter = new ChatAdapter(this, BaseActivity.chatRecordList
-                        .get( BaseActivity.mapEridToPosition.get(patientTalker.getPid()) ).getList());
-            }
+        switch (intent.getIntExtra("TargetType",-1)){
+            case TARGET_TYPE_DOCTOR:
+
+                layoutDescri.setVisibility(View.GONE);
+
+                targetType = TARGET_TYPE_DOCTOR;
+                doctorTalker = (Doctor) intent.getSerializableExtra("Target");
+                getSupportActionBar().setTitle(doctorTalker.getDname());
+                getSupportActionBar().setSubtitle("医生");
+                if(BaseActivity.mapEridToPosition.containsKey(doctorTalker.getDid())){
+                    adapter = new ChatAdapter(this, BaseActivity.chatRecordList
+                            .get( BaseActivity.mapEridToPosition.get(doctorTalker.getDid()) ).getList());
+                }
+                break;
+            case TARGET_TYPE_PATIENT:
+
+                layoutDescri.setVisibility(View.GONE);
+
+                targetType = TARGET_TYPE_PATIENT;
+                patientTalker = (Patient) intent.getSerializableExtra("Target");
+                getSupportActionBar().setTitle(patientTalker.getPname());
+                getSupportActionBar().setSubtitle("患者");
+                if(BaseActivity.mapEridToPosition.containsKey(patientTalker.getPid())){
+                    adapter = new ChatAdapter(this, BaseActivity.chatRecordList
+                            .get( BaseActivity.mapEridToPosition.get(patientTalker.getPid()) ).getList());
+                }
+                break;
+            case TARGET_TYPE_CONSULT:
+
+                layoutDescri.setVisibility(View.VISIBLE);
+
+                //会诊室 TODO:显示医生加入聊天室
+                targetType = TARGET_TYPE_CONSULT;
+                getSupportActionBar().setTitle("会诊室");
+                initialConsult();
+                break;
+            case -1:
+                break;
         }
         if(adapter == null)
             adapter = new ChatAdapter(this,null);
+    }
+
+    protected void initialConsult(){
+        //会诊情况初始化
+        Intent intent = getIntent();
+        if(intent==null)
+            return;
+        ((TextView)findViewById(R.id.text_view_chat_descri)).setText(intent.getStringExtra("DESCRI"));
     }
 
     @Override
@@ -141,9 +178,21 @@ public class ChatActivity extends BaseActivity
     @Override
     protected void onStop() {
         super.onStop();
+
         if(adapter == null || adapter.getItemCount()==0 )
             return;
         //保存聊天记录
+        if(targetType == TARGET_TYPE_DOCTOR || targetType == TARGET_TYPE_PATIENT){
+            savePersonChatRecord();
+        }else if(targetType == TARGET_TYPE_CONSULT){
+            //TODO：会诊室返回，保存记录
+            return;
+        }
+        //返回参数
+    }
+
+    private void savePersonChatRecord(){
+        //保存针对个人的聊天记录
         int pos = -1;
         ArrayList<ChatItem> list = adapter.getList();
         if(targetType == TARGET_TYPE_PATIENT ){
@@ -187,7 +236,6 @@ public class ChatActivity extends BaseActivity
                 BaseActivity.userDatabasewrit.insert("CHAT_RECORD",null,content);
             }
         }
-        //返回参数
     }
 
 }

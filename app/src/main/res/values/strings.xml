@@ -68,6 +68,7 @@
     <string name="illness">疾病</string>
     <string name="send">发送</string>
     <string name="begin_consult">发起会诊</string>
+    <string name="describe">病情描述</string>
     <string name="describe_hint">在此输入病情描述</string>
     <string name="blank_doctor_list">邀请医生</string>
     <string name="blank_data_list">添加资料</string>

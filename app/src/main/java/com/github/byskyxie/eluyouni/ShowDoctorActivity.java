@@ -55,6 +55,8 @@ public class ShowDoctorActivity extends BaseActivity
         findViewById(R.id.text_view_show_doc_plan).setOnClickListener(this);
         findViewById(R.id.text_view_show_doc_consult).setOnClickListener(this);
         findViewById(R.id.text_view_show_doc_pri).setOnClickListener(this);
+        if(isConsultContain(doctor.getDid()))
+            findViewById(R.id.text_view_show_doc_consult).setEnabled(false);
         //设置默认头像
         ImageView img = findViewById(R.id.image_view_show_doc_icon);
         if(doctor.getDsex()==2 )
@@ -87,7 +89,7 @@ public class ShowDoctorActivity extends BaseActivity
                 //咨询
                 intent = new Intent(this, ChatActivity.class);
                 intent.putExtra("Target",doctor);
-                intent.putExtra("TargetType",2);
+                intent.putExtra("TargetType",ChatActivity.TARGET_TYPE_DOCTOR);
                 startActivity(intent);
                 break;
             case R.id.text_view_show_doc_focus:
@@ -106,11 +108,11 @@ public class ShowDoctorActivity extends BaseActivity
                 break;
             case R.id.text_view_show_doc_consult:
                 //添加会诊
-                v.setEnabled(false);
-                Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
-                intent = new Intent();
-                intent.putExtra("DOCTOR",doctor);
-                setResult(SHOW_DOCTOR_ACTIVITY_CODE, intent);
+                if(addConsultDoctor(doctor)){
+                    v.setEnabled(false);
+                    Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+                }else
+                    Toast.makeText(this, "会诊室一次最多邀请"+BaseActivity.DOC_NUM_LIMIT+"位医生", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.text_view_show_doc_pri:
                 //私人医生,弹窗要钱

@@ -6,12 +6,14 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
@@ -108,16 +110,22 @@ public class MainActivity extends BaseActivity
         else
             ((ImageView)header.findViewById(R.id.image_view_icon)).setImageBitmap( BitmapFactory.decodeFile(
                     getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
+        //pname
+        ((TextView)header.findViewById(R.id.text_view_nav_name)).setText(userInfo.getPname());
         //e币
-        ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(userInfo.getEcoin()+" e币");
+        if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N )
+            ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(Html.fromHtml("<font color=#f00>"
+                    +userInfo.getEcoin()+"</font>"+"e币", Html.FROM_HTML_MODE_COMPACT) );
+        else
+            ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(Html.fromHtml("<font color=#FFA500>"+userInfo.getEcoin()+"</font>"+" e币") );
         //等级
-        ((TextView)header.findViewById(R.id.text_view_score)).setText(userInfo.getPscore()+" 积分");
+        ((TextView)header.findViewById(R.id.text_view_score)).setText(userInfo.getGradeName());
         //血压
-        ((TextView)header.findViewById(R.id.text_view_blood_press)).setText("血压：\n121");
+        ((TextView)header.findViewById(R.id.text_view_blood_press)).setText("血压：\n101\nKpa");
         //血脂
-        ((TextView)header.findViewById(R.id.text_view_blood_fat)).setText("血脂：\n81");
+        ((TextView)header.findViewById(R.id.text_view_blood_fat)).setText("血脂：\n3.4\nmmol/L");
         //血糖
-        ((TextView)header.findViewById(R.id.text_view_blood_sugar)).setText("血糖：\n60");
+        ((TextView)header.findViewById(R.id.text_view_blood_sugar)).setText("血糖：\n5.0\nmmol/L");
         //睡眠
         ((TextView)header.findViewById(R.id.text_view_sleep)).setText("睡眠：\n7小时");
     }
@@ -272,10 +280,6 @@ public class MainActivity extends BaseActivity
             cursor.moveToFirst();
             consultFragment.addDataItem( cursor.getString( cursor.getColumnIndex(MediaStore.Images.Media.DATA) ) );
             cursor.close();
-        }else if(requestCode == ShowDoctorActivity.SHOW_DOCTOR_ACTIVITY_CODE){
-            if(resultCode != RESULT_OK || data == null )
-                return;
-            consultFragment.addDoctorItem( (Doctor) data.getSerializableExtra("DOCTOR") );
         }
     }
 
@@ -307,6 +311,7 @@ public class MainActivity extends BaseActivity
                         consultFragment = new ConsultFragment();
                         transaction.add(R.id.fragment_show, consultFragment);
                     }
+                    consultFragment.notifyDoctorList();
                     hideFragment(transaction);
                     transaction.show(consultFragment);
                     transaction.commit();

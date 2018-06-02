@@ -35,8 +35,6 @@
         android:textColor="@color/white"
         android:background="@drawable/shape_for_doctor_grade"
         android:layout_marginStart="@dimen/small_border"
-        android:paddingStart="@dimen/mini_border"
-        android:paddingEnd="@dimen/mini_border"
         app:layout_constraintTop_toTopOf="@id/text_view_pri_name"
         app:layout_constraintLeft_toRightOf="@id/text_view_pri_name"
         app:layout_constraintBottom_toBottomOf="@id/text_view_pri_name"/>

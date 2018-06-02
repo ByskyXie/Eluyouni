@@ -4,6 +4,9 @@
         <shape>
             <solid android:color="@color/steelBlue"/>
             <corners android:radius="@dimen/small_border"/>
+            <padding
+                android:right="@dimen/mini_border"
+                android:left="@dimen/mini_border"/>
         </shape>
     </item>
 </selector>

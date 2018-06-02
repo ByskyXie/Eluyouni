@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_margin="@dimen/mini_border"
-    android:layout_height="92dp">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/text_view_consult_add_doc"
@@ -12,6 +12,7 @@
         android:padding="@dimen/mid_border"
         android:clickable="true"
         android:focusable="true"
+        android:drawableTop="@drawable/ic_add_per"
         android:background="@drawable/shape_for_consult_add_button"
         android:gravity="center"
         android:layout_width="match_parent"

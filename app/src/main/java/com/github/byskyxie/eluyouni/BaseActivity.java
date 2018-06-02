@@ -36,9 +36,11 @@ public class BaseActivity extends AppCompatActivity {
 
     public static final String IP_SERVER = "192.168.137.1";  //"192.168.137.1"  "119.23.62.71"
     public static final String DATE_FORMAT = "yyyy-M-d HH:mm:ss";
+    protected static final int DOC_NUM_LIMIT = 5; //会诊室医生最大容量
     private static final int REQUEST_INTERNET = 10086;
     private static final int REQUEST_FILE_READ = 10010;
 
+    protected static ArrayList<Doctor> consultList = new ArrayList<>();
     protected static Patient userInfo = null;
     protected static SQLiteDatabase userDatabaseRead;
     protected static SQLiteDatabase userDatabasewrit;
@@ -476,6 +478,24 @@ public class BaseActivity extends AppCompatActivity {
         content.put("DHOT_LEVEL",doctor.getDhot_level());
         userDatabasewrit.insert("DOCTOR_BASE_INFO", null, content);
         return true;
+    }
+
+    protected boolean addConsultDoctor(Doctor doctor){
+        if(doctor == null || consultList.size()>=DOC_NUM_LIMIT || isConsultContain(doctor.getDid()))
+            return false;
+        consultList.add(doctor);
+        return true;
+    }
+
+    protected ArrayList<Doctor> getConsultList(){
+        return consultList;
+    }
+
+    protected boolean isConsultContain(long did){
+        for(Doctor d: consultList)
+            if(d.getDid() == did)
+                return true;
+        return false;
     }
 
 }

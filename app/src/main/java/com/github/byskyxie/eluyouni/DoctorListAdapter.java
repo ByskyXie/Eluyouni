@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,8 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.DoctorListHolder> {
+public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.DoctorListHolder>
+        implements View.OnClickListener{
 
     private Context context;
     private ArrayList<Doctor> list = new ArrayList<>();
@@ -68,6 +70,8 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
     @Override
     public void onBindViewHolder(@NonNull DoctorListHolder holder, int position) {
         final int actPos = holder.getAdapterPosition();
+        holder.view.setTag(actPos);
+        holder.view.setOnClickListener(this);
         holder.name.setText(list.get(actPos).getDname());
         holder.hospital.setText( list.get(actPos).getDhospital());
         holder.grade.setText( list.get(actPos).getGradeName() );
@@ -98,5 +102,13 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos = (int)v.getTag();
+        Intent intent = new Intent(context, ShowDoctorActivity.class);
+        intent.putExtra("DOCTOR", list.get(pos));
+        context.startActivity(intent);
     }
 }
