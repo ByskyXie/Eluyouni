@@ -1,6 +1,8 @@
 package com.github.byskyxie.eluyouni;
 
-public class Illness {
+import java.io.Serializable;
+
+public class Illness implements Serializable{
     private String name;
 
     public Illness(){}

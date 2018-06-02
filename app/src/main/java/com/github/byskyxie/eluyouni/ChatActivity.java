@@ -26,7 +26,7 @@ public class ChatActivity extends BaseActivity
 
     private SendWatcher watcher = new SendWatcher();
     private int targetType;
-    private int clickedPos;
+    private int clickedPos; //返回传入act列表点击的位置
     private Doctor doctorTalker;
     private Patient patientTalker;
     private RecyclerView recyclerChat;

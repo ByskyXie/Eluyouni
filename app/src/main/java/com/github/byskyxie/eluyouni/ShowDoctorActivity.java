@@ -86,6 +86,8 @@ public class ShowDoctorActivity extends BaseActivity
             case R.id.text_view_show_doc_query:
                 //咨询
                 intent = new Intent(this, ChatActivity.class);
+                intent.putExtra("Target",doctor);
+                intent.putExtra("TargetType",2);
                 startActivity(intent);
                 break;
             case R.id.text_view_show_doc_focus:

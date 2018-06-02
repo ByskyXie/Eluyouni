@@ -275,7 +275,6 @@ public class MainActivity extends BaseActivity
         }else if(requestCode == ShowDoctorActivity.SHOW_DOCTOR_ACTIVITY_CODE){
             if(resultCode != RESULT_OK || data == null )
                 return;
-            Log.e("++++++++++++","get data:"+data);
             consultFragment.addDoctorItem( (Doctor) data.getSerializableExtra("DOCTOR") );
         }
     }

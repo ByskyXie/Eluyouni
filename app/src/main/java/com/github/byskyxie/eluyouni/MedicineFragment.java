@@ -257,7 +257,8 @@ public class MedicineFragment extends Fragment {
                             fameList.add( doctor );
                     }
                     //插入数据库
-                    ((BaseActivity)getContext()).writeDoctorBaseInfo(fameList);
+                    if(getContext() != null)
+                        ((BaseActivity)getContext()).writeDoctorBaseInfo(fameList);
                     br.close();
                     Message msg = new Message();
                     msg.what = ACCEPT_FAME_LIST;
