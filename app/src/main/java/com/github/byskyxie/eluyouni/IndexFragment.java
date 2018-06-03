@@ -31,6 +31,7 @@ import static com.github.byskyxie.eluyouni.IndexPagerAdapter.BASE_INFO_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.COMMUNITY_ICON_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.DOCTOR_ICON_ACCEPT;
+import static com.github.byskyxie.eluyouni.IndexPagerAdapter.FOCUS_EVENT_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.FOCUS_ICON_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.PATIENT_ICON_ACCEPT;
 import static com.github.byskyxie.eluyouni.IndexPagerAdapter.RECOMMEND_ICON_ACCEPT;
@@ -71,8 +72,15 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
 
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
             switch (msg.what){
+                case FOCUS_EVENT_ACCEPT:
+                    if(fragment.get() == null){
+                        Log.e("indexFragmentHandler","indexFragment has recycler Focus");
+                        break;
+                    }
+                    fragment.get().indexPagerAdapter.addFocusList((ArrayList<Object>) msg.obj);
+                    (fragment.get()).getBaseInfo_focus((ArrayList<Object>)msg.obj);
+                    break;
                 case COMMUNITY_ACCEPT:
                     if(fragment.get() == null){
                         Log.e("indexFragmentHandler","indexFragment has recycler COMMUNITY");
@@ -147,15 +155,6 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         ie.printStackTrace();
                     }
                     fragment.get().indexPagerAdapter.patiRecycler.getAdapter().notifyItemChanged((int)msg.obj);
-                    break;
-                case FOCUS_ICON_ACCEPT:
-                    try {
-                        while(fragment.get().indexPagerAdapter.focusRecycler.isComputingLayout())
-                            Thread.sleep(200);
-                    }catch (InterruptedException ie){
-                        ie.printStackTrace();
-                    }
-                    fragment.get().indexPagerAdapter.focusRecycler.getAdapter().notifyItemChanged((int)msg.obj);
                     break;
             }
         }
@@ -262,6 +261,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         indexPagerAdapter = new IndexPagerAdapter(getContext(),views,titles);
         pager.setAdapter(indexPagerAdapter);
         pager.addOnPageChangeListener(this);
+        pager.setCurrentItem( 0 );    //设置主页
+        onPageSelected(0);
     }
 
 
@@ -321,7 +322,54 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         switch (position){
             case 0:
                 //更新关注
-
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Object> focusList = new ArrayList<>();
+                        String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/patient/focusevent?"+"pid="+ BaseActivity.userInfo.getPid()
+                                +"&startpos="+0+"&ndbody=false";    //TODO:startpos
+                        URL url;
+                        try {
+                            //链接服务器请求验证
+                            url = new URL(request);
+                            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                            InputStreamReader ins = new InputStreamReader( urlConnection.getInputStream());
+                            BufferedReader br = new BufferedReader(ins);
+                            //获得结果
+                            String line = br.readLine();
+                            if(line == null){
+                                //说明失败
+                                return;
+                            }
+                            //成功 读取数量
+                            int num = Integer.parseInt( line.substring(line.indexOf('=')+1) );
+                            for(int i=0; i<num; i++){
+                                line = br.readLine();
+                                if(getContext() == null){
+                                    Log.e("IndexFrag","getContext() has revoke");
+                                    return;
+                                }//下载推荐文章
+                                if(line.matches(".*ap"))
+                                    focusList.add( ((BaseActivity)getContext()).downloadOneArticlePatient(br) );
+                                else if(line.matches(".*ad"))
+                                    focusList.add( ((BaseActivity)getContext()).downloadOneArticleDoctor(br) );
+                                else if(line.matches(".*ac"))
+                                    focusList.add( ((BaseActivity)getContext()).downloadOnePatientCommunity(br) );
+                                else
+                                    Log.e("IndexFrag","error focus type:"+line);
+                            }
+                            //结束读取数据
+                            br.close();
+                            Message msg = new Message();
+                            msg.obj = focusList;
+                            msg.what = FOCUS_EVENT_ACCEPT;
+                            handler.sendMessage(msg);
+                        }catch (IOException ioe){
+                            ioe.getStackTrace();
+                        }
+                        //function end
+                    }
+                }).start();
                 break;
             case 1:
                 //推荐更新
@@ -514,6 +562,64 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 }).start();
                 break;
         }
+    }
+
+    private void getBaseInfo_focus(final ArrayList<Object> list){
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int renewNum = 0;   //更新信息数
+                ContentValues content = new ContentValues();
+                if(list == null)
+                    return;
+                for(Object obj: list){
+                    Cursor cursor;
+                    content.clear();
+                    if( obj instanceof ArticlePatient || (obj instanceof PatientCommunity && ((PatientCommunity) obj).getErType()==1) ){
+                        long pid = (obj instanceof ArticlePatient)? ((ArticlePatient) obj).getPid(): ((PatientCommunity) obj).getErId();
+                        cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
+                                , "PID=?",new String[]{""+pid},null,null,null,null);
+                        if(cursor.moveToFirst()){
+                            cursor.close();
+                            continue;
+                        }
+                        cursor.close();
+                        Patient patient = getPatientBaseInfo( pid );
+                        if(((BaseActivity)getContext()).writePatientBaseInfo(patient))
+                            renewNum++;
+                        //下载头像
+                        if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+                                ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
+                            ((BaseActivity)getContext()).downloadPicon(patient);
+                    }else if( obj instanceof ArticleDoctor|| (obj instanceof PatientCommunity && ((PatientCommunity) obj).getErType()==2)){
+                        long did = (obj instanceof ArticleDoctor)? ((ArticleDoctor) obj).getDid(): ((PatientCommunity) obj).getErId();
+                        cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
+                                , "DID=?",new String[]{""+did},null,null,null,null);
+                        if(cursor.moveToFirst()){
+                            cursor.close();
+                            continue;
+                        }
+                        cursor.close();
+                        Doctor doctor = getDoctorBaseInfo( did );
+                        if(((BaseActivity)getContext()).writeDoctorBaseInfo(doctor))
+                            renewNum++;
+                        //下载头像
+                        if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+                                ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
+                            ((BaseActivity)getContext()).downloadDicon(doctor);
+                    }
+                }
+                //如果一条信息都未更新，不必刷新视图
+                if(renewNum == 0){
+                    return;
+                }
+                Message msg = new Message();
+                msg.what = BASE_INFO_ACCEPT;
+                handler.sendMessage(msg);
+            }
+        }).start();
+        //function end
     }
 
     private void getBaseInfo_recom(final ArrayList<ArticleRecommend> list){

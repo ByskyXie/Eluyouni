@@ -65,4 +65,9 @@ public class PatientCommunity {
     public void setAssentNum(int assentNum) {
         this.assentNum = assentNum;
     }
+
+    @Override
+    public String toString() {
+        return "time:"+getTime();
+    }
 }

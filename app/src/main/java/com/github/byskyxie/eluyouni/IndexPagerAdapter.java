@@ -19,6 +19,8 @@ public class IndexPagerAdapter extends PagerAdapter{
     static final int ARTICLE_DOCTOR_ACCEPT = 0x1000;
     static final int ARTICLE_PATIENT_ACCEPT = 0x1001;
     static final int ARTICLE_RECOMMEND_ACCEPT = 0x1010;
+    static final int FOCUS_EVENT_ACCEPT = 0x1100;
+
     static final int FOCUS_ICON_ACCEPT  = 0x2010;
     static final int RECOMMEND_ICON_ACCEPT  = 0x2011;
     static final int PATIENT_ICON_ACCEPT  = 0x2012;
@@ -46,6 +48,14 @@ public class IndexPagerAdapter extends PagerAdapter{
         patiRecycler = list.get(2).findViewById(R.id.recycler_article_patient);
         docRecycler = list.get(3).findViewById(R.id.recycler_article_doctor);
         commRecycler = list.get(4).findViewById(R.id.recycler_community);
+    }
+
+    public void addFocusList(ArrayList<Object> list){
+        if( ((FocusAdapter)focusRecycler.getAdapter()).compareDataSetSame(list) )
+            return;
+        //加入新元素
+        ((FocusAdapter)focusRecycler.getAdapter()).addData(list);
+        commitDataChanged( 0);
     }
 
     public void addRecomList(ArrayList<ArticleRecommend> recomList){
@@ -114,7 +124,9 @@ public class IndexPagerAdapter extends PagerAdapter{
         checkedPage = position;
         switch (checkedPage){
             case 0:
-
+                if(focusRecycler == null)
+                    focusRecycler = container.findViewById(R.id.recycler_focus);
+                focusRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 1:
                 if(recomRecycler == null)
@@ -150,6 +162,10 @@ public class IndexPagerAdapter extends PagerAdapter{
             pos = checkedPage;
         switch (pos){
             case 0:
+                if(focusRecycler == null || focusRecycler.getAdapter() == null)
+                    break;
+                Log.e("adapter","notifyDataChage");
+                focusRecycler.getAdapter().notifyDataSetChanged();
                 break;
             case 1:
                 if(recomRecycler == null || recomRecycler.getAdapter() == null){

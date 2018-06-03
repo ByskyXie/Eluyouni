@@ -56,4 +56,9 @@ public class ArticleDoctor {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "time:"+getTime();
+    }
 }

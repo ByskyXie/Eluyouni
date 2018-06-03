@@ -26,7 +26,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
 
     private Context context;
     private IndexFragment.IndexHandler handler;
-    private ArrayList<Object> list;
+    private ArrayList<Object> list = new ArrayList<>();
 
     static class FocusHolder extends RecyclerView.ViewHolder{
         private View view;
@@ -36,13 +36,17 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         }
     }
 
-    public FocusAdapter(Context context, ArrayList<Object> list, IndexFragment.IndexHandler handler) {
+    FocusAdapter(Context context, ArrayList<Object> list, IndexFragment.IndexHandler handler) {
         this.context = context;
         this.handler = handler;
-        this.list = list;
+        if(list == null)
+            return;
+        addData( list );
     }
 
     protected void addData(ArrayList<Object> list){
+        if(this.list.size()>0)
+            return;//TODO:只下载一次
         if(list == null)
             return;
         for(Object obj: list)
@@ -53,6 +57,10 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         if(obj == null || (!(obj instanceof ArticlePatient) &&
                 !(obj instanceof ArticleDoctor) && !(obj instanceof PatientCommunity) ))
             return;
+        for(Object item: list){
+            if(item.toString().equals(obj))
+                return;
+        }
         list.add(obj);
     }
 
@@ -62,7 +70,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
 
     protected boolean compareDataSetSame(ArrayList<Object> list){
         //TODO:对比函数
-        return true;
+        return false;
     }
 
     @Override
@@ -268,7 +276,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         }
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_time)).setText( com.getTime());
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_content)).setText( com.getCcontent());
-        ((TextView)holder.view.findViewById(R.id.text_view_item_community_assent)).setText( com.getCcontent()+" ");//TODO:点赞效果
+        ((TextView)holder.view.findViewById(R.id.text_view_item_community_assent)).setText( com.getAssentNum()+" ");//TODO:点赞效果
     }
 
     @Override
