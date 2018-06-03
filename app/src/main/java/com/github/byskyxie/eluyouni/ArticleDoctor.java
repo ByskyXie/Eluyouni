@@ -1,6 +1,8 @@
 package com.github.byskyxie.eluyouni;
 
-public class ArticleDoctor {
+import java.io.Serializable;
+
+public class ArticleDoctor implements Serializable{
     private long adid;
     private long did;
     private String title;
@@ -9,7 +11,7 @@ public class ArticleDoctor {
 
     public ArticleDoctor(){}
 
-    public ArticleDoctor(int adid, long did, String title, String time, String content) {
+    public ArticleDoctor(long adid, long did, String title, String time, String content) {
         this.adid = adid;
         this.did = did;
         this.title = title;

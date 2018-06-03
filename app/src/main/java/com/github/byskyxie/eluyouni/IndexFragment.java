@@ -378,7 +378,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     public void run() {
                         ArrayList<ArticleRecommend> recomList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/recommend?"+"pid="+ BaseActivity.userInfo.getPid()
-                                +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=false";
+                                +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=true";
                         URL url;
                         try {
                             //链接服务器请求验证
@@ -426,7 +426,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     public void run() {
                         ArrayList<ArticlePatient> patList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/patientarticle?"+"pid="+ BaseActivity.userInfo.getPid()
-                                +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=false";
+                                +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=true";
                         URL url;
                         try {
                             //链接服务器请求验证
@@ -474,7 +474,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     public void run() {
                         ArrayList<ArticleDoctor> docList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/doctorarticle?"+"pid="+ BaseActivity.userInfo.getPid()
-                                +"&startpos="+(1+indexPagerAdapter.docRecycler.getAdapter().getItemCount())+"&ndbody=false";
+                                +"&startpos="+(1+indexPagerAdapter.docRecycler.getAdapter().getItemCount())+"&ndbody=true";
                         URL url;
                         try {
                             //链接服务器请求验证

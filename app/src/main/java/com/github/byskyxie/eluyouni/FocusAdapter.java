@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Message;
@@ -19,7 +20,7 @@ import org.w3c.dom.Text;
 import java.io.File;
 import java.util.ArrayList;
 
-public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder> {
+public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder> implements View.OnClickListener{
     private static final int VIEW_TYPE_ARTICLE_PATIENT = 0X0101;
     private static final int VIEW_TYPE_ARTICLE_DOCTOR = 0X0102;
     private static final int VIEW_TYPE_COMMUNITY = 0X0103;
@@ -153,6 +154,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
     private void bindArticleDoctorData(FocusHolder holder, final int position){
         int actPos = holder.getAdapterPosition();
         ArticleDoctor ad = (ArticleDoctor) list.get(actPos);
+        holder.view.setOnClickListener(this);
+        holder.view.setTag(actPos);
         ((TextView)holder.view.findViewById(R.id.text_view_article_doctor_title)).setText( ad.getTitle() );
         //获取医生姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
@@ -184,6 +187,8 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
     private void bindArticlePatientData(FocusHolder holder, final int position){
         int actPos = holder.getAdapterPosition();
         ArticlePatient ap = (ArticlePatient)list.get(actPos);
+        holder.view.setOnClickListener(this);
+        holder.view.setTag(actPos);
         ((TextView)holder.view.findViewById(R.id.text_view_article_patient_title)).setText( ap.getTitle() );
         //获取姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
@@ -277,6 +282,16 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_time)).setText( com.getTime());
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_content)).setText( com.getCcontent());
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_assent)).setText( com.getAssentNum()+" ");//TODO:点赞效果
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos = (int)v.getTag();
+        Object obj = list.get(pos);
+        Intent intent = new Intent(context, ShowArticleActivity.class);
+        intent.putExtra("TITLE",context.getString(R.string.pager_focus));
+        intent.putExtra("ARTICLE", (obj instanceof ArticlePatient)? (ArticlePatient)obj: (ArticleDoctor)obj );
+        context.startActivity(intent);
     }
 
     @Override

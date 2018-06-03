@@ -385,6 +385,22 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    protected Patient readPatientBaseInfo(long pid){
+        Cursor cursor = userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
+                , "PID=?",new String[]{""+pid},null,null,null,null);
+        if( !cursor.moveToFirst()){
+            return null;
+        }
+        Patient patient = new Patient();
+        patient.setPid(pid);
+        patient.setPname( cursor.getString( cursor.getColumnIndex("PNAME") ) );
+        patient.setPsex( cursor.getInt( cursor.getColumnIndex("PSEX") ) );
+        patient.setPicon( cursor.getString( cursor.getColumnIndex("PICON") ) );
+        patient.setPscore( cursor.getInt( cursor.getColumnIndex("PSCORE") ) );
+        cursor.close();
+        return patient;
+    }
+
     protected Doctor downloadOneDoctorBaseInfo(BufferedReader br) throws IOException{
         Doctor doctor = new Doctor();
         String line;
@@ -450,6 +466,7 @@ public class BaseActivity extends AppCompatActivity {
         return num;
     }
 
+
     protected boolean writeDoctorBaseInfo(Doctor doctor){
         if(doctor == null)
             return false;
@@ -480,8 +497,33 @@ public class BaseActivity extends AppCompatActivity {
         return true;
     }
 
+    protected Doctor readDoctorBaseInfo(long did){
+        Cursor cursor = userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
+                , "DID=?",new String[]{""+did},null,null,null,null);
+        if( !cursor.moveToFirst() ){
+            return null;
+        }
+        Doctor doctor = new Doctor();
+        doctor.setDid(did);
+        doctor.setDname( cursor.getString( cursor.getColumnIndex("DNAME") ) );
+        doctor.setDsex( cursor.getInt( cursor.getColumnIndex("DSEX") ) );
+        doctor.setDicon( cursor.getString( cursor.getColumnIndex("DICON") ) );
+        doctor.setDillness( cursor.getString( cursor.getColumnIndex("DILLNESS") ) );
+        doctor.setDgrade( cursor.getInt( cursor.getColumnIndex("DGRADE") ) );
+        doctor.setDprofess( cursor.getString( cursor.getColumnIndex("DPROFESS") ) );
+        doctor.setDcareer( cursor.getString( cursor.getColumnIndex("DCAREER") ) );
+        doctor.setDhospital( cursor.getString( cursor.getColumnIndex("DHOSPITAL") ) );
+        doctor.setDmarking( cursor.getFloat( cursor.getColumnIndex("DMARKING") ) );
+        doctor.setD24hreply( cursor.getFloat( cursor.getColumnIndex("D24HREPLY") ) );
+        doctor.setDpatient_num( cursor.getInt( cursor.getColumnIndex("DPATIENT_NUM") ) );
+        doctor.setDhot_level( cursor.getFloat( cursor.getColumnIndex("DHOT_LEVEL") ) );
+        cursor.close();
+        return doctor;
+    }
+
     protected ArticleRecommend downloadOneArticleRecommend(BufferedReader br) throws IOException{
         String line;
+        StringBuilder temp = new StringBuilder();
         ArticleRecommend ar = new ArticleRecommend();
         //arid
         line = br.readLine();
@@ -498,13 +540,23 @@ public class BaseActivity extends AppCompatActivity {
         //time
         line = br.readLine();
         ar.setTime( line.substring(line.indexOf('=')+1) );
-        //不需要content
-        ar.setContent(null);
+        //content
+        line = br.readLine();
+        temp.append( line.substring(line.indexOf('=')+1) );
+        do{
+            line = br.readLine();
+            if(line.matches("end=.+"))
+                break;
+            temp.append( line );
+            temp.append('\n');
+        }while(true);
+        ar.setContent( temp.toString() );
         return ar;
     }
 
     protected ArticlePatient downloadOneArticlePatient(BufferedReader br) throws IOException{
         ArticlePatient ap = new ArticlePatient();
+        StringBuilder temp = new StringBuilder();
         String line;
         //apid
         line = br.readLine();
@@ -518,13 +570,23 @@ public class BaseActivity extends AppCompatActivity {
         //time
         line = br.readLine();
         ap.setTime( line.substring(line.indexOf('=')+1) );
-        //不需要content
-        ap.setContent(null);
+        //content
+        line = br.readLine();
+        temp.append( line.substring(line.indexOf('=')+1) );
+        do{
+            line = br.readLine();
+            if(line.matches("end=.+"))
+                break;
+            temp.append( line );
+            temp.append('\n');
+        }while(true);
+        ap.setContent( temp.toString() );
         return ap;
     }
 
     protected ArticleDoctor downloadOneArticleDoctor(BufferedReader br) throws IOException{
         ArticleDoctor ad = new ArticleDoctor();
+        StringBuilder temp = new StringBuilder();
         String line;
         //adid
         line = br.readLine();
@@ -538,8 +600,17 @@ public class BaseActivity extends AppCompatActivity {
         //time
         line = br.readLine();
         ad.setTime( line.substring(line.indexOf('=')+1) );
-        //不需要 content
-        ad.setContent(null);
+        //content
+        line = br.readLine();
+        temp.append( line.substring(line.indexOf('=')+1) );
+        do{
+            line = br.readLine();
+            if(line.matches("end=.+"))
+                break;
+            temp.append( line );
+            temp.append('\n');
+        }while(true);
+        ad.setContent( temp.toString() );
         return ad;
     }
 
@@ -567,6 +638,7 @@ public class BaseActivity extends AppCompatActivity {
             if(line.matches("assent=.+"))
                 break;
             temp.append( line );
+            temp.append('\n');
         }while(true);
         pc.setCcontent( temp.toString() );
         //assent 直到遇见assent

@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Message;
@@ -16,19 +17,22 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdapter.DoctorArticleHolder> {
+public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdapter.DoctorArticleHolder>
+            implements View.OnClickListener{
 
     private Context context;
     private IndexFragment.IndexHandler handler;
     private ArrayList<ArticleDoctor> list = new ArrayList<>();
 
     static class DoctorArticleHolder extends RecyclerView.ViewHolder{
+        private View view;
         private TextView title;
         private TextView name;
         private ImageView icon;
         private ImageView pic;
         DoctorArticleHolder(View itemView) {
             super(itemView);
+            view = itemView;
             title = itemView.findViewById(R.id.text_view_article_doctor_title);
             name = itemView.findViewById(R.id.text_view_article_doctor_name);
             icon = itemView.findViewById(R.id.image_view_article_doctor_icon);
@@ -70,6 +74,8 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
     @Override
     public void onBindViewHolder(@NonNull DoctorArticleHolder holder, int position) {
         int actPos = holder.getAdapterPosition();
+        holder.view.setTag(actPos);
+        holder.view.setOnClickListener( this );
         holder.title.setText( list.get(actPos).getTitle() );
         //获取医生姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
@@ -108,6 +114,15 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
                 handler.sendMessage(msg);
             }
         }).start();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos = (int)v.getTag();
+        Intent intent = new Intent(context, ShowArticleActivity.class);
+        intent.putExtra("TITLE",context.getString(R.string.pager_recommend));
+        intent.putExtra("ARTICLE", list.get(pos) );
+        context.startActivity(intent);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.github.byskyxie.eluyouni;
 
-public class ArticlePatient {
+import java.io.Serializable;
+
+public class ArticlePatient implements Serializable{
     private long apid;
     private long pid;
     private String title;

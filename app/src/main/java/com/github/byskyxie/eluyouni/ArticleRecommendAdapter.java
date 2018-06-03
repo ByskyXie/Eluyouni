@@ -1,6 +1,7 @@
 package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.os.Message;
@@ -17,18 +18,21 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecommendAdapter.ArticleRecommendHolder> {
+public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecommendAdapter.ArticleRecommendHolder>
+                implements View.OnClickListener{
     private ArrayList<ArticleRecommend> list = new ArrayList<>();
     private Context context;
     private IndexFragment.IndexHandler handler;
 
     static class ArticleRecommendHolder extends RecyclerView.ViewHolder{
+        private View view;
         private TextView title;
         private TextView name;
         private ImageView icon;
         private ImageView pic;
         ArticleRecommendHolder(View itemView) {
             super(itemView);
+            view = itemView;
             title = itemView.findViewById(R.id.text_view_article_recom_title);
             name = itemView.findViewById(R.id.text_view_article_recom_name);
             icon = itemView.findViewById(R.id.image_view_article_recom_icon);
@@ -70,6 +74,8 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
     @Override
     public void onBindViewHolder(@NonNull ArticleRecommendAdapter. ArticleRecommendHolder holder, int position) {
         int actPos = holder.getAdapterPosition();
+        holder.view.setTag(actPos);
+        holder.view.setOnClickListener(this);
         holder.title.setText( list.get(actPos).getTitle() );
         if( list.get(actPos).getErtype() == 1 ){
             //获取患者姓名
@@ -151,6 +157,19 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
                 handler.sendMessage(msg);
             }
         }).start();
+    }
+
+    @Override
+    public void onClick(View v) {
+        int pos = (int)v.getTag();
+        ArticleRecommend ar = list.get(pos);
+        Intent intent = new Intent(context, ShowArticleActivity.class);
+        intent.putExtra("TITLE",context.getString(R.string.pager_recommend));
+        if(ar.getErtype() == 1)
+            intent.putExtra("ARTICLE", new ArticlePatient(ar.getArid(), ar.getErid(), ar.getTitle(), ar.getTime(), ar.getContent()) );
+        else
+            intent.putExtra("ARTICLE", new ArticleDoctor( ar.getArid(), ar.getErid(), ar.getTitle(), ar.getTime(), ar.getContent()) );
+        context.startActivity(intent);
     }
 
     @Override
