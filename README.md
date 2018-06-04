@@ -10,14 +10,9 @@
 
 ## 使用效果
 
-<img src="/img/index.jpg" width="200" height="355"/>
-<img src="/img/nav.jpg" width="200" height="355"/>
-<img src="/img/fame.jpg" width="200" height="355"/>
-<img src="/img/consult.jpg" width="200" height="355"/>
-<img src="/img/pridoc.jpg" width="200" height="355"/>
-<img src="/img/chat.jpg" width="200" height="355"/>
-<img src="/img/medicine.jpg" width="200" height="355"/>
-<img src="/img/emer.jpg" width="200" height="355"/>
+<img src="/img/index.jpg" width="200" height="355"/><img src="/img/nav.jpg" width="200" height="355"/><img src="/img/fame.jpg" width="200" height="355"/>
+<img src="/img/consult.jpg" width="200" height="355"/><img src="/img/pridoc.jpg" width="200" height="355"/><img src="/img/chat.jpg" width="200" height="355"/>
+<img src="/img/medicine.jpg" width="200" height="355"/><img src="/img/emer.jpg" width="200" height="355"/>
 
 ## LICENSE
 
