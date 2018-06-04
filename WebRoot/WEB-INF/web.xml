@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <servlet>
+    <servlet-name>FocusEvenServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>servlet.FocusEvenServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PatientExperServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>For patient exper</description>
+    <servlet-class>servlet.PatientExperServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PatientFocusEvent</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>For patient focus event</description>
+    <servlet-class>servlet.PatientFocusEvent</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PatientFamousDoctorServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>For patient famous doctor</description>
+    <servlet-class>servlet.PatientFamousDoctorServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>CommunityServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>Community</description>
+    <servlet-class>servlet.CommunityServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>GetInfoServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>get doctor or patient base info</description>
+    <servlet-class>servlet.GetInfoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PatientDoctorArticleServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>Show doctor article</description>
+    <servlet-class>servlet.PatientDoctorArticleServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PatientArticlePatientServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>Show patient article</description>
+    <servlet-class>servlet.PatientArticlePatientServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PatientArticleRecommendServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>Show recommend article</description>
+    <servlet-class>servlet.PatientArticleRecommendServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PrivateDocServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>Output private doc info</description>
+    <servlet-class>servlet.PrivateDocServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PictureServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>servlet.PictureServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>SectionServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>servlet.SectionServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>DoctorListServlet</servlet-name>
+    <display-name>This is the display name of my J2EE component</display-name>
+    <description>This is the description of my J2EE component</description>
+    <servlet-class>servlet.DoctorListServlet</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>FocusEvenServlet</servlet-name>
+    <url-pattern>/servlet/FocusEvenServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PatientExperServlet</servlet-name>
+    <url-pattern>/servlet/PatientExperServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PatientFocusEvent</servlet-name>
+    <url-pattern>/servlet/PatientFocusEvent</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PatientFamousDoctorServlet</servlet-name>
+    <url-pattern>/servlet/PatientFamousDoctorServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CommunityServlet</servlet-name>
+    <url-pattern>/servlet/CommunityServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GetInfoServlet</servlet-name>
+    <url-pattern>/servlet/GetInfoServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PatientDoctorArticleServlet</servlet-name>
+    <url-pattern>/servlet/PatientDoctorArticleServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PatientArticlePatientServlet</servlet-name>
+    <url-pattern>/servlet/PatientArticlePatientServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PatientArticleRecommendServlet</servlet-name>
+    <url-pattern>/servlet/PatientArticleRecommendServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PrivateDocServlet</servlet-name>
+    <url-pattern>/servlet/PrivateDocServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PictureServlet</servlet-name>
+    <url-pattern>/servlet/PictureServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SectionServlet</servlet-name>
+    <url-pattern>/servlet/SectionServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DoctorListServlet</servlet-name>
+    <url-pattern>/servlet/DoctorListServlet</url-pattern>
+  </servlet-mapping>
+
+</web-app>
