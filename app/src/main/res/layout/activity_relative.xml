@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundGray"
+    android:orientation="vertical"
+    tools:context=".RelativeActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_relative"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_relative"
+            app:title="亲情账号"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:padding="@dimen/small_border"
+        android:background="@drawable/shape_for_text_border"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            app:srcCompat="@drawable/ic_patient_male"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <TextView
+            android:text="张国年"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/mid_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="暂无聊天内容"
+            android:layout_gravity="center"
+            android:textSize="17sp"
+            android:layout_marginStart="@dimen/mid_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="@dimen/small_border"
+        android:background="@drawable/shape_for_text_border"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            app:srcCompat="@drawable/ic_patient_male"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <TextView
+            android:text="王小明"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/mid_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="暂无聊天内容"
+            android:layout_gravity="center"
+            android:textSize="17sp"
+            android:layout_marginStart="@dimen/mid_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:padding="@dimen/small_border"
+        android:background="@drawable/shape_for_text_border"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            app:srcCompat="@drawable/ic_patient_female"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+        <TextView
+            android:text="周娲"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:paddingStart="@dimen/mid_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="暂无聊天内容"
+            android:layout_gravity="center"
+            android:textSize="17sp"
+            android:layout_marginStart="@dimen/mid_border"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+</LinearLayout>

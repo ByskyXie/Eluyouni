@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -51,6 +52,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ViewPager pager;
+    private TabLayout tab;
     private IndexPagerAdapter indexPagerAdapter;
     private IndexHandler handler = new IndexHandler(this);
 
@@ -197,6 +199,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_index, container, false);
+        tab = view.findViewById(R.id.tab_view_pager);
+        pager = view.findViewById(R.id.view_pager);
         //设置pager内容
         initialUI(view);
         return view;
@@ -208,7 +212,6 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         View item;
         RecyclerView.Adapter adapter;
         RecyclerView recycler;
-        pager = view.findViewById(R.id.view_pager);
         //focus
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
         item = LayoutInflater.from(getContext()).inflate(R.layout.pager_focus,pager,false);
@@ -263,6 +266,9 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         pager.addOnPageChangeListener(this);
         pager.setCurrentItem( 0 );    //设置主页
         onPageSelected(0);
+
+        tab.setupWithViewPager(pager);
+        tab.setTabMode(TabLayout.MODE_FIXED);
     }
 
 

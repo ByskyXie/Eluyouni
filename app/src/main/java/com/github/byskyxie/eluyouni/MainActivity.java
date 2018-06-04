@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity
     private RadioButton radioButtonDoc;
 
     private Dialog dialogExit;
+    private Dialog dialogEmerg;
     private IndexFragment indexFragment;
     private ConsultFragment consultFragment;
     private MedicineFragment medicineFragment;
@@ -178,6 +179,21 @@ public class MainActivity extends BaseActivity
         dialogExit.show();
     }
 
+    protected void showEmergeDialog(){
+        if(dialogEmerg != null){
+            dialogEmerg.show();
+            return;
+        }
+        dialogEmerg = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog);
+        dialogEmerg.setContentView(R.layout.dialog_emerg);
+        dialogEmerg.findViewById(R.id.button_emerg_cancel).setOnClickListener(this);
+        //position
+        Window window = dialogEmerg.getWindow();
+        if(window != null)
+            window.setGravity(Gravity.CENTER);
+        dialogEmerg.show();
+    }
+
     /**
      * function:Top main menu
      * */
@@ -200,8 +216,7 @@ public class MainActivity extends BaseActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_emergency) {
-            //TODO：发送紧急信息
-
+            showEmergeDialog();
             return true;
         }
 
@@ -234,6 +249,8 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_menu_my_relate_account:
                 //亲情账号
+                Intent intent = new Intent(this, RelativeActivity.class);
+                startActivity(intent);
                 break;
         }
 
@@ -373,6 +390,9 @@ public class MainActivity extends BaseActivity
             case R.id.button_exit_confirm:
                 finish();
                 System.exit(0);
+                break;
+            case R.id.button_emerg_cancel:
+                dialogEmerg.dismiss();
                 break;
         }
     }
