@@ -41,7 +41,7 @@
             android:name=".ShowArticleActivity"
             android:theme="@style/NewTheme.Activity.Anim" />
         <activity android:name=".RelativeActivity">
-            
+
         </activity>
     </application>
 

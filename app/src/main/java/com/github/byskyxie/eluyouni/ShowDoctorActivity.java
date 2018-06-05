@@ -1,13 +1,16 @@
 package com.github.byskyxie.eluyouni;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +22,7 @@ public class ShowDoctorActivity extends BaseActivity
 
     public static final int SHOW_DOCTOR_ACTIVITY_CODE = 0x0120;
 
+    private Dialog dialogPri;
     private Doctor doctor;
 
     @Override
@@ -116,9 +120,48 @@ public class ShowDoctorActivity extends BaseActivity
                 break;
             case R.id.text_view_show_doc_pri:
                 //私人医生,弹窗要钱
-
+                if(doctor.getDgrade()>userInfo.getGrade()){
+                    showPriDialog();
+                }else{
+                    //联网更新数据
+                    updatePriDoc();
+                    v.setEnabled(false);
+                }
+                break;
+            case R.id.button_exit_cancel:
+                //取消
+                dialogPri.dismiss();
+                break;
+            case R.id.button_exit_confirm:
+                //花钱
+                updatePriDoc();
+                findViewById(R.id.text_view_show_doc_pri).setEnabled(false);
+                dialogPri.dismiss();
                 break;
         }
+    }
+
+    private void updatePriDoc(){
+        //TODO:update private doctor
+    }
+
+    private void showPriDialog(){
+        if(dialogPri != null){
+            dialogPri.show();
+            return;
+        }
+        dialogPri = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog);
+        dialogPri.setContentView(R.layout.dialog_exit);
+        dialogPri.findViewById(R.id.button_exit_cancel).setBackgroundColor(ContextCompat.getColor(this,R.color.white));
+        dialogPri.findViewById(R.id.button_exit_confirm).setBackgroundColor(ContextCompat.getColor(this,R.color.colorGrayBlue));
+        dialogPri.findViewById(R.id.button_exit_cancel).setOnClickListener(this);
+        dialogPri.findViewById(R.id.button_exit_confirm).setOnClickListener(this);
+        ((TextView)dialogPri.findViewById(R.id.text_view_exit_hint)).setText("你当前等级不够\n是否支付费用雇用该医生？");
+        //position
+        Window window = dialogPri.getWindow();
+        if(window != null)
+            window.setGravity(Gravity.CENTER);
+        dialogPri.show();
     }
 
     @Override

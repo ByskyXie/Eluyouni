@@ -83,8 +83,6 @@ public class Patient implements Serializable{
     }
 
     public String getGradeName(){
-        if(pscore>150)
-            return "钻石";
         if(pscore>120)
             return "铂金";
         if(pscore>90)
@@ -92,6 +90,16 @@ public class Patient implements Serializable{
         if(pscore>60)
             return "白银";
         return "青铜";
+    }
+
+    public int getGrade(){
+        if(pscore>120)
+            return 4;
+        if(pscore>90)
+            return 3;
+        if(pscore>60)
+            return 2;
+        return 1;
     }
 
     public void save(){
