@@ -27,7 +27,7 @@
     <TextView
         android:id="@+id/text_view_exit_hint"
         android:text="@string/exit_hint"
-        android:maxLines="1"
+        android:maxLines="2"
         android:textSize="17sp"
         android:layout_marginTop="@dimen/mid_border"
         android:layout_width="wrap_content"

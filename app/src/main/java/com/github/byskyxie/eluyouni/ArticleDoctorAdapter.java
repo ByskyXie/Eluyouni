@@ -26,6 +26,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
 
     static class DoctorArticleHolder extends RecyclerView.ViewHolder{
         private View view;
+        private TextView content;
         private TextView title;
         private TextView name;
         private ImageView icon;
@@ -33,6 +34,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
         DoctorArticleHolder(View itemView) {
             super(itemView);
             view = itemView;
+            content = itemView.findViewById(R.id.text_view_article_doctor_content);
             title = itemView.findViewById(R.id.text_view_article_doctor_title);
             name = itemView.findViewById(R.id.text_view_article_doctor_name);
             icon = itemView.findViewById(R.id.image_view_article_doctor_icon);
@@ -77,6 +79,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
         holder.view.setTag(actPos);
         holder.view.setOnClickListener( this );
         holder.title.setText( list.get(actPos).getTitle() );
+        holder.content.setText( list.get(actPos).getContent() );
         //获取医生姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                 , "DID=? ",new String[]{""+list.get(actPos).getDid() },null,null,null,null);
@@ -120,7 +123,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
     public void onClick(View v) {
         int pos = (int)v.getTag();
         Intent intent = new Intent(context, ShowArticleActivity.class);
-        intent.putExtra("TITLE",context.getString(R.string.pager_recommend));
+        intent.putExtra("TITLE",context.getString(R.string.pager_famous_doc));
         intent.putExtra("ARTICLE", list.get(pos) );
         context.startActivity(intent);
     }

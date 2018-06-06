@@ -168,6 +168,7 @@ public class MainActivity extends BaseActivity
         }
         dialogExit = new Dialog(this, R.style.Theme_AppCompat_Light_Dialog);
         dialogExit.setContentView(R.layout.dialog_exit);
+        ((TextView)dialogExit.findViewById(R.id.text_view_exit_hint)).setText(getString(R.string.exit_hint));
         dialogExit.findViewById(R.id.button_exit_cancel).setBackgroundColor(ContextCompat.getColor(this,R.color.white));
         dialogExit.findViewById(R.id.button_exit_confirm).setBackgroundColor(ContextCompat.getColor(this,R.color.colorGrayBlue));
         dialogExit.findViewById(R.id.button_exit_cancel).setOnClickListener(this);

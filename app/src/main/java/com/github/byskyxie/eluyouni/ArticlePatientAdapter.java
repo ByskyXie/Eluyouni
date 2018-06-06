@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -28,6 +30,7 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
 
     static class ArticlePatientHolder extends RecyclerView.ViewHolder{
         private View view;
+        private TextView content;
         private TextView title;
         private TextView name;
         private ImageView icon;
@@ -35,6 +38,7 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
         ArticlePatientHolder(View itemView) {
             super(itemView);
             view = itemView;
+            content = itemView.findViewById(R.id.text_view_article_patient_content);
             title = itemView.findViewById(R.id.text_view_article_patient_title);
             name = itemView.findViewById(R.id.text_view_article_patient_name);
             icon = itemView.findViewById(R.id.image_view_article_patient_icon);
@@ -79,6 +83,7 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
         holder.view.setTag(actPos);
         holder.view.setOnClickListener(this);
         holder.title.setText( list.get(actPos).getTitle() );
+        holder.content.setText( list.get(actPos).getContent() );
         //获取姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
                 , "PID=? ",new String[]{""+list.get(actPos).getPid() },null,null,null,null);
@@ -124,7 +129,7 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
     public void onClick(View v) {
         int pos = (int)v.getTag();
         Intent intent = new Intent(context, ShowArticleActivity.class);
-        intent.putExtra("TITLE",context.getString(R.string.pager_recommend));
+        intent.putExtra("TITLE",context.getString(R.string.pager_patient_exper));
         intent.putExtra("ARTICLE", list.get(pos) );
         context.startActivity(intent);
     }

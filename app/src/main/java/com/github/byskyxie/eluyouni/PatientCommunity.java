@@ -7,8 +7,9 @@ public class PatientCommunity {
     private String time;
     private String ccontent;
     private int assentNum;
+    private boolean assented ;
 
-    protected PatientCommunity(){}
+    protected PatientCommunity(){ assented = false;}
     protected PatientCommunity(long cid, long erId, int erType, String time, String ccontent, int assentNum) {
         this.cid = cid;
         this.erId = erId;
@@ -16,6 +17,7 @@ public class PatientCommunity {
         this.time = time;
         this.ccontent = ccontent;
         this.assentNum = assentNum;
+        assented = false;
     }
 
     public String getTime() {
@@ -64,6 +66,14 @@ public class PatientCommunity {
 
     public void setAssentNum(int assentNum) {
         this.assentNum = assentNum;
+    }
+
+    public boolean isAssented() {
+        return assented;
+    }
+
+    public void setAssented(boolean assented) {
+        this.assented = assented;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.github.byskyxie.eluyouni;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -18,7 +19,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 
-public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.CommunityHolder> {
+public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.CommunityHolder>
+            implements View.OnClickListener{
 
     private Context context;
     private IndexFragment.IndexHandler handler;
@@ -77,6 +79,7 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
     @Override
     public void onBindViewHolder(@NonNull CommunityHolder holder, final int position) {
         int actPos = holder.getAdapterPosition();
+        holder.itemView.setTag(actPos);
         if(list.get(actPos).getErType() == 1){
             holder.tag.setText("患者");
             //获取患者姓名
@@ -133,7 +136,10 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
         }
         holder.time.setText( list.get(actPos).getTime());
         holder.content.setText( list.get(actPos).getCcontent());
-        holder.assent.setText( list.get(actPos).getAssentNum()+" ");//TODO:点赞按钮
+        holder.assent.setOnClickListener(this);
+        holder.assent.setText( list.get(actPos).getAssentNum()+" ");
+        holder.assent.setTag( actPos );
+        setIsAssent(holder.assent, list.get(actPos).isAssented());
     }
 
     private void downloadDicon(final String dicon, final int position){
@@ -169,4 +175,30 @@ public class CommunityAdapter extends RecyclerView.Adapter<CommunityAdapter.Comm
         return list.size();
     }
 
+    protected void setIsAssent(TextView view, boolean isAssent){
+        Drawable d = null;
+        if( isAssent ){
+            d = ContextCompat.getDrawable(context, R.drawable.ic_zan_checked);
+        }else{
+            d = ContextCompat.getDrawable(context, R.drawable.ic_zan);
+        }
+        if(d != null)
+            d.setBounds(0,0,d.getMinimumWidth(),d.getMinimumHeight());
+        else
+            Log.e("Assent set","get icon failed");
+        view.setCompoundDrawables(null, null, d,null);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int actPos = (int)v.getTag();
+        switch (v.getId()){
+        case R.id.text_view_item_community_assent:
+            int i =list.get(actPos).isAssented()?list.get(actPos).getAssentNum()-1:list.get(actPos).getAssentNum()+1 ;
+            list.get(actPos).setAssentNum( i );
+            setIsAssent((TextView) v, list.get(actPos).isAssented());
+            list.get(actPos).setAssented( !list.get(actPos).isAssented() );
+            break;
+        }
+    }
 }

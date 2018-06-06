@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -157,6 +158,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         holder.view.setOnClickListener(this);
         holder.view.setTag(actPos);
         ((TextView)holder.view.findViewById(R.id.text_view_article_doctor_title)).setText( ad.getTitle() );
+        ((TextView)holder.view.findViewById(R.id.text_view_article_doctor_content)).setText( ad.getContent() );
         //获取医生姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                 , "DID=? ",new String[]{""+ad.getDid() },null,null,null,null);
@@ -190,6 +192,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         holder.view.setOnClickListener(this);
         holder.view.setTag(actPos);
         ((TextView)holder.view.findViewById(R.id.text_view_article_patient_title)).setText( ap.getTitle() );
+        ((TextView)holder.view.findViewById(R.id.text_view_article_patient_content)).setText( ap.getContent() );
         //获取姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
                 , "PID=? ",new String[]{""+ap.getPid() },null,null,null,null);
@@ -281,17 +284,48 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         }
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_time)).setText( com.getTime());
         ((TextView)holder.view.findViewById(R.id.text_view_item_community_content)).setText( com.getCcontent());
-        ((TextView)holder.view.findViewById(R.id.text_view_item_community_assent)).setText( com.getAssentNum()+" ");//TODO:点赞效果
+        ((TextView)holder.view.findViewById(R.id.text_view_item_community_assent)).setText( com.getAssentNum()+" ");
+        holder.view.findViewById(R.id.text_view_item_community_assent).setOnClickListener(this);
+        holder.view.findViewById(R.id.text_view_item_community_assent).setTag( actPos );
+        setIsAssent(((TextView)holder.view.findViewById(R.id.text_view_item_community_assent))
+                ,((PatientCommunity)list.get(actPos)).isAssented());
+    }
+
+    protected void setIsAssent(TextView view, boolean isAssent){
+        Drawable d = null;
+        if( isAssent ){
+            d = ContextCompat.getDrawable(context, R.drawable.ic_zan_checked);
+        }else{
+            d = ContextCompat.getDrawable(context, R.drawable.ic_zan);
+        }
+        if(d != null)
+            d.setBounds(0,0,d.getMinimumWidth(),d.getMinimumHeight());
+        else
+            Log.e("Assent set","get icon failed");
+        view.setCompoundDrawables(null, null, d,null);
     }
 
     @Override
     public void onClick(View v) {
         int pos = (int)v.getTag();
-        Object obj = list.get(pos);
-        Intent intent = new Intent(context, ShowArticleActivity.class);
-        intent.putExtra("TITLE",context.getString(R.string.pager_focus));
-        intent.putExtra("ARTICLE", (obj instanceof ArticlePatient)? (ArticlePatient)obj: (ArticleDoctor)obj );
-        context.startActivity(intent);
+        switch (v.getId()){
+            case R.id.text_view_item_community_assent:
+                //点赞
+                PatientCommunity pm = (PatientCommunity) list.get(pos);
+                int i = pm.isAssented()? pm.getAssentNum()-1: pm.getAssentNum()+1 ;
+                pm.setAssentNum( i );
+                setIsAssent((TextView) v, pm.isAssented());
+                pm.setAssented( !pm.isAssented() );
+                break;
+            default:
+                //点击文章
+                Object obj = list.get(pos);
+                Intent intent = new Intent(context, ShowArticleActivity.class);
+                intent.putExtra("TITLE",context.getString(R.string.pager_focus));
+                intent.putExtra("ARTICLE", (obj instanceof ArticlePatient)? (ArticlePatient)obj: (ArticleDoctor)obj );
+                context.startActivity(intent);
+                break;
+        }
     }
 
     @Override

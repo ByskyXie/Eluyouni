@@ -24,7 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/nano_border"
-        android:textSize="16sp"
+        android:textSize="17sp"
+        android:textStyle="bold"
         android:layout_marginStart="@dimen/small_border"
         app:layout_constraintLeft_toRightOf="@id/image_view_item_community_icon"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -58,8 +59,11 @@
         android:id="@+id/text_view_item_community_assent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_marginEnd="@dimen/small_border"
         android:drawableEnd="@drawable/ic_zan"
+        android:background="@drawable/shape_for_assent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/text_view_item_community_time"
         app:layout_constraintTop_toTopOf="@id/image_view_item_community_icon"/>
