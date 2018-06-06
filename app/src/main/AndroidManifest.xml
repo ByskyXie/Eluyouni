@@ -40,9 +40,13 @@
         <activity
             android:name=".ShowArticleActivity"
             android:theme="@style/NewTheme.Activity.Anim" />
-        <activity android:name=".RelativeActivity">
-
-        </activity>
+        <activity
+            android:name=".RelativeActivity"
+            android:theme="@style/NewTheme.Activity.Anim" />
+        <activity android:name=".MyKeepActivity" />
+        <activity android:name=".MyArticleActivity" />
+        <activity android:name=".ConsultRecordActivity" />
+        <activity android:name=".HealthFileActivity"></activity>
     </application>
 
 </manifest>

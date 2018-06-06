@@ -20,81 +20,44 @@
             android:layout_height="wrap_content"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-    <LinearLayout
-        android:padding="@dimen/small_border"
-        android:background="@drawable/shape_for_text_border"
-        android:orientation="horizontal"
+
+    <TextView
+        android:id="@+id/text_view_relative_hint"
+        android:text="暂无关注亲情账号"
+        android:gravity="center"
+        android:textSize="22sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            app:srcCompat="@drawable/ic_patient_male"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
-        <TextView
-            android:text="张国年"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:paddingStart="@dimen/mid_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="暂无聊天内容"
-            android:layout_gravity="center"
-            android:textSize="17sp"
-            android:layout_marginStart="@dimen/mid_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:padding="@dimen/small_border"
-        android:background="@drawable/shape_for_text_border"
-        android:orientation="horizontal"
+        android:layout_height="500dp" />
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            app:srcCompat="@drawable/ic_patient_male"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
-        <TextView
-            android:text="王小明"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:paddingStart="@dimen/mid_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="暂无聊天内容"
-            android:layout_gravity="center"
-            android:textSize="17sp"
-            android:layout_marginStart="@dimen/mid_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:padding="@dimen/small_border"
-        android:background="@drawable/shape_for_text_border"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            app:srcCompat="@drawable/ic_patient_female"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
-        <TextView
-            android:text="周娲"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:paddingStart="@dimen/mid_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:text="暂无聊天内容"
-            android:layout_gravity="center"
-            android:textSize="17sp"
-            android:layout_marginStart="@dimen/mid_border"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="wrap_content"/>
+
+    <!--<LinearLayout-->
+        <!--android:padding="@dimen/small_border"-->
+        <!--android:background="@drawable/shape_for_text_border"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<ImageView-->
+            <!--app:srcCompat="@drawable/ic_patient_male"-->
+            <!--android:layout_width="48dp"-->
+            <!--android:layout_height="48dp" />-->
+        <!--<TextView-->
+            <!--android:text="张国年"-->
+            <!--android:textSize="20sp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:paddingStart="@dimen/mid_border"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+        <!--<TextView-->
+            <!--android:text="暂无聊天内容"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:textSize="17sp"-->
+            <!--android:layout_marginStart="@dimen/mid_border"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content" />-->
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>

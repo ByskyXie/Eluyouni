@@ -229,28 +229,37 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent;
         switch (id){
             case R.id.nav_menu_my_keep:
                 //我的收藏
+                intent = new Intent(this, MyKeepActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_visited:
                 //浏览记录
                 break;
             case R.id.nav_menu_my_article:
                 //我的文章
+                intent = new Intent(this, MyArticleActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_my_health_document:
                 //健康文档
                 break;
             case R.id.nav_menu_my_consult_record:
                 //会诊记录
+                intent = new Intent(this, ConsultRecordActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_my_health_manage:
                 //健康管理
+                intent = new Intent(this, HealthFileActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_my_relate_account:
                 //亲情账号
-                Intent intent = new Intent(this, RelativeActivity.class);
+                intent = new Intent(this, RelativeActivity.class);
                 startActivity(intent);
                 break;
         }
