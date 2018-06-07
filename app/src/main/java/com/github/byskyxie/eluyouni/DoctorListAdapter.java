@@ -3,6 +3,7 @@ package com.github.byskyxie.eluyouni;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
 
     private boolean isShowFame = false;
     private Context context;
+    private DoctorListActivity.DoctorListHandler handler;
     private ArrayList<Doctor> list = new ArrayList<>();
 
     static class DoctorListHolder extends RecyclerView.ViewHolder {
@@ -47,8 +49,9 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
         }
     }
 
-    public DoctorListAdapter(Context context, ArrayList<Doctor> list) {
+    public DoctorListAdapter(Context context, ArrayList<Doctor> list, DoctorListActivity.DoctorListHandler handler) {
         this.context = context;
+        this.handler = handler;
         if(list != null)
             this.list.addAll( list );
     }
@@ -81,7 +84,7 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DoctorListHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DoctorListHolder holder, final int position) {
         final int actPos = holder.getAdapterPosition();
         holder.view.setTag(actPos);
         holder.view.setOnClickListener(this);
@@ -108,7 +111,12 @@ public class DoctorListAdapter extends RecyclerView.Adapter<DoctorListAdapter.Do
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ((BaseActivity)context).downloadDicon(list.get(actPos));
+                        if( ((BaseActivity)context).downloadDicon(list.get(actPos)) ){
+                            Message msg = new Message();
+                            msg.what = DoctorListActivity.ACCEPT_ICON;
+                            msg.obj = position;
+                            handler.sendMessage(msg);
+                        }
                     }
                 }).start();
             }

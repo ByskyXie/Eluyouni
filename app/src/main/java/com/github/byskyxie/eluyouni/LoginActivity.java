@@ -210,9 +210,6 @@ public class LoginActivity extends BaseActivity{
 
 
 
-
-
-
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -278,8 +275,12 @@ public class LoginActivity extends BaseActivity{
                     //保存到数据库
                     userInfo = patient;
                     userInfo.save();
-                    if(patient.getPicon()!=null && !patient.getPicon().isEmpty())
-                        downloadPicon(userInfo); //下载头像
+                    if(patient.getPicon()!=null && !patient.getPicon().isEmpty()){
+                        if( !downloadPicon(userInfo) ){ //下载头像
+                            Log.e("LoginAct","download icon failed"+userInfo.getPicon());
+                            downloadPicon(userInfo);
+                        }
+                    }
                 }
 
             }catch (IOException ioe){

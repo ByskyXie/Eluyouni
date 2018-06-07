@@ -34,7 +34,7 @@ public class BaseActivity extends AppCompatActivity {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
-    public static final String IP_SERVER = "192.168.137.1";  //"192.168.137.1"  "119.23.62.71"
+    public static final String IP_SERVER = "119.23.62.71";  //"192.168.137.1"  "119.23.62.71"
     public static final String DATE_FORMAT = "yyyy-M-d HH:mm:ss";
     protected static final int DOC_NUM_LIMIT = 5; //会诊室医生最大容量
     private static final int REQUEST_INTERNET = 10086;

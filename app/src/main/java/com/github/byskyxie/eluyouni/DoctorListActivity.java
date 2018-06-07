@@ -28,12 +28,13 @@ import java.util.ArrayList;
 
 public class DoctorListActivity extends BaseActivity {
 
-    private static final int ACCEPT_DOCTOR_LIST = 0x1025;
+    public static final int ACCEPT_DOCTOR_LIST = 0x1025;
+    public static final int ACCEPT_ICON = 0x1040;
 
     private Illness ill;
     private DoctorListHandler handler = new DoctorListHandler(new WeakReference<>(this));
     private RecyclerView recyclerList;
-    private DoctorListAdapter adapter = new DoctorListAdapter(this, null);
+    private DoctorListAdapter adapter = new DoctorListAdapter(this, null, handler);
 
     class DoctorListHandler extends Handler{
         private WeakReference<DoctorListActivity> activity;
@@ -56,6 +57,12 @@ public class DoctorListActivity extends BaseActivity {
                         ie.printStackTrace();
                     }
                     activity.get().adapter.notifyDataSetChanged();
+                    break;
+                case ACCEPT_ICON:
+                    int pos = (int)msg.obj;
+                    if(activity.get() == null)
+                        return;
+                    activity.get().adapter.notifyItemChanged(pos);
                     break;
             }
         }

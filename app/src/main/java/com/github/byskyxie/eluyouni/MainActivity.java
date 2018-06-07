@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +36,8 @@ import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener ,IndexFragment.OnFragmentInteractionListener ,ConsultFragment.OnFragmentInteractionListener
                     ,MedicineFragment.OnFragmentInteractionListener, PriDocFragment.OnFragmentInteractionListener
@@ -44,6 +48,9 @@ public class MainActivity extends BaseActivity
     private static final int CHECKED_CONSULT = 2;
     private static final int CHECKED_MEDICINE = 3;
     private static final int CHECKED_DOCTOR = 4;
+
+    private static final int ACCEPT_ICON = 20;
+
     private int checkedOpt = CHECKED_NONE;
 
     private NavigationView navView;
@@ -59,6 +66,29 @@ public class MainActivity extends BaseActivity
     private ConsultFragment consultFragment;
     private MedicineFragment medicineFragment;
     private PriDocFragment priDocFragment;
+    private MainHandler handler = new MainHandler(this);
+
+    class MainHandler extends Handler{
+        private MainActivity activity;
+
+        public MainHandler(MainActivity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case ACCEPT_ICON:
+                    if(msg.arg1 == 1)
+                        ((ImageView)activity.navHeader.findViewById(R.id.image_view_icon)).setImageBitmap( BitmapFactory.decodeFile(
+                                getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
+                    else
+                        ((ImageView)activity.navHeader.findViewById(R.id.image_view_icon)).setImageDrawable(ContextCompat
+                                .getDrawable(activity,R.mipmap.patient)  );
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,17 +130,36 @@ public class MainActivity extends BaseActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
     }
 
     protected void setNavHeaderData(View header){
         //用户头像
         if(userInfo.getPicon()==null || userInfo.getPicon().equalsIgnoreCase("null"))
             ((ImageView)header.findViewById(R.id.image_view_icon)).setImageDrawable(ContextCompat.getDrawable(this,R.mipmap.patient)  );
-        else
-            ((ImageView)header.findViewById(R.id.image_view_icon)).setImageBitmap( BitmapFactory.decodeFile(
-                    getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
+        else{
+            //查看picon有没有下载
+            if( new File(this. getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon()).exists() ){
+                ((ImageView)header.findViewById(R.id.image_view_icon)).setImageBitmap( BitmapFactory.decodeFile(
+                        getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
+            }else{//下载并notify
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(downloadPicon(userInfo.getPicon())){
+                            Message msg = new Message();
+                            msg.what = ACCEPT_ICON;
+                            msg.arg1 = 1;
+                            handler.sendMessage(msg);
+                        }else{
+                            Message msg = new Message();
+                            msg.what = ACCEPT_ICON;
+                            msg.arg1 = 0;
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }).start();
+            }
+        }
         //pname
         ((TextView)header.findViewById(R.id.text_view_nav_name)).setText(userInfo.getPname());
         //e币

@@ -13,7 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import static com.github.byskyxie.eluyouni.BaseActivity.userInfo;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
 
@@ -106,9 +109,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
             holder.time.setText(list.get(actPos).getDayTime());
         }
         holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.ic_patient_male));
-        if(list.get(actPos).getChatType() == ChatItem.CHAT_TYPE_SELF || list.get(actPos).getErtype()==1 )
-            holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
-                .getFilesDir().getAbsolutePath()+"/icon/picon/"+BaseActivity.userInfo.getPicon()));
+        if(list.get(actPos).getChatType() == ChatItem.CHAT_TYPE_SELF || list.get(actPos).getErtype()==1 ){
+            if( !new File(this. context.getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon()).exists() )
+                holder.icon.setImageDrawable(ContextCompat.getDrawable(context,R.mipmap.patient)  );
+            else
+                holder.icon.setImageBitmap(BitmapFactory.decodeFile(context //用户头像
+                    .getFilesDir().getAbsolutePath()+"/icon/picon/"+ userInfo.getPicon()));
+        }
     }
 
     @Override

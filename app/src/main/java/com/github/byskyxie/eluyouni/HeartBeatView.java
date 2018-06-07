@@ -9,6 +9,7 @@ import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -117,9 +118,15 @@ public class HeartBeatView extends View {
      * */
     private Paint mHeartBeatPathPaint;
 
+    /**
+     * 在绘制中？
+     * */
+    private boolean isDrawing = false;
+
     Path path = new Path();
 
     private void init() {
+        init2();
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         if (!isInEditMode()) {
@@ -145,6 +152,21 @@ public class HeartBeatView extends View {
         mHeartBeatPathPaint = new Paint(mHeartBeatPaint);
         mHeartBeatPathPaint.setStrokeWidth(5);
         mHeartBeatPathPaint.setStyle(Paint.Style.STROKE);
+    }
+
+    private void init2(){
+        mRadius = 200;
+        mAnimAngle = -1;
+        mPeriodFraction = 0;
+        mOffset=0;
+        AmplitudeA = 200;
+        path = new Path();
+        isDrawing = false;
+        StartHeartBeatAnmiFlag = false;
+        StartFirstFrameFlag = false;
+        mFirstFrameOffset = 0;
+        StopHeartBeatAnmiFlag = false;
+
     }
 
 
@@ -247,8 +269,9 @@ public class HeartBeatView extends View {
         //canvas.restoreToCount(level);
         if(StartHeartBeatAnmiFlag){
             resetPath1(); //或者resetPath ，这个优化效果一般
-            canvas.drawPath(path, mHeartBeatPathPaint);;
-            canvas.drawCircle(mHeartBeatWidth+20+mHeartPaintWidth, mTotalHeight/2-mOriginalYPositon[mOffset], 10, mHeartBeatPaint);
+            canvas.drawPath(path, mHeartBeatPathPaint);
+            if(mOffset<mOriginalYPositon.length)//防止越界
+                canvas.drawCircle(mHeartBeatWidth+20+mHeartPaintWidth, mTotalHeight/2-mOriginalYPositon[mOffset], 10, mHeartBeatPaint);
         }
 
         /*-------------通过drawPoint方法绘制 会降低性能--------------------*/
@@ -278,8 +301,6 @@ public class HeartBeatView extends View {
 
 
 
-
-
     /*---------------------------------动画-----------------------------------------*/
     private volatile boolean StartHeartBeatAnmiFlag = false;
 
@@ -294,6 +315,7 @@ public class HeartBeatView extends View {
      * */
     private void startHeartBeatAnmi(){
         StartFirstFrameFlag = true;
+        Log.e("HeartBeat","Start heart+++++++++++++++++++++++++++++++++++++++++++++++");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -303,12 +325,13 @@ public class HeartBeatView extends View {
                     e1.printStackTrace();
                 }
                 while (mFirstFrameOffset > 0) {
-                    System.arraycopy(mOriginalYPositon,0,mDefaultYPostion, mFirstFrameOffset,mOriginalYPositon.length - mFirstFrameOffset );
+                    System.arraycopy(mOriginalYPositon,0,mDefaultYPostion, mFirstFrameOffset
+                            ,mOriginalYPositon.length - mFirstFrameOffset );
                     mFirstFrameOffset--;
                     try {
                         Thread.sleep(5);
                     } catch (InterruptedException e) {
-                        ;
+                        e.printStackTrace();
                     }
                     postInvalidate();
                 }
@@ -322,6 +345,7 @@ public class HeartBeatView extends View {
      * 循环心跳图
      * */
     private void startSecondFrameAnmi(){
+        Log.e("HeartBeat","recycler heart +++++++++++++++++++++++++++++++++++++++++++++++");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -343,6 +367,7 @@ public class HeartBeatView extends View {
      * 开启圆环动画
      * */
     private void startRingAnim() {
+        Log.e("HeartBeat","circle +++++++++++++++++++++++++++++++++++++++++++++++");
         mAnimAngle = 0;
         new Thread(new Runnable() {
 
@@ -367,10 +392,13 @@ public class HeartBeatView extends View {
     public void stopAnim(){
         StopHeartBeatAnmiFlag = true;
         StartHeartBeatAnmiFlag = false;
-
+        isDrawing = false;
     }
 
     public void startAnim(){
+        if(isDrawing)   /** 防止多次点击 */
+            return;
+        isDrawing = true;
         startRingAnim();
         startHeartBeatAnmi();
     }
