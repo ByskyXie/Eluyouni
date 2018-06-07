@@ -27,6 +27,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
     static class DoctorArticleHolder extends RecyclerView.ViewHolder{
         private View view;
         private TextView content;
+        private TextView time;
         private TextView title;
         private TextView name;
         private ImageView icon;
@@ -34,6 +35,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
         DoctorArticleHolder(View itemView) {
             super(itemView);
             view = itemView;
+            time = itemView.findViewById(R.id.text_view_article_doctor_time);
             content = itemView.findViewById(R.id.text_view_article_doctor_content);
             title = itemView.findViewById(R.id.text_view_article_doctor_title);
             name = itemView.findViewById(R.id.text_view_article_doctor_name);
@@ -78,6 +80,7 @@ public class ArticleDoctorAdapter extends RecyclerView.Adapter<ArticleDoctorAdap
         int actPos = holder.getAdapterPosition();
         holder.view.setTag(actPos);
         holder.view.setOnClickListener( this );
+        holder.time.setText(list.get(actPos).getMDTime());
         holder.title.setText( list.get(actPos).getTitle() );
         holder.content.setText( list.get(actPos).getContent() );
         //获取医生姓名

@@ -158,6 +158,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         holder.view.setOnClickListener(this);
         holder.view.setTag(actPos);
         ((TextView)holder.view.findViewById(R.id.text_view_article_doctor_title)).setText( ad.getTitle() );
+        ((TextView)holder.view.findViewById(R.id.text_view_article_doctor_time)).setText( ad.getMDTime() );
         ((TextView)holder.view.findViewById(R.id.text_view_article_doctor_content)).setText( ad.getContent() );
         //获取医生姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
@@ -192,6 +193,7 @@ public class FocusAdapter extends RecyclerView.Adapter<FocusAdapter.FocusHolder>
         holder.view.setOnClickListener(this);
         holder.view.setTag(actPos);
         ((TextView)holder.view.findViewById(R.id.text_view_article_patient_title)).setText( ap.getTitle() );
+        ((TextView)holder.view.findViewById(R.id.text_view_article_patient_time)).setText( ap.getMDTime() );
         ((TextView)holder.view.findViewById(R.id.text_view_article_patient_content)).setText( ap.getContent() );
         //获取姓名
         Cursor cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}

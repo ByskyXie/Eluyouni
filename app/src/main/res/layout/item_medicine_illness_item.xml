@@ -9,11 +9,12 @@
     android:layout_width="match_parent"
     android:layout_height="96dp">
     <!-- 展示具体疾病的item -->
+
     <ImageView
         android:id="@+id/image_view_medicine_illness_pic"
         app:srcCompat="@drawable/ic_illness"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="52dp"
+        android:layout_height="52dp" />
 
     <TextView
         android:id="@+id/text_view_medicine_illness_text"

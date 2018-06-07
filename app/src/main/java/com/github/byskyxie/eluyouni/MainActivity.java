@@ -238,6 +238,8 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_menu_visited:
                 //浏览记录
+                intent = new Intent(this, VisitedActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_my_article:
                 //我的文章
@@ -246,6 +248,8 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_menu_my_health_document:
                 //健康文档
+                intent = new Intent(this, HealthFileActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_menu_my_consult_record:
                 //会诊记录
@@ -254,7 +258,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_menu_my_health_manage:
                 //健康管理
-                intent = new Intent(this, HealthFileActivity.class);
+                intent = new Intent(this, HealthManageActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_menu_my_relate_account:

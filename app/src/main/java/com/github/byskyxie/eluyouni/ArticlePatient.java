@@ -19,6 +19,14 @@ public class ArticlePatient implements Serializable{
         this.content = content;
     }
 
+    public String getMDTime(){
+        return time.substring( time.indexOf('-')+1 );
+    }
+
+    public String getDTime(){
+        return time.substring( time.lastIndexOf('-')+1 );
+    }
+
     public long getApid() {
         return apid;
     }

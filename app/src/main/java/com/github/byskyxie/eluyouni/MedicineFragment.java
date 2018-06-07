@@ -146,14 +146,15 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_medicine, container, false);
         recyclerFame = view.findViewById(R.id.recycler_medicine_famous);
         fameAdapter = new MedicineFameAdapter(getContext(), null, handler);
-        recyclerFame.setLayoutManager( new GridLayoutManager(getContext(), FAME_COLUMN_NUM) );
-        recyclerFame.setNestedScrollingEnabled(false);  //禁止嵌套滑动，使有惯性
+        GridLayoutManager glm = new GridLayoutManager(getContext(), FAME_COLUMN_NUM);
+        recyclerFame.setLayoutManager( glm );
+        recyclerFame.setNestedScrollingEnabled(true);  //禁止嵌套滑动，使有惯性
         recyclerFame.setAdapter(fameAdapter);
 
         recyclerIllness = view.findViewById(R.id.recycler_medicine_illness);
         illnessAdapter = new MedicineIllnessAdapter(getContext(), illnessList);
         recyclerIllness.setLayoutManager( new GridLayoutManager(getContext(), SECTION_COLUMN_NUM) );
-        recyclerIllness.setNestedScrollingEnabled(false);   //禁止嵌套滑动，使有惯性
+        recyclerIllness.setNestedScrollingEnabled(true);   //禁止嵌套滑动，使有惯性
         recyclerIllness.setAdapter(illnessAdapter);
 
         textMoreDoc = view.findViewById(R.id.text_view_famous_more);

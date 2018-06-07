@@ -32,12 +32,14 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
         private View view;
         private TextView content;
         private TextView title;
+        private TextView time;
         private TextView name;
         private ImageView icon;
         private ImageView pic;
         ArticlePatientHolder(View itemView) {
             super(itemView);
             view = itemView;
+            time = itemView.findViewById(R.id.text_view_article_patient_time);
             content = itemView.findViewById(R.id.text_view_article_patient_content);
             title = itemView.findViewById(R.id.text_view_article_patient_title);
             name = itemView.findViewById(R.id.text_view_article_patient_name);
@@ -82,6 +84,7 @@ public class ArticlePatientAdapter extends RecyclerView.Adapter<ArticlePatientAd
         int actPos = holder.getAdapterPosition();
         holder.view.setTag(actPos);
         holder.view.setOnClickListener(this);
+        holder.time.setText(list.get(actPos).getMDTime());
         holder.title.setText( list.get(actPos).getTitle() );
         holder.content.setText( list.get(actPos).getContent() );
         //获取姓名

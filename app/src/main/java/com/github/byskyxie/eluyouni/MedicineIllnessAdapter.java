@@ -2,17 +2,16 @@ package com.github.byskyxie.eluyouni;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllnessAdapter.MedicineIllnessHolder>
@@ -72,6 +71,7 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
         holder.view.setOnClickListener(this);
         holder.name.setText(illList.get(actPos).getName());
         //TODO:设置疾病图片
+        holder.image.setImageDrawable( ContextCompat.getDrawable(context, getMipmapId( illList.get(actPos).getName() ))  );
     }
 
     @Override
@@ -85,5 +85,45 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
         Intent intent = new Intent(context, DoctorListActivity.class);
         intent.putExtra("ILLNESS",illList.get(pos));
         context.startActivity(intent);
+    }
+
+    private int getMipmapId(String name){
+        if(name.equals("冠心病"))
+            return R.mipmap.gxb;
+        if(name.equals("哮喘病"))
+            return R.mipmap.xcb;
+        if(name.equals("慢性支气管炎"))
+            return R.mipmap.mxzqgy;
+        if(name.equals("慢性肝炎"))
+            return R.mipmap.mxgy;
+        if(name.equals("甲亢"))
+            return R.mipmap.jk;
+        if(name.equals("痛风性关节炎"))
+            return R.mipmap.tfxgjy;
+        if(name.equals("精神病"))
+            return R.mipmap.jsb;
+        if(name.equals("糖尿病"))
+            return R.mipmap.tnb;
+        if(name.equals("老年痴呆"))
+            return R.mipmap.lncd;
+        if(name.equals("肝硬化"))
+            return R.mipmap.gyh;
+        if(name.equals("肩周炎"))
+            return R.mipmap.jzy;
+        if(name.equals("脑卒中"))
+            return R.mipmap.nzc;
+        if(name.equals("脑梗塞"))
+            return R.mipmap.ngs;
+        if(name.equals("阻塞性气肺"))
+            return R.mipmap.zsxfqz;
+        if(name.equals("颈椎病"))
+            return R.mipmap.jzb;
+        if(name.equals("骨质疏松"))
+            return R.mipmap.gzss;
+        if(name.equals("高血压"))
+            return R.mipmap.gxy;
+        if(name.equals("高血脂"))
+            return R.mipmap.gxz;
+        return R.drawable.ic_illness;
     }
 }

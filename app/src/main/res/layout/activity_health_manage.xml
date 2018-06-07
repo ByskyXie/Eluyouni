@@ -6,16 +6,16 @@
     android:background="@color/backgroundGray"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HealthFileActivity">
+    tools:context=".HealthManageActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar_health_file"
+        android:id="@+id/app_bar_health_manage"
         android:theme="@style/AppTheme.AppBarOverlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_health_file"
-            app:title="健康档案"
+            android:id="@+id/toolbar_health_manage"
+            app:title="健康管理"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
@@ -27,14 +27,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="我的病历"
+            android:text="身体指标"
             android:layout_marginStart="@dimen/small_border"
             android:textSize="22sp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <TextView
-            android:text="病历记录"
+            android:text="记录身体健康数据"
             android:layout_weight="0"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
@@ -47,14 +47,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="我的处方"
+            android:text="饮食记录"
             android:layout_marginStart="@dimen/small_border"
             android:textSize="22sp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <TextView
-            android:text="医生开具的医疗处方"
+            android:text="每日饮食情况记录"
             android:layout_weight="0"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"
@@ -67,14 +67,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="我的医疗方案"
+            android:text="报告分析"
             android:layout_marginStart="@dimen/small_border"
             android:textSize="22sp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <TextView
-            android:text="医生开具的系统治疗方案"
+            android:text="通过记录数据给出分析报告"
             android:layout_weight="0"
             android:layout_width="wrap_content"
             android:layout_gravity="center_vertical"

@@ -53,7 +53,7 @@
                 android:id="@+id/recycler_medicine_famous"
                 android:background="@drawable/shape_for_recycler_border"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="240dp"/>
 
             <TextView
                 android:id="@+id/text_view_illness_title"
