@@ -72,6 +72,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
             this.fragment = new WeakReference<>(fragment);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
@@ -202,11 +203,11 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         tab = view.findViewById(R.id.tab_view_pager);
         pager = view.findViewById(R.id.view_pager);
         //设置pager内容
-        initialUI(view);
+        initialUI();
         return view;
     }
 
-    private void initialUI(View view){
+    private void initialUI(){
         ArrayList<View> views = new ArrayList<>();
         LinearLayoutManager llm;
         View item;
@@ -586,7 +587,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         long pid = (obj instanceof ArticlePatient)? ((ArticlePatient) obj).getPid(): ((PatientCommunity) obj).getErId();
                         cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
                                 , "PID=?",new String[]{""+pid},null,null,null,null);
-                        if(cursor.moveToFirst()){
+                        if(cursor.moveToFirst() || getContext() == null){
                             cursor.close();
                             continue;
                         }
@@ -602,7 +603,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         long did = (obj instanceof ArticleDoctor)? ((ArticleDoctor) obj).getDid(): ((PatientCommunity) obj).getErId();
                         cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                                 , "DID=?",new String[]{""+did},null,null,null,null);
-                        if(cursor.moveToFirst()){
+                        if(cursor.moveToFirst() || getContext() == null){
                             cursor.close();
                             continue;
                         }
@@ -643,7 +644,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     if(ar.getErtype() == 1){
                         cursor = BaseActivity.userDatabaseRead.query("PATIENT_BASE_INFO",new String[]{"*"}
                                 , "PID=?",new String[]{""+ar.getErid()},null,null,null,null);
-                        if(cursor.moveToFirst()){
+                        if(cursor.moveToFirst() || getContext() == null){
                             cursor.close();
                             continue;
                         }
@@ -658,7 +659,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }else{
                         cursor = BaseActivity.userDatabaseRead.query("DOCTOR_BASE_INFO",new String[]{"*"}
                                 , "DID=?",new String[]{""+ar.getErid()},null,null,null,null);
-                        if(cursor.moveToFirst()){
+                        if(cursor.moveToFirst() || getContext() == null){
                             cursor.close();
                             continue;
                         }
@@ -717,7 +718,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         cursor.close();
                         renewNum++;
                         //下载头像
-                        if(patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
+                        if(getContext() != null && patient.getPicon()!=null && !patient.getPicon().isEmpty() &&
                                 ((BaseActivity)getContext()).isPiconExists(patient.getPicon()))
                             ((BaseActivity)getContext()).downloadPicon(patient);
                     }else{
@@ -743,7 +744,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                         cursor.close();
                         renewNum++;
                         //下载头像
-                        if(doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
+                        if(getContext() != null && doctor.getDicon()!=null && !doctor.getDicon().isEmpty() &&
                                 ((BaseActivity)getContext()).isDiconExists(doctor.getDicon()))
                             ((BaseActivity)getContext()).downloadDicon(doctor);
                     }
@@ -779,6 +780,10 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                     cursor.close();
                     Patient patient = getPatientBaseInfo(ap.getPid());
+                    if(patient == null || getContext() == null){
+                        Log.e("getPatientBaseInfo","failed:"+ap.getPid());
+                        continue;
+                    }
                     if(((BaseActivity)getContext()).writePatientBaseInfo(patient))
                         renewNum++;
                     //下载头像
@@ -815,6 +820,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 return null;
             }else if(line.matches("accepted.*")){
                 //成功
+                if(getContext() == null)
+                    return null;
                 patient = ((BaseActivity)getContext()).downloadOnePatientBaseInfo(br);
             }
             br.close();
@@ -846,7 +853,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                     }
                     cursor.close();
                     Doctor doctor = getDoctorBaseInfo(ad.getDid());
-                    if(doctor == null){
+                    if(doctor == null || getContext() == null){
                         Log.e("getDoctorBaseInfo","error");
                         continue;
                     }
@@ -886,6 +893,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 return null;
             }else if(line.matches("accepted.*")){
                 //成功
+                if(getContext() == null)
+                    return null;
                 doctor = ((BaseActivity)getContext()).downloadOneDoctorBaseInfo(br);
             }
             br.close();

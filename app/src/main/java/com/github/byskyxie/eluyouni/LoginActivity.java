@@ -227,7 +227,7 @@ public class LoginActivity extends BaseActivity{
         @Override
         protected Boolean doInBackground(Void... params) {
             String request = "http://"+IP_SERVER+":8080/"+"eluyouni/patient/login?"+"pid="+mPid+"&pwd="+mPwd;
-            URL url = null;
+            URL url;
             try {
                 //链接服务器请求验证
                 url = new URL(request);

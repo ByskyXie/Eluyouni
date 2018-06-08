@@ -101,7 +101,7 @@ public class HeartBeatView extends View {
     /**
      * 心跳线条速度
      * */
-    private final int SPEED = 5;
+    private final int SPEED = 4;
 
     /**
      * 将SPEED转换为实际速度
@@ -122,11 +122,11 @@ public class HeartBeatView extends View {
      * 在绘制中？
      * */
     private boolean isDrawing = false;
+    private int speedConst;
 
     Path path = new Path();
 
     private void init() {
-        init2();
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         mRingPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         if (!isInEditMode()) {
@@ -141,7 +141,7 @@ public class HeartBeatView extends View {
 
         //初始化心跳曲线
         mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
-        mOffsetSpeed = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SPEED, mContext.getResources().getDisplayMetrics());
+        speedConst = mOffsetSpeed = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, SPEED, mContext.getResources().getDisplayMetrics());
         mHeartBeatPaint  =new Paint(Paint.ANTI_ALIAS_FLAG);
         mHeartBeatPaint.setStrokeWidth(5);
         //mHeartBeatPaint.setStyle(Style.STROKE);
@@ -166,7 +166,19 @@ public class HeartBeatView extends View {
         StartFirstFrameFlag = false;
         mFirstFrameOffset = 0;
         StopHeartBeatAnmiFlag = false;
+        //初始化心跳曲线
+        mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG|Paint.FILTER_BITMAP_FLAG);
+        mOffsetSpeed = speedConst;
+        mHeartBeatPaint  =new Paint(Paint.ANTI_ALIAS_FLAG);
+        mHeartBeatPaint.setStrokeWidth(5);
+        //mHeartBeatPaint.setStyle(Style.STROKE);
+        if (!isInEditMode()) {
+            mHeartBeatPaint.setColor(mContext.getResources().getColor(R.color.heartbeat));
+        }
 
+        mHeartBeatPathPaint = new Paint(mHeartBeatPaint);
+        mHeartBeatPathPaint.setStrokeWidth(5);
+        mHeartBeatPathPaint.setStyle(Paint.Style.STROKE);
     }
 
 
@@ -315,7 +327,6 @@ public class HeartBeatView extends View {
      * */
     private void startHeartBeatAnmi(){
         StartFirstFrameFlag = true;
-        Log.e("HeartBeat","Start heart+++++++++++++++++++++++++++++++++++++++++++++++");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -345,7 +356,6 @@ public class HeartBeatView extends View {
      * 循环心跳图
      * */
     private void startSecondFrameAnmi(){
-        Log.e("HeartBeat","recycler heart +++++++++++++++++++++++++++++++++++++++++++++++");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -356,9 +366,11 @@ public class HeartBeatView extends View {
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                     postInvalidate();
                 }
+                mOffset = 0;
             }
         }).start();
     }
@@ -367,7 +379,6 @@ public class HeartBeatView extends View {
      * 开启圆环动画
      * */
     private void startRingAnim() {
-        Log.e("HeartBeat","circle +++++++++++++++++++++++++++++++++++++++++++++++");
         mAnimAngle = 0;
         new Thread(new Runnable() {
 
@@ -388,15 +399,15 @@ public class HeartBeatView extends View {
         }).start();
     }
 
-
     public void stopAnim(){
         StopHeartBeatAnmiFlag = true;
         StartHeartBeatAnmiFlag = false;
         isDrawing = false;
+        init2();
     }
 
     public void startAnim(){
-        if(isDrawing)   /** 防止多次点击 */
+        if(isDrawing)   // 防止多次点击
             return;
         isDrawing = true;
         startRingAnim();

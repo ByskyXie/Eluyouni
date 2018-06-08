@@ -63,7 +63,8 @@ public class BaseActivity extends AppCompatActivity {
     protected void createFolder(){
         File file = new File( getFilesDir()+"/icon/dicon/");
         if(!file.exists())
-            file.mkdirs();
+            if(!file.mkdirs())
+                Log.e("BaseAct","Create folder failed:"+file.getAbsolutePath());
         file = new File(getFilesDir()+"/icon/picon/");
         if(!file.exists())
             file.mkdirs();
@@ -86,7 +87,10 @@ public class BaseActivity extends AppCompatActivity {
                 Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
                 return false;
             }
-            file.createNewFile();
+            if (!file.createNewFile()){
+                Log.e("BaseAct","Create file failed:"+file.getAbsolutePath());
+                return false;
+            }
             URL url = new URL(request);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             FileOutputStream fos = new FileOutputStream(file);
@@ -102,7 +106,8 @@ public class BaseActivity extends AppCompatActivity {
                 fos.write(bytes, 0, i);
             }while(true);
             if(file.length()==0) {    //图片接收失败
-                file.delete();
+                if( !file.delete() )
+                    Log.e("BaseAct","Delete failed:"+file.getAbsolutePath());
                 Log.e("BaseActivity","download dicon failed "+doctor.getDicon());
                 return false;
             }
@@ -122,7 +127,10 @@ public class BaseActivity extends AppCompatActivity {
                 Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
                 return false;
             }
-            file.createNewFile();
+            if( !file.createNewFile() ){
+                Log.e("BaseAct","Create file failed:"+file.getAbsolutePath());
+                return false;
+            }
             URL url = new URL(request);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             FileOutputStream fos = new FileOutputStream(file);
@@ -138,7 +146,8 @@ public class BaseActivity extends AppCompatActivity {
                 fos.write(bytes, 0, i);
             }while(true);
             if(file.length()==0) {    //图片接收失败
-                file.delete();
+                if(!file.delete())
+                    Log.e("BaseAct","Delete failed:"+file.getAbsolutePath());
                 Log.e("BaseActivity","download dicon failed "+dicon);
                 return false;
             }
@@ -158,7 +167,10 @@ public class BaseActivity extends AppCompatActivity {
                 Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
                 return false;
             }
-            file.createNewFile();
+            if(!file.createNewFile()){
+                Log.e("BaseAct","Create file failed:"+file.getAbsolutePath());
+                return false;
+            }
             URL url = new URL(request);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             FileOutputStream fos = new FileOutputStream(file);
@@ -174,7 +186,8 @@ public class BaseActivity extends AppCompatActivity {
                 fos.write(bytes, 0, i);
             }while(true);
             if(file.length()==0) {    //图片接收失败
-                file.delete();
+                if(!file.delete())
+                    Log.e("BaseAct","Delete failed:"+file.getAbsolutePath());
                 Log.e("BaseActivity","download picon failed "+patient.getPicon());
                 return false;
             }
@@ -194,7 +207,10 @@ public class BaseActivity extends AppCompatActivity {
                 Log.e("BaseActivity",file.getAbsolutePath()+" exists!");
                 return false;
             }
-            file.createNewFile();
+            if(!file.createNewFile()){
+                Log.e("BaseAct","Create file failed:"+file.getAbsolutePath());
+                return false;
+            }
             URL url = new URL(request);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             FileOutputStream fos = new FileOutputStream(file);
@@ -210,7 +226,8 @@ public class BaseActivity extends AppCompatActivity {
                 fos.write(bytes, 0, i);
             }while(true);
             if(file.length()==0) {    //图片接收失败
-                file.delete();
+                if(!file.delete())
+                    Log.e("BaseAct","Delete failed:"+file.getAbsolutePath());
                 Log.e("BaseActivity","download picon failed "+picon);
                 return false;
             }

@@ -40,8 +40,6 @@ public class ChatActivity extends BaseActivity
     private ChatAdapter adapter;
     private LinearLayout layoutDescri;
 
-    private String contri;  //病情描述
-
     class SendWatcher implements TextWatcher{
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -95,8 +93,10 @@ public class ChatActivity extends BaseActivity
 
                 targetType = TARGET_TYPE_DOCTOR;
                 doctorTalker = (Doctor) intent.getSerializableExtra("Target");
-                getSupportActionBar().setTitle(doctorTalker.getDname());
-                getSupportActionBar().setSubtitle("医生");
+                if(getSupportActionBar() != null){
+                    getSupportActionBar().setTitle(doctorTalker.getDname());
+                    getSupportActionBar().setSubtitle("医生");
+                }
                 if(BaseActivity.mapEridToPosition.containsKey(doctorTalker.getDid())){
                     adapter = new ChatAdapter(this, BaseActivity.chatRecordList
                             .get( BaseActivity.mapEridToPosition.get(doctorTalker.getDid()) ).getList());
@@ -108,8 +108,10 @@ public class ChatActivity extends BaseActivity
 
                 targetType = TARGET_TYPE_PATIENT;
                 patientTalker = (Patient) intent.getSerializableExtra("Target");
-                getSupportActionBar().setTitle(patientTalker.getPname());
-                getSupportActionBar().setSubtitle("患者");
+                if(getSupportActionBar() != null){
+                    getSupportActionBar().setTitle(patientTalker.getPname());
+                    getSupportActionBar().setSubtitle("患者");
+                }
                 if(BaseActivity.mapEridToPosition.containsKey(patientTalker.getPid())){
                     adapter = new ChatAdapter(this, BaseActivity.chatRecordList
                             .get( BaseActivity.mapEridToPosition.get(patientTalker.getPid()) ).getList());
@@ -121,7 +123,8 @@ public class ChatActivity extends BaseActivity
 
                 //会诊室 TODO:显示医生加入聊天室
                 targetType = TARGET_TYPE_CONSULT;
-                getSupportActionBar().setTitle("会诊室");
+                if(getSupportActionBar() != null)
+                    getSupportActionBar().setTitle("会诊室");
                 //提前加入文本
                 initialConsult();
                 break;
@@ -192,10 +195,8 @@ public class ChatActivity extends BaseActivity
         if(targetType == TARGET_TYPE_DOCTOR || targetType == TARGET_TYPE_PATIENT){
             savePersonChatRecord();
         }else if(targetType == TARGET_TYPE_CONSULT){
-            //TODO：会诊室返回，保存记录
-            return;
+
         }
-        //返回参数
     }
 
     private void savePersonChatRecord(){

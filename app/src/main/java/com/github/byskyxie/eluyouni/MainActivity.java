@@ -68,10 +68,10 @@ public class MainActivity extends BaseActivity
     private PriDocFragment priDocFragment;
     private MainHandler handler = new MainHandler(this);
 
-    class MainHandler extends Handler{
+    static class MainHandler extends Handler{
         private MainActivity activity;
 
-        public MainHandler(MainActivity activity) {
+        MainHandler(MainActivity activity) {
             this.activity = activity;
         }
 
@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity
                 case ACCEPT_ICON:
                     if(msg.arg1 == 1)
                         ((ImageView)activity.navHeader.findViewById(R.id.image_view_icon)).setImageBitmap( BitmapFactory.decodeFile(
-                                getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
+                                activity.getFilesDir().getAbsolutePath()+"/icon/picon/"+userInfo.getPicon() ) );
                     else
                         ((ImageView)activity.navHeader.findViewById(R.id.image_view_icon)).setImageDrawable(ContextCompat
                                 .getDrawable(activity,R.mipmap.patient)  );
@@ -125,7 +125,7 @@ public class MainActivity extends BaseActivity
 
 
         //TODO:setDrawableTopSize(radioButtonMedic,92);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -317,7 +317,7 @@ public class MainActivity extends BaseActivity
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -372,7 +372,8 @@ public class MainActivity extends BaseActivity
         switch (buttonView.getId()){
             case R.id.radio_button_index:
                 if(isChecked && checkedOpt != CHECKED_INDEX){
-                    getSupportActionBar().setTitle(R.string.main_menu_index);
+                    if(getSupportActionBar() != null)
+                        getSupportActionBar().setTitle(R.string.main_menu_index);
                     checkedOpt = CHECKED_INDEX;
                     if(indexFragment == null){
                         indexFragment = new IndexFragment();
@@ -385,7 +386,8 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.radio_button_consult:
                 if(isChecked && checkedOpt != CHECKED_CONSULT){
-                    getSupportActionBar().setTitle(R.string.main_menu_consult);
+                    if(getSupportActionBar() != null)
+                        getSupportActionBar().setTitle(R.string.main_menu_consult);
                     checkedOpt = CHECKED_CONSULT;
                     if(consultFragment == null){
                         consultFragment = new ConsultFragment();
@@ -399,7 +401,8 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.radio_button_medicine:
                 if(isChecked && checkedOpt != CHECKED_MEDICINE){
-                    getSupportActionBar().setTitle(R.string.main_menu_medicine);
+                    if(getSupportActionBar() != null)
+                        getSupportActionBar().setTitle(R.string.main_menu_medicine);
                     checkedOpt = CHECKED_MEDICINE;
                     if(medicineFragment == null){
                         medicineFragment = new MedicineFragment();
@@ -412,7 +415,8 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.radio_button_private_doc:
                 if(isChecked && checkedOpt != CHECKED_DOCTOR){
-                    getSupportActionBar().setTitle(R.string.main_menu_private_doc);
+                    if(getSupportActionBar() != null)
+                        getSupportActionBar().setTitle(R.string.main_menu_private_doc);
                     checkedOpt = CHECKED_DOCTOR;
                     if(priDocFragment == null){
                         priDocFragment = new PriDocFragment();

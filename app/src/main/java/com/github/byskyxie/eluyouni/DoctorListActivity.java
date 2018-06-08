@@ -36,13 +36,14 @@ public class DoctorListActivity extends BaseActivity {
     private RecyclerView recyclerList;
     private DoctorListAdapter adapter = new DoctorListAdapter(this, null, handler);
 
-    class DoctorListHandler extends Handler{
+    static class DoctorListHandler extends Handler{
         private WeakReference<DoctorListActivity> activity;
 
-        public DoctorListHandler(WeakReference<DoctorListActivity> activity) {
+        DoctorListHandler(WeakReference<DoctorListActivity> activity) {
             this.activity = activity;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
@@ -85,7 +86,8 @@ public class DoctorListActivity extends BaseActivity {
         if(intent == null || intent.getSerializableExtra("ILLNESS") == null)
             return;
         ill = (Illness) intent.getSerializableExtra("ILLNESS");
-        getSupportActionBar().setTitle(ill.getName());
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setTitle(ill.getName());
         if(ill.getName().equals("名医达人")){
             //说明是从名医达人进来的
             adapter.setShowFame(true);
@@ -95,11 +97,7 @@ public class DoctorListActivity extends BaseActivity {
             @Override
             public void run() {
                 ArrayList<Doctor> list = null;
-                try{
-                    list = downloadIllnessDoctor(ill);
-                }catch (InterruptedException ie){
-                    ie.printStackTrace();
-                }
+                list = downloadIllnessDoctor(ill);
                 if(list != null && list.size()>0){
                     Message msg = new Message();
                     msg.what = ACCEPT_DOCTOR_LIST;
@@ -110,7 +108,7 @@ public class DoctorListActivity extends BaseActivity {
         }).start();
     }
 
-    protected ArrayList<Doctor> downloadIllnessDoctor(Illness ill) throws InterruptedException{
+    protected ArrayList<Doctor> downloadIllnessDoctor(Illness ill) {
         ArrayList<Doctor> list = new ArrayList<>();
         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/doctorlist";
         try{

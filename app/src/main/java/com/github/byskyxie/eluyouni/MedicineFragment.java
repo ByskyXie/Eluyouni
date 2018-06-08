@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,7 +64,7 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
         // Required empty public constructor
     }
 
-    class MedicineHandler extends Handler {
+    static class MedicineHandler extends Handler {
         private WeakReference<MedicineFragment> fragment;
 
         MedicineHandler(WeakReference<MedicineFragment> fragment) {
@@ -76,9 +77,9 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
                 case ACCEPT_ILLNESS_LIST:
                     if(fragment.get() == null || fragment.get().illnessAdapter.getItemCount()!=0)
                         return; //只接受一次，为0时
-                    fragment.get().illnessAdapter.addData(illnessList);
+                    fragment.get().illnessAdapter.addData(fragment.get().illnessList);
                     try{
-                    while(recyclerIllness.isComputingLayout())
+                    while(fragment.get().recyclerIllness.isComputingLayout())
                         Thread.sleep(200);
                     }catch (InterruptedException ie){
                         ie.printStackTrace();
@@ -88,9 +89,9 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
                 case ACCEPT_FAME_LIST:
                     if(fragment.get() == null || fragment.get().fameAdapter.getItemCount()!=0)
                         return;//只接受一次，为0时
-                    fragment.get().fameAdapter.addData(fameList);
+                    fragment.get().fameAdapter.addData(fragment.get().fameList);
                     try{
-                        while(recyclerFame.isComputingLayout())
+                        while(fragment.get().recyclerFame.isComputingLayout())
                             Thread.sleep(200);
                     }catch (InterruptedException ie){
                         ie.printStackTrace();
@@ -140,7 +141,7 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_medicine, container, false);
@@ -211,7 +212,6 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
@@ -278,8 +278,10 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
                             fameList.add( doctor );
                     }
                     //插入数据库
+                    int i = 0;
                     if(getContext() != null)
-                        ((BaseActivity)getContext()).writeDoctorBaseInfo(fameList);
+                        i = ((BaseActivity)getContext()).writeDoctorBaseInfo(fameList);
+                    Log.w("getList","get new info:"+i);
                     br.close();
                     Message msg = new Message();
                     msg.what = ACCEPT_FAME_LIST;

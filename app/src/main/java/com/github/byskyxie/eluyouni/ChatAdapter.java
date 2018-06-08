@@ -25,14 +25,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatHolder> {
 
     static class ChatHolder extends RecyclerView.ViewHolder{
         private int viewType;
-        private View view;
         private ImageView icon;
         private TextView time;
         private TextView content;
         ChatHolder(View itemView, int viewType) {
             super(itemView);
             this.viewType = viewType;
-            view = itemView;
             if(viewType == ChatItem.CHAT_TYPE_SELF){
                 icon = itemView.findViewById(R.id.image_view_chat_icon_self);
                 time = itemView.findViewById(R.id.text_view_chat_time_self);
