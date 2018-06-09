@@ -267,6 +267,7 @@
                 <TextView
                     android:id="@+id/text_view_show_profess_title"
                     android:background="@drawable/shape_for_text_border"
+                    android:drawableStart="@drawable/ic_profess"
                     android:padding="@dimen/mini_border"
                     android:paddingStart="@dimen/small_border"
                     android:paddingEnd="@dimen/small_border"
@@ -302,6 +303,7 @@
                 <TextView
                     android:id="@+id/text_view_show_career_title"
                     android:background="@drawable/shape_for_text_border"
+                    android:drawableStart="@drawable/ic_career"
                     android:padding="@dimen/mini_border"
                     android:paddingStart="@dimen/small_border"
                     android:paddingEnd="@dimen/small_border"
@@ -336,6 +338,7 @@
                 <TextView
                     android:id="@+id/text_view_show_pri_title"
                     android:background="@drawable/shape_for_text_border"
+                    android:drawableStart="@drawable/ic_pri_doc"
                     android:padding="@dimen/mini_border"
                     android:paddingStart="@dimen/small_border"
                     android:paddingEnd="@dimen/small_border"

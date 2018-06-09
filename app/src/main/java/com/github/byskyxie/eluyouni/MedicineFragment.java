@@ -224,6 +224,8 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
                 else
                     illnessList.clear();
                 //下载
+                if(BaseActivity.userInfo == null)
+                    return;
                 String req = "http://"+ BaseActivity.IP_SERVER+":8080/"+"eluyouni/medicine?pid="+BaseActivity.userInfo.getPid()+"&req=illness";
                 try{
                     URL url = new URL(req);
@@ -259,6 +261,8 @@ public class MedicineFragment extends Fragment implements View.OnClickListener{
                 else
                     fameList.clear();
                 //下载
+                if(BaseActivity.userInfo == null)
+                    return;
                 String req = "http://"+ BaseActivity.IP_SERVER+":8080/"+"eluyouni/medicine?pid="+BaseActivity.userInfo.getPid()+"&req=fame";
                 try{
                     URL url = new URL(req);

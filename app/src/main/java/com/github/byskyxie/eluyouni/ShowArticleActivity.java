@@ -29,7 +29,6 @@ public class ShowArticleActivity extends BaseActivity {
     private TextView tag;
     private ImageView icon;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

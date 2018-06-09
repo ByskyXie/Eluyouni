@@ -41,7 +41,6 @@
                 android:paddingTop="@dimen/small_border"
                 android:paddingBottom="@dimen/small_border"
                 android:background="@drawable/shape_for_text_border"
-                android:layout_marginTop="@dimen/small_border"
                 app:layout_constraintTop_toTopOf="parent"/>
 
             <android.support.constraint.ConstraintLayout

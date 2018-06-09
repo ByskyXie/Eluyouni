@@ -114,7 +114,7 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
             return R.mipmap.nzc;
         if(name.equals("脑梗塞"))
             return R.mipmap.ngs;
-        if(name.equals("阻塞性气肺"))
+        if(name.equals("阻塞性肺气肿"))
             return R.mipmap.zsxfqz;
         if(name.equals("颈椎病"))
             return R.mipmap.jzb;

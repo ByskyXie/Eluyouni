@@ -11,12 +11,15 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -220,6 +223,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         recycler = item.findViewById(R.id.recycler_focus);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration( new DividerItemDecoration(getContext(), LinearLayout.VERTICAL) );
         views.add(item);
         //recommend
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -228,6 +232,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         recycler = item.findViewById(R.id.recycler_recommend);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration( new DividerItemDecoration(getContext(), LinearLayout.VERTICAL) );
         views.add(item);
         //article patient
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -236,6 +241,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         recycler = item.findViewById(R.id.recycler_article_patient);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration( new DividerItemDecoration(getContext(), LinearLayout.VERTICAL) );
         views.add(item);
         //article doctor
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -244,6 +250,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         recycler = item.findViewById(R.id.recycler_article_doctor);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration( new DividerItemDecoration(getContext(), LinearLayout.VERTICAL) );
         views.add(item);
         //community
         llm = new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false);
@@ -252,6 +259,7 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
         recycler = item.findViewById(R.id.recycler_community);
         recycler.setLayoutManager(llm);
         recycler.setAdapter(adapter);
+        recycler.addItemDecoration( new DividerItemDecoration(getContext(), LinearLayout.VERTICAL) );
         views.add(item);
         //finished
 
@@ -332,6 +340,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        if(BaseActivity.userInfo == null)
+                            return;
                         ArrayList<Object> focusList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/patient/focusevent?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+0+"&ndbody=false";    //TODO:startpos
@@ -383,6 +393,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        if(BaseActivity.userInfo == null)
+                            return;
                         ArrayList<ArticleRecommend> recomList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/recommend?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=true";
@@ -431,6 +443,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        if(BaseActivity.userInfo == null)
+                            return;
                         ArrayList<ArticlePatient> patList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/patientarticle?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+(1+indexPagerAdapter.patiRecycler.getAdapter().getItemCount())+"&ndbody=true";
@@ -479,6 +493,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        if(BaseActivity.userInfo == null)
+                            return;
                         ArrayList<ArticleDoctor> docList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/doctorarticle?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+(1+indexPagerAdapter.docRecycler.getAdapter().getItemCount())+"&ndbody=true";
@@ -526,6 +542,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
+                        if(BaseActivity.userInfo == null)
+                            return;
                         ArrayList<PatientCommunity> commList = new ArrayList<>();
                         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/community?"+"pid="+ BaseActivity.userInfo.getPid()
                                 +"&startpos="+(1+indexPagerAdapter.commRecycler.getAdapter().getItemCount());
@@ -804,6 +822,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     }
 
     protected Patient getPatientBaseInfo(long pid) {
+        if(BaseActivity.userInfo == null)
+            return null;
         Patient patient = null;
         String request = "http://"+IP_SERVER+":8080/"+"eluyouni/baseinfo?"+"reqid="+BaseActivity.userInfo.getPid()+"&erid="+pid+"&ertype="+1;
         URL url;
@@ -877,6 +897,8 @@ public class IndexFragment extends Fragment implements ViewPager.OnPageChangeLis
     }
 
     protected Doctor getDoctorBaseInfo(long did) {
+        if(BaseActivity.userInfo == null)
+            return null;
         Doctor doctor = null;
         String request = "http://"+IP_SERVER+":8080/"+"eluyouni/baseinfo?"+"reqid="+BaseActivity.userInfo.getPid()+"&erid="+did+"&ertype="+2;
         URL url;

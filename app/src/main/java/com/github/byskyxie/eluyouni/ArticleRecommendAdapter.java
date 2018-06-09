@@ -26,6 +26,7 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
 
     static class ArticleRecommendHolder extends RecyclerView.ViewHolder{
         private View view;
+        private TextView time;
         private TextView content;
         private TextView title;
         private TextView name;
@@ -34,6 +35,7 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
         ArticleRecommendHolder(View itemView) {
             super(itemView);
             view = itemView;
+            time = itemView.findViewById(R.id.text_view_article_recom_time);
             content = itemView.findViewById(R.id.text_view_article_recom_content);
             title = itemView.findViewById(R.id.text_view_article_recom_title);
             name = itemView.findViewById(R.id.text_view_article_recom_name);
@@ -79,6 +81,7 @@ public class ArticleRecommendAdapter extends RecyclerView.Adapter<ArticleRecomme
         holder.view.setTag(actPos);
         holder.view.setOnClickListener(this);
         holder.title.setText( list.get(actPos).getTitle() );
+        holder.time.setText(list.get(actPos).getMDTime());
         holder.content.setText( list.get(actPos).getContent() );
         if( list.get(actPos).getErtype() == 1 ){
             //获取患者姓名

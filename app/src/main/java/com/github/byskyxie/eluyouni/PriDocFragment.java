@@ -136,6 +136,8 @@ public class PriDocFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                if(BaseActivity.userInfo == null)
+                    return;
                 ArrayList<Doctor> docList = new ArrayList<>();
                 String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/privatedoc?"+"pid="+ BaseActivity.userInfo.getPid()
                         +"&startpos="+(1+adapter.getItemCount());

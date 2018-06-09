@@ -20,7 +20,7 @@ public class ArticleDoctor implements Serializable{
     }
 
     public String getMDTime(){
-        return time.substring( time.indexOf('-')+1 );
+        return time.substring( time.indexOf('-')+1, time.lastIndexOf(':') );
     }
 
     public String getDTime(){

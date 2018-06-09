@@ -15,11 +15,74 @@
     android:paddingStart="@dimen/nano_border"
     android:paddingBottom="@dimen/small_border">
 
+    <!--<ImageView-->
+        <!--android:id="@+id/image_view_article_doctor_pic"-->
+        <!--android:background="@drawable/shape_for_article_pic"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="120dp"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/text_view_article_doctor_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/mini_border"-->
+        <!--android:textSize="18sp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:maxLines="2"-->
+        <!--android:ellipsize="end"-->
+        <!--android:layout_marginStart="@dimen/small_border"-->
+        <!--android:layout_marginEnd="@dimen/small_border"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/text_view_article_doctor_content"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/text_view_article_doctor_content"-->
+        <!--android:layout_marginBottom="@dimen/mini_border"-->
+        <!--android:textSize="16sp"-->
+        <!--android:maxLines="2"-->
+        <!--android:ellipsize="end"-->
+        <!--android:layout_marginStart="@dimen/small_border"-->
+        <!--android:layout_marginEnd="@dimen/small_border"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/image_view_article_doctor_pic"/>-->
+
+    <!--<ImageView-->
+        <!--android:id="@+id/image_view_article_doctor_icon"-->
+        <!--android:background="@drawable/shape_for_icon_background"-->
+        <!--android:layout_marginTop="@dimen/mini_border"-->
+        <!--android:layout_marginStart="@dimen/small_border"-->
+        <!--android:layout_width="42dp"-->
+        <!--android:layout_height="42dp"-->
+        <!--android:scaleType="fitXY"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/image_view_article_doctor_pic"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/text_view_article_doctor_name"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_marginStart="@dimen/mini_border"-->
+        <!--android:textSize="18sp"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/text_view_article_doctor_time"-->
+        <!--app:layout_constraintLeft_toRightOf="@id/image_view_article_doctor_icon"/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/text_view_article_doctor_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="@dimen/mini_border"-->
+        <!--app:layout_constraintLeft_toRightOf="@id/image_view_article_doctor_icon"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/image_view_article_doctor_icon"/>-->
+
     <ImageView
         android:id="@+id/image_view_article_doctor_pic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@drawable/shape_for_article_pic"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
         android:scaleType="fitCenter"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,54 +91,58 @@
         android:id="@+id/text_view_article_doctor_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/mini_border"
         android:textSize="18sp"
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
         android:layout_marginStart="@dimen/small_border"
         android:layout_marginEnd="@dimen/small_border"
-        app:layout_constraintBottom_toTopOf="@id/text_view_article_doctor_content"/>
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/text_view_article_doctor_content"
-        android:layout_marginBottom="@dimen/mini_border"
         android:textSize="16sp"
         android:maxLines="2"
         android:ellipsize="end"
+        android:layout_marginBottom="@dimen/mini_border"
         android:layout_marginStart="@dimen/small_border"
         android:layout_marginEnd="@dimen/small_border"
+        android:layout_marginTop="@dimen/mini_border"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/image_view_article_doctor_pic"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_view_article_doctor_title"/>
 
     <ImageView
         android:id="@+id/image_view_article_doctor_icon"
         android:background="@drawable/shape_for_icon_background"
         android:layout_marginTop="@dimen/mini_border"
         android:layout_marginStart="@dimen/small_border"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:scaleType="fitXY"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_view_article_doctor_pic"/>
+        app:layout_constraintTop_toBottomOf="@id/text_view_article_doctor_content"/>
 
     <TextView
         android:id="@+id/text_view_article_doctor_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_marginStart="@dimen/mini_border"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/text_view_article_doctor_time"
+        android:textColor="@color/gray"
+        android:layout_marginStart="@dimen/small_border"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/image_view_article_doctor_icon"
+        app:layout_constraintTop_toBottomOf="@id/text_view_article_doctor_content"
         app:layout_constraintLeft_toRightOf="@id/image_view_article_doctor_icon"/>
 
     <TextView
         android:id="@+id/text_view_article_doctor_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/mini_border"
-        app:layout_constraintLeft_toRightOf="@id/image_view_article_doctor_icon"
-        app:layout_constraintBottom_toBottomOf="@id/image_view_article_doctor_icon"/>
+        android:textColor="@color/gray"
+        android:layout_marginStart="@dimen/mid_border"
+        app:layout_constraintLeft_toRightOf="@id/text_view_article_doctor_name"
+        app:layout_constraintBottom_toBottomOf="@id/text_view_article_doctor_name"/>
 
 </android.support.constraint.ConstraintLayout>

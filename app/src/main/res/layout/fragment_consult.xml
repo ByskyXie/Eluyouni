@@ -30,6 +30,9 @@
             <TextView
                 android:id="@+id/text_view_consult_doc_title"
                 android:text="@string/consult_doc_title"
+                android:textSize="18sp"
+                android:padding="@dimen/nano_border"
+                android:drawableStart="@drawable/ic_doc_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"/>
@@ -43,6 +46,9 @@
             <TextView
                 android:id="@+id/text_view_consult_data_title"
                 android:text="@string/consult_data_title"
+                android:textSize="18sp"
+                android:padding="@dimen/nano_border"
+                android:drawableStart="@drawable/ic_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/mini_border"

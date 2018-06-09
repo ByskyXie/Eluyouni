@@ -79,6 +79,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean downloadDicon(Doctor doctor){
+        if(BaseActivity.userInfo == null)
+            return false;
         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+doctor.getDicon()
                 +"&pictype=dicon";
         File file = new File( getFilesDir()+"/icon/dicon/"+doctor.getDicon() );
@@ -119,6 +121,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean downloadDicon(String dicon){
+        if(BaseActivity.userInfo == null)
+            return false;
         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+dicon
                 +"&pictype=dicon";
         File file = new File( getFilesDir()+"/icon/dicon/"+dicon );
@@ -159,6 +163,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean downloadPicon(Patient patient){
+        if(BaseActivity.userInfo == null)
+            return false;
         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+patient.getPicon()
                 +"&pictype=picon";
         File file = new File( getFilesDir()+"/icon/picon/"+patient.getPicon() );
@@ -199,6 +205,8 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     protected boolean downloadPicon(String picon){
+        if(BaseActivity.userInfo == null)
+            return false;
         String request = "http://"+ IP_SERVER+":8080/"+"eluyouni/pic?id="+userInfo.getPid()+"&pic="+picon
                 +"&pictype=picon";
         File file = new File( getFilesDir()+"/icon/picon/"+picon );
