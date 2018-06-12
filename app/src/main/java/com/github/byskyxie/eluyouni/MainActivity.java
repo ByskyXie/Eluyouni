@@ -163,11 +163,13 @@ public class MainActivity extends BaseActivity
         //pname
         ((TextView)header.findViewById(R.id.text_view_nav_name)).setText(userInfo.getPname());
         //e币
+        header.findViewById(R.id.text_view_e_coin).setOnClickListener(this);
         if(Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N )
-            ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(Html.fromHtml("<font color=#f00>"
-                    +userInfo.getEcoin()+"</font>"+"e币", Html.FROM_HTML_MODE_COMPACT) );
+            ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(Html
+                    .fromHtml("<font color=#f00>" +userInfo.getEcoin()+"</font>"+"e币", Html.FROM_HTML_MODE_COMPACT) );
         else
-            ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(Html.fromHtml("<font color=#FFA500>"+userInfo.getEcoin()+"</font>"+" e币") );
+            ((TextView)header.findViewById(R.id.text_view_e_coin)).setText(Html
+                    .fromHtml("<font color=#FFA500>"+userInfo.getEcoin()+"</font>"+" e币") );
         //等级
         ((TextView)header.findViewById(R.id.text_view_score)).setText(userInfo.getGradeName());
         //血压
@@ -460,6 +462,11 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.button_emerg_cancel:
                 dialogEmerg.dismiss();
+                break;
+            case R.id.text_view_e_coin:
+                //充值
+                Intent intent = new Intent(this, EcoinActivity.class);
+                startActivity(intent);
                 break;
         }
     }

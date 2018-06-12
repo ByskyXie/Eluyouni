@@ -126,4 +126,5 @@ public class MedicineIllnessAdapter extends RecyclerView.Adapter<MedicineIllness
             return R.mipmap.gxz;
         return R.drawable.ic_illness;
     }
+
 }

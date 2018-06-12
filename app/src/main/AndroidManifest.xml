@@ -48,7 +48,8 @@
         <activity android:name=".ConsultRecordActivity" />
         <activity android:name=".HealthFileActivity" />
         <activity android:name=".HealthManageActivity" />
-        <activity android:name=".VisitedActivity"/>
+        <activity android:name=".VisitedActivity" />
+        <activity android:name=".EcoinActivity"></activity>
     </application>
 
 </manifest>
